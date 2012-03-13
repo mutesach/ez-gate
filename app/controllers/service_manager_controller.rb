@@ -5,8 +5,8 @@ class ServiceManagerController < ApplicationController
 	  	if request.env["HTTP_USER_AGENT"] == "Kannel/1.4.3"
         if params[:smsc] != nil or params[:content] != nil or params[:sender] != nil or params[:keyword] != nil
           @service  = Service.find(:first, :conditions => "keyword = '#{params[:keyword]}' or aliases like '%#{params[:keyword]}%'",
-          :joins => "left join short_codes on short_codes.code='#{params[:destination]}'",
-        :select => "services.id as service_id, services.user_id, services.status, services.content_type, services.reply, services.reply_content, services.web_service_id,services.user_short_code_id, services.name, services.keyword, services.aliases, short_codes.id, short_codes.code, short_codes.smsc")
+            :joins => "left join short_codes on short_codes.code='#{params[:destination]}'",
+            :select => "services.id as service_id, services.user_id, services.status, services.content_type, services.reply, services.reply_content, services.web_service_id,services.user_short_code_id, services.name, services.keyword, services.aliases, short_codes.id, short_codes.code, short_codes.smsc")
           #@code = ShortCode.find(:first, :conditions => "user_short_codes.user_id = #{@service.user_id} and code != 'All'",
 					#	:joins => "left join user_short_codes on user_short_codes.short_code_id=#{@service.user_short_code_id}",
 					#	:select => "user_short_codes.user_id, short_codes.code, short_codes.id, short_codes.smsc") unless @service.nil?
@@ -97,6 +97,8 @@ class ServiceManagerController < ApplicationController
                       service_params = service_params + "," + @web_service.param9.strip() unless @web_service.param9 == ""
                       service_params = service_params + "," + @web_service.param10.strip() unless @web_service.param10 == ""
                       content = "Invalid parameters. Follow this order : #{service_params}\n"
+                      req.update_attribute(:service_status, "failed")
+                      req.update_attribute(:status_message, content)
                       self.send_sms(req, user_id, params[:sender], short_code, @service, content)
                     end
                   else
@@ -244,33 +246,44 @@ class ServiceManagerController < ApplicationController
         puts "#{web_service.web_service_uri}?#{service_params}"
         if webservice_response.code == "200"
           request.update_attribute(:service_status, "success")
+        else
+          request.update_attribute(:service_status, "failed")
         end
         result = webservice_response.body
       rescue Errno::ECONNREFUSED
-        result = "WebService does not exist"
-        request.update_attribute(:service_status, result)
+        result = "The service is not available for the moment"
+        request.update_attribute(:service_status, "failed")
+        request.update_attribute(:status_message, result)
       rescue Timeout::Error
         result = "The request has timed out"
-        request.update_attribute(:service_status, result)
+        request.update_attribute(:service_status, "failed")
+        request.update_attribute(:status_message, result)
       rescue Errno::ECONNRESET
         result = "Server not available"
-        request.update_attribute(:service_status, result)
+        request.update_attribute(:service_status, "failed")
+        request.update_attribute(:status_message, result)
       rescue Errno::ENETUNREACH
         result = "Network unreachable"
-        request.update_attribute(:service_status, result)
+        request.update_attribute(:service_status, "failed")
+        request.update_attribute(:status_message, result)
       rescue SocketError
         result = "Name or service unknown"
-        request.update_attribute(:service_status, result)
+        request.update_attribute(:service_status, "failed")
+        request.update_attribute(:status_message, result)
       end
     when "POST-XML" then
       result = "POST-XML"
   	end
   	result
-
   end
-
  
   def service_test
   	@result = "web service content..."
+    render :layout => false
+  end
+
+  def get_ringtone
+  	@result = "http://my-ezgate.com/yuejk"
+    render :layout => false
   end
 end

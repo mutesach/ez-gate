@@ -176,6 +176,8 @@ EzGate::Application.routes.draw do
     collection do
       get 'request_handler'
       get 'record_push'
+      get 'service_test'
+      get 'get_ringtone'
     end
   end
 

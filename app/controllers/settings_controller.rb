@@ -227,26 +227,30 @@ class SettingsController < ApplicationController
 	end
 
   def new_ringtone
-    if request.post? 
-      import_file = params[:ringtone][:f_name].tempfile
-      save_as = File.join(RINGTONES_PATH ,  params[:ringtone][:f_name].original_filename)
-      File.open(save_as.to_s,'wb' ) do |file|
-        file.write( import_file.read )
-      end
-      extension = File.extname(params[:ringtone][:f_name].original_filename).sub( /^\./, '' ).downcase
-      size = File.size(save_as)
+    if request.post?
+      begin
+        import_file = params[:ringtone][:f_name].tempfile
+        save_as = File.join(RINGTONES_PATH ,  params[:ringtone][:f_name].original_filename)
+        File.open(save_as.to_s,'wb' ) do |file|
+          file.write( import_file.read )
+        end
+        extension = File.extname(params[:ringtone][:f_name].original_filename).sub( /^\./, '' ).downcase
+        size = File.size(save_as)
 
-      Ringtone.create(:user_id => session[:user_id],
-        :keyword => params[:ringtone][:keyword],
-        :aliases => params[:ringtone][:aliases],
-        :song_title => params[:ringtone][:song_title],
-        :artist_name => params[:ringtone][:artist_name],
-        :f_name => save_as,
-        :f_extension => extension,
-        :f_size => size,
-        :f_path => RINGTONES_PATH,
-        :status => 0)
-      message = "Ringtone created successfuly"
+        Ringtone.create(:user_id => session[:user_id],
+          :keyword => params[:ringtone][:keyword],
+          :aliases => params[:ringtone][:aliases],
+          :song_title => params[:ringtone][:song_title],
+          :artist_name => params[:ringtone][:artist_name],
+          :f_name => params[:ringtone][:f_name].original_filename,
+          :f_extension => extension,
+          :f_size => size,
+          :f_path => RINGTONES_PATH,
+          :status => 0)
+        message = "Ringtone created successfuly"
+      rescue Errno::ENOENT => message
+      rescue Errno::EACCES => message
+      end
 
       flash[:notice] = message    
       redirect_to :action => "index"
