@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <meta name="author" content="" />
+
+    <%= stylesheet_link_tag "main"%>
+    <%= javascript_include_tag :defaults, 'jquery' %>
+    <link rel="shortcut icon" href="ezgate.ico" type="image/ico" />
+    <title>ezGate</title>
+  </head>
+  <body
+    <div id="wrap">
+        <% if flash[:notice] -%>
+        <div id="flash">
+          <div style="margin-bottom:0px;">
+            <%= flash[:notice] %>
+          </div>
+        </div>
+      <% end -%>
+      <%= yield  %>
+      <div id="footer">
+        <p/><a href="#">Contact us</a> |
+          <a href="#">Privacy policy</a>
+          <br />&copy; 2012 ez-Gate
+      </div>
+    </div>
+  </body>
+</html>

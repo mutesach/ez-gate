@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/706/pivot_gate/trunk/pivot_gate/app/views/contacts
+END
+new_group.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/contacts/new_group.html.erb
+END
+index.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/706/pivot_gate/trunk/pivot_gate/app/views/contacts/index.html.erb
+END
+_contacts.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/706/pivot_gate/trunk/pivot_gate/app/views/contacts/_contacts.html.erb
+END
+update_contact.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/contacts/update_contact.html.erb
+END
+_groups.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/706/pivot_gate/trunk/pivot_gate/app/views/contacts/_groups.html.erb
+END
+_edit_contact.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/contacts/_edit_contact.html.erb
+END
+new_contact.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/contacts/new_contact.html.erb
+END

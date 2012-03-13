@@ -1,0 +1,45 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+
+  <div id="assign_short_code">
+    <h2><%= link_to "Settings", settings_path %> > Assign short code&nbsp;&nbsp;
+      <%= image_tag("spinner.gif",:align => "absmiddle",
+        :border => 0,:id => "spinner",
+        :style =>"display: none;" ) %></h2>
+
+    <ul>
+      <% @user_short_code.errors.each_with_index do |msg, i| %>
+        <li><%= msg[1] %></li>
+      <% end %>
+    </ul>
+
+    <%= form_tag :controller => "settings", :action => 'assign_short_code', :id => @user_short_code do -%>
+      <table>
+        <tbody>
+          <tr>
+          <tr>
+            <td>Short code:</td>
+            <td><%= collection_select :user_short_code, :short_code_id, ShortCode.find(:all, :conditions => "code != 'All'"),
+                :id, :short_code_with_smsc, :prompt => "Select" %></td>
+          </tr>
+          <tr>
+            <td>User:</td>
+            <td><%= collection_select :user_short_code, :user_id, User.find(:all),
+                :id, :name, :prompt => "Select" %></td>
+          </tr>
+          <tr><td>
+              <a class="submit"><%= submit_tag "Assign", :name => "save_user_short_code" %></a> </td>
+          </tr>
+          </tr>
+        </tbody>
+      </table>
+    <% end -%>
+
+  </div>
+</div>

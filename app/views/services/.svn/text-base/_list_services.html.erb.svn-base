@@ -1,0 +1,130 @@
+<h2>Services&nbsp;&nbsp;
+<%= image_tag("spinner.gif",:align => "absmiddle",
+		:border => 0,:id => "spinner",
+		:style =>"display: none;" ) %></h2>
+<p>
+<%= link_to "New service", :action => "new_service" unless !["SA","Administrator"].include?(session[:user_type])%>
+<% if @services.nil? %>
+	<% if session[:user_type] != "SA" or session[:user_type] != "Administrator" %>
+		<% conditions = "user_id = '#{session[:user_id]}' and id != 1" %>
+	<% else	 %>
+		<% conditions = "id != 1" %>
+	<% end %>
+	<%  @services = Service.paginate :per_page => 50, 
+		:conditions => conditions, :page => params[:page], 
+		:order => 'created_at DESC' %>
+<% end %>
+<div id="services">
+	<% if flash[:notice] -%>
+		<div id="flash">
+			<div style="margin-bottom:0px;">
+				<%= flash[:notice] %>
+			</div>
+			<script type="text/javascript">
+		    setTimeout("new Effect.Fade('flash');", 500)
+		  </script>
+		</div>
+	<% end -%>
+<table class="tgate" id="rounded-corner">  
+  <thead class="tgate">
+      <th class="tgate">Name</th>
+      <th class="tgate">Keyword</th>
+      <% if session[:user_type] != "Service-Aggregator" or session[:user_type] != "Bulk-push" %>
+        <th class="tgate">Owner</th>
+      <% end %>
+      <th class="tgate">Type</th>
+
+      <th class="tgate">Status</th>      
+  </thead>  
+  <tbody>
+  <% if @services != nil %>
+    <% @services.each do |i| %>
+      <tr class="tgate">
+      	<td class="tgate"><%=h i.name %></td>
+      	<td class="tgate"><%=h i.keyword %></td>
+      	<% if session[:user_type] != "User" %>
+      		<td class="tgate"><%=h i.user.name %></td>
+      	<% end %>
+      	<td class="tgate"><%=h i.content_type %></td>
+
+      	<% if i.status == true %>
+          <td class="tgate" bgcolor = "green"><b>On</b></td>
+        <% else %>
+        	<td class="tgate" bgcolor = "red"><b>Off</b></td>
+        <% end %>
+				<td><%= link_to_remote "[View]",:update => 'serv', :url => {
+			    				:controller => "services", :action => "disp_service", 
+			    				:id => i.id}%></td>
+			    				
+			  <td><%= link_to "[Edit]",:controller => "services", 
+			  				:action => "edit_service",
+			  				:id => i.id unless i.id == 1%></td>			    							
+				  <% if i.status != true %>
+						<td><%= link_to_remote "[Enable]",:update => 'services', :url => {
+							    				:controller => "services", :action => "enable_service", 
+							    				:id => i.id}, 
+							    				:before => "Element.show('spinner')", 
+							    				:success => "Element.hide('spinner')" unless i.id == 1 or session[:user_type] == "User"%></td> 
+					<% else %> 				
+						<td><%= link_to_remote "[Disable]",:update => 'services', 
+										:url => {:controller => "services", :action => "disable_service", 
+										:id => i.id}, :before => "Element.show('spinner')",
+										:success => "Element.hide('spinner')" unless i.id == 1 or session[:user_type] == "User"%> </td>
+					<% end %>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
+<br><br>
+<%= will_paginate @incoming_messages %>
+</div>
+
+<br><br><br><br><br>
+<h2>Moderators&nbsp;&nbsp;
+<%= image_tag("spinner.gif",:align => "absmiddle",
+		:border => 0,:id => "spinner",
+		:style =>"display: none;" ) %></h2>
+<%= link_to "Add moderator", :action => "new_user_mod" unless !["SA","Administrator","Service-Aggregator"].include?(session[:user_type])%><br><br>
+<div id="user_mod">
+<table class="tgate" id="rounded-corner">  
+	<thead class="tgate">
+   <th class="tgate">Name</th>
+   <th class="tgate">Service(s)</th>
+   <th class="tgate">Status</th>    
+ </thead>  
+ <tbody>
+ <% if @user_mod != nil %>
+  <% @user_mod.each do |i| %>
+   <tr class="tgate">
+   	<td class="tgate"><%=h i.username %></td>
+   	<% @mod_services = UserModService.find(:all, :conditions => "user_mod_id = #{i.id}")%>
+   	<% @mod_count = UserModService.count(:all, :conditions => "user_mod_id = #{i.id}")%>
+   	<td class="tgate"><% @mod_services.each do |j|%>[<%=h j.service.name unless j.service_id.nil?%>] <% end %></td>
+   	<% if i.status == true %>
+     <td class="tgate" bgcolor = "green"><b>On</b></td>
+     <td><%= link_to "[Deactivate]", :action => 'deactivate_user_mod', :id => i.id %></td>
+    <% else %>
+    	<td class="tgate" bgcolor = "red"><b>Off</b></td>
+    	<td><%= link_to "[Activate]",	:action => 'activate_user_mod', :id => i.id %></td>
+    <% end %>
+    <td id="add_service_mod"><%= link_to_remote "[Add service]",	
+    :url => {:action => 'add_service_mod', :id => i.id }, :update => "add_service_mod",
+    :before => "Element.show('spinner')",
+    :success => "Element.hide('spinner')"%></td>
+   	<td id="remove_service_mod"><%= link_to_remote "[Remove service]",	
+    :url => {:action => 'remove_service_mod', :id => i.id }, :update => "remove_service_mod",
+    :before => "Element.show('spinner')",
+    :success => "Element.hide('spinner')" unless @mod_count == nil%></td>
+    <td id="remove_service_mod"><%= link_to "[Delete]",	
+    {:action => 'delete_mod_user', :id => i.id}, {:post => true,
+							                          :confirm => "Delete user #{i.username}?"
+							                          }%></td>
+   </tr>
+  <% end %>
+ <% end %>
+ </tbody>
+</table>
+<br><br>
+<%= will_paginate @mod_service %>
+</div>

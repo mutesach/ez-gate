@@ -1,0 +1,38 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+
+  <div id="change_password">
+    <h2><%= link_to "Users", users_path %> > Change <%= @user.user.name %>'s password&nbsp;&nbsp;
+      <%= image_tag("spinner.gif",:align => "absmiddle",
+        :border => 0,:id => "spinner",
+        :style =>"display: none;" ) %></h2>
+
+    <ul>
+      <% @user.errors.each_with_index do |msg, i| %>
+        <li><%= msg[1] %></li>
+      <% end %>
+    </ul>
+    <%= form_tag :action => 'change_password', :id => @user do %>
+      <table>
+        <tr>
+          <td>
+            <p/><label for="user_new_password">New password</label><br/>
+            <%= password_field :user_detail, :password, :value => "", :size => 15%>
+
+            <p/><label for="user_confirm_new_password">Confirm new password</label><br/>
+            <%= password_field :user_detail, :password_confirmation,:size => 15, :value => "" %>
+
+            <a class="submit"><%= submit_tag "Change"%></a><p>
+          </td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+</div>
+

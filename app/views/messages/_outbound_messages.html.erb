@@ -1,0 +1,39 @@
+<strong><i>(<%= @result %>) records found</i></strong>
+<div id="messages">
+  <table class="tgate" id="rounded-corner">
+    <thead class="tgate">
+    <th class="tgate">Sender</th>
+    <th class="tgate">Destination</th>
+    <th class="tgate">Service</th>
+    <th class="tgate">Content</th>
+    <th class="tgate">Status</th>
+    <th class="tgate">Date/Time</th>
+    </thead>
+    <tbody>
+      <% if @outbound_messages != nil %>
+        <% @outbound_messages.each do |i| %>
+          <tr class="tgate">
+            <td class="tgate"><%=h i.sender %></td>
+            <td class="tgate"><%=h i.destination %></td>
+            <td class="tgate"><%=h i.service %></td>
+            <td class="tgate">
+              <%=h i.content.slice(0, 40) %>
+              <%= "..." unless i.content.length() < 40 %></td>
+            <% case i.status when "delivered","submitted" then %>
+              <td class="tgate" bgcolor = "#c3ea78">
+                <%=h i.status.strip() %></td>
+            <% when "failed" then %>
+              <td class="tgate" bgcolor = "#bb3c2d">
+                <%=h i.status_message %></td>
+            <% end %>
+            <td class="tgate"><%=h i.created_at.strftime("%Y-%m-%d %l:%M:%S %p") %></td>
+            <td><%= link_to "[View]", view_outbound_message_messages_path(:id => i.id), :method => :get, 'data-popup' => true %></td>
+          </tr>
+        <% end %>
+        <tr><td></td></tr>
+      <% end %>
+    </tbody>
+
+  </table>
+</div>
+

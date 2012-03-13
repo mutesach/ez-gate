@@ -1,0 +1,10 @@
+<%= javascript_include_tag 'pagination' %>
+<div id="content">
+
+	<div id="services">
+	  <%= render :partial => "list_services" %>
+	</div>
+	
+	<div id="serv">
+	</div>
+</div>

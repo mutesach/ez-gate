@@ -1,0 +1,17 @@
+<%= form_remote_tag :update => "content", :url => {:action => 'update_service_mod', :id => @user_mod.id}, 
+				:before => "Element.show('spinner');",
+				:success => "Element.hide('spinner');" %>
+<table>
+	<tbody>
+		<tr>
+			<tr>
+   	<td>Service:</td>
+   	<td><%= collection_select :user_mod_service, :service_id, 
+   			Service.find(:all, :conditions => "id != 1 and user_id = '#{session[:user_id]}'", 
+   			:order => "name ASC"), :id, :name, 
+   			:prompt => "Select"%> <a class="submit"><%= submit_tag "Add", :name => "add_mod_service" %></a></td>
+   </tr>        
+		</tr>    
+	</tbody>
+</table>
+

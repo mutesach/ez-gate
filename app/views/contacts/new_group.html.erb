@@ -1,0 +1,43 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+
+  <div id="new_group">
+    <h2><%= link_to "Contacts/Groups", contacts_path %> > New contact&nbsp;&nbsp;
+      <%= image_tag("spinner.gif",:align => "absmiddle",
+        :border => 0,:id => "spinner",
+        :style =>"display: none;" ) %></h2>
+    <ul>
+      <% @group.errors.each_with_index do |msg, i| %>
+        <li><%= msg[1] %></li>
+      <% end %>
+    </ul>
+    <%= form_tag :controller => "contacts", :action => 'new_group', :id => @group do -%>
+      <table>
+        <tbody>
+          <tr>
+          <tr>
+            <td>Name:</td>
+            <td><%= text_field :group, :name, :size => 30 %></td>
+          </tr>
+
+          <%= hidden_field :group, :user_id, :value => session[:user_id] %>
+
+          <tr><td>
+              <a class="submit"><%= submit_tag "Save", :name => "save_group" %></a> </td>
+          </tr>
+          </tr>
+        </tbody>
+      </table>
+    <% end -%>
+
+  </div>
+</div>
+
+
+

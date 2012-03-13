@@ -1,0 +1,66 @@
+<div id="short_codes">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+  <h3><i>Registered short codes</i></h3>
+  <table width="50%">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>SMSC</th>
+        <th>Cost</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @short_codes != nil %>
+        <% @short_codes.each do |i| %>
+          <tr>
+            <td><%=h i.code %></td>
+            <td><%=h i.smsc %></td>
+            <td><%=h i.sms_cost %></td>
+            <% if i.status == true %>
+              <td bgcolor = "green"><b>On</b></td>
+              <td><%= link_to "[Disable]",
+                  :action => "deactivate_short_code",
+                  :id => i.id unless i.id == 1%></td>
+            <% else %>
+              <td bgcolor = "red"><b>Off</b></td>
+              <td><%= link_to "[Enable]",:action => "activate_short_code",
+                  :id => i.id unless i.id == 1%></td>
+            <% end %>
+            <td><%= link_to "[Edit]",:action => "edit_short_code", :id => i.id unless i.id == 1%></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h3><i>Assigned short codes</i></h3>
+  <table width="50%">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>SMSC</th>
+        <th>User</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @user_short_codes != nil %>
+        <% @user_short_codes.each do |i| %>
+          <tr>
+            <td><%=h i.short_code.code %></td>
+            <td><%=h i.short_code.smsc %></td>
+            <td><%=h i.user.name %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <br /><br />
+
+</div>

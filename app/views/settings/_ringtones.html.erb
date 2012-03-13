@@ -1,0 +1,34 @@
+<div id="ringtones">
+  <h3><i>Available ringtones</i></h3>
+  <table width="50%">
+    <thead>
+      <tr>
+        <th>Keyword</th>
+        <th>Aliases</th>
+        <th>Song title</th>
+        <th>Artist</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @ringtones != nil %>
+        <% @ringtones.each do |i| %>
+          <tr>
+            <td><%=h i.keyword %></td>
+            <td><%=h i.aliases %></td>
+            <td><%=h i.song_title %></td>
+            <td><%=h i.artist_name %></td>
+            <% if i.status == true %>
+              <td bgcolor = "green"><b>On</b></td>
+              <td><%= link_to "[Disable]", :action => "deactivate_ringtone", :id => i.id %></td>
+            <% else %>
+              <td bgcolor = "red"><b>Off</b></td>
+              <td><%= link_to "[Enable]",:action => "activate_ringtone", :id => i.id %></td>
+            <% end %>
+            <td><%= link_to "[Edit]", :action => "edit_ringtone", :id => i.id %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

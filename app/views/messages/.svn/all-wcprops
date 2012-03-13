@@ -1,0 +1,179 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/835/pivot_gate/trunk/pivot_gate/app/views/messages
+END
+_multi_message_box.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/messages/_multi_message_box.html.erb
+END
+_reply_message_box.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/708/pivot_gate/trunk/pivot_gate/app/views/messages/_reply_message_box.html.erb
+END
+index.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/835/pivot_gate/trunk/pivot_gate/app/views/messages/index.html.erb
+END
+_filtered_by_service.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/708/pivot_gate/trunk/pivot_gate/app/views/messages/_filtered_by_service.html.erb
+END
+_filtered_by_smsc.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/708/pivot_gate/trunk/pivot_gate/app/views/messages/_filtered_by_smsc.html.erb
+END
+_disp_outgoing_message.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/!svn/ver/706/pivot_gate/trunk/pivot_gate/app/views/messages/_disp_outgoing_message.html.erb
+END
+search_by_service.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/messages/search_by_service.html.erb
+END
+_outgoing_messages.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/754/pivot_gate/trunk/pivot_gate/app/views/messages/_outgoing_messages.html.erb
+END
+_filtered_by_content.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/708/pivot_gate/trunk/pivot_gate/app/views/messages/_filtered_by_content.html.erb
+END
+_disp_incoming_message.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/!svn/ver/706/pivot_gate/trunk/pivot_gate/app/views/messages/_disp_incoming_message.html.erb
+END
+single_message.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/835/pivot_gate/trunk/pivot_gate/app/views/messages/single_message.html.erb
+END
+_filtered_by_sender.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/708/pivot_gate/trunk/pivot_gate/app/views/messages/_filtered_by_sender.html.erb
+END
+_incoming_messages.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/754/pivot_gate/trunk/pivot_gate/app/views/messages/_incoming_messages.html.erb
+END
+search_by_content.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/messages/search_by_content.html.erb
+END
+view_outgoing_message.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/messages/view_outgoing_message.html.erb
+END
+_filtered_by_status.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/708/pivot_gate/trunk/pivot_gate/app/views/messages/_filtered_by_status.html.erb
+END
+outgoing.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/messages/outgoing.html.erb
+END
+_single_message_box.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/messages/_single_message_box.html.erb
+END
+search_by_date.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/messages/search_by_date.html.erb
+END
+new_message.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/754/pivot_gate/trunk/pivot_gate/app/views/messages/new_message.html.erb
+END
+multi_message.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/804/pivot_gate/trunk/pivot_gate/app/views/messages/multi_message.html.erb
+END
+reply_message.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/708/pivot_gate/trunk/pivot_gate/app/views/messages/reply_message.html.erb
+END
+search_by_sender.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/messages/search_by_sender.html.erb
+END
+filter_by_frequency.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/708/pivot_gate/trunk/pivot_gate/app/views/messages/filter_by_frequency.html.erb
+END
+search_by_destination.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/messages/search_by_destination.html.erb
+END
+toggle_completed.rjs
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/835/pivot_gate/trunk/pivot_gate/app/views/messages/toggle_completed.rjs
+END
+view_incoming_message.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/messages/view_incoming_message.html.erb
+END
+_filtered_by_date_time.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/!svn/ver/708/pivot_gate/trunk/pivot_gate/app/views/messages/_filtered_by_date_time.html.erb
+END
+incoming.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/messages/incoming.html.erb
+END

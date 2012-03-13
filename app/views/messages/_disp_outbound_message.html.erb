@@ -1,0 +1,7 @@
+<script type="text/javascript">
+	jQuery.facebox(function() {
+  	jQuery.get("view_outgoing_message?id=<%= @outgoing_message.id %>", function(data) {
+    	jQuery.facebox('<table>' + data + '</table>')
+  	})
+	})
+</script>

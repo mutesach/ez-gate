@@ -1,0 +1,25 @@
+<%= link_to (image_tag("/images/back.png", {:alt=>'example',:class=>"rollover"}),:action => "index") %>
+<%= error_messages_for 'short_code' %>
+
+<% form_tag :controller => "settings", :action => 'update_assigned_short_code', :id => @user_short_code do -%>
+<table>
+			<tbody>
+				<tr> 
+					<tr>
+					  <td>Short code:</td>
+					  <td><%= collection_select :user_short_code, :short_code_id, ShortCode.find(:all), 
+																		:id, :name, :prompt => "Select" %></td>
+					</tr>
+					<tr>
+					  <td>User:</td>
+					  <td><%= collection_select :user_short_code, :user_id, User.find(:all), 
+																		:id, :name, :prompt => "Select" %></td>
+					</tr>  		    
+			    <tr><td>
+			    <a class="submit"><%= submit_tag "Assign", :name => "save_user_short_code" %></a> </td>
+			    </tr>    
+				</tr>     
+			</tbody>
+		</table>
+<% end -%>
+

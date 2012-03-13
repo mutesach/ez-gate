@@ -1,0 +1,23 @@
+<br /><br />
+<div id="groups">
+  <table class="tgate">
+    <h2>Group(s)</h2>
+    <thead class="tgate">
+    <th class="tgate">Name</th>
+    <th></th>
+    </thead>
+    <% if @groups != nil %>
+      <% @groups.each do |i| %>
+        <tr id="<%= i.id%>" class="tgate" style="cursor:-moz-grab">
+          <% contact = Contact.count(:all,
+            :conditions => "group_id = '#{i.id}'")%>
+          <td class="tgate"><%=h i.name %> (<%= contact %>)</td>
+          <td><%= link_to "send message", multi_message_box_messages_path(:id => i.id), :method => :get, 'data-popup' => true %></td>
+        </tr>
+
+
+      <% end %>
+    <% end %>
+
+  </table>
+</div>

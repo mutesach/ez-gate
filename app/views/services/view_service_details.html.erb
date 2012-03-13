@@ -1,0 +1,31 @@
+<div id="serv">
+  <table align="center">
+    <thead>
+      <tr>
+        <th>Service : [<%=h @service.name%>]</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Keyword</td><td align="left"><%=h @service.keyword %></td></tr>
+      <tr><td>Aliases</td><td align="left"><%=h @service.aliases %></td></tr>
+      <tr><td>Owner</td><td align="left"><%=h @service.user.name %></td></tr>
+      <tr><td>Content Type</td><td align="left"><%=h @service.content_type %></td></tr>
+      <tr><td>Reply</td><% if @service.reply == true %>
+          <td bgcolor = "green" align="left"><b>Yes</b></td>
+        <% else %>
+          <td bgcolor = "red" align="left"><b>No</b></td>
+        <% end %></tr>
+      <tr><td><%= "Reply Content" unless @service.reply == false %></td><td align="left"><%=h @service.reply_content unless @service.reply == false%></td></tr>
+      <% if @service.content_type == "Dynamic"%>
+        <tr><td>Web service</td><td align="left"><%=h @service.web_service.name %></td></tr>
+      <% end %>
+      <tr><td>Status</td>
+        <% if @service.status == true %>
+          <td bgcolor = "green" align="left"><b>On</b></td>
+        <% else %>
+          <td bgcolor = "red" align="left"><b>Off</b></td>
+        <% end %></tr>
+    </tbody>
+  </table>
+</div>

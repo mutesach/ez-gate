@@ -1,0 +1,16 @@
+<%= form_tag :action => 'delete_user_service_mod' %>
+<table>
+  <tbody>
+    <tr>
+    <tr>
+      <td>Service:</td>
+      <td><%= collection_select :user_mod_service, :service_id,
+          Service.find(:all, :conditions => "id in(#{@sel})",
+          :order => "name ASC"), :id, :name,
+          :prompt => "Select"%></td>
+    </tr>
+    </tr>
+  </tbody>
+</table>
+<a class="submit"><%= submit_tag "Remove", :name => "remove_mod_service" %></a>
+

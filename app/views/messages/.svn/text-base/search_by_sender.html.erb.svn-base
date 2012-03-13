@@ -1,0 +1,115 @@
+<div id="content">
+	<% if flash[:notice] -%>
+		<div id="flash">
+			<div style="margin-bottom:0px;">
+				<%= flash[:notice] %>
+			</div>
+			<script type="text/javascript">
+		    setTimeout("new Effect.Fade('flash');", 500)
+		  </script>
+		</div>
+	<% end -%>
+ <% case params[:sel] when "in" then %>
+  <% link = "Incoming messages" %>
+  <% action = "incoming" %>
+  <% param1 = :id %>
+  <% param2 = :name%>
+ <% when "out" then %>
+ 	<% link = "Outgoing messages" %>
+ 	<% action = "outgoing" %>
+ 	<% param1 = :keyword %>
+  <% param2 = :keyword%>
+ <% end %>
+ <h2><%= link_to "Messages", :action => "index"%> > <%= link_to link, :action => action%> > Search by sender <i>[<%= params[:query3]%>]</i>&nbsp;&nbsp;
+	<%= image_tag("spinner.gif",:align => "absmiddle",
+			:border => 0,:id => "spinner",
+			:style =>"display: none;" ) %></h2>
+
+	<% @sel = params[:sel]%>
+	<% if session[:user_type] != "SA"%>
+ 	<% @services = Service.find(:all, :conditions => "user_id = #{session[:user_id]}", 
+	:order => "name ASC") %>
+		<% @short_codes = 	ShortCode.find(:all, :conditions => "user_short_codes.user_id = #{session[:user_id]}",
+		:joins => "left join user_short_codes on user_short_codes.short_code_id=short_codes.id", 
+							:select => "user_short_codes.user_id, short_codes.code, short_codes.id") %>
+	<% else %>
+		<% @services = Service.find(:all, :order => "name ASC") %>
+		<% @short_codes = 	ShortCode.find(:all, :conditions => "code != 'All'")%>
+	<% end %>
+
+ <table width="100%">		
+		<tr>
+			<td width="50%">
+				<table>
+					<tr>					
+						<th align ='left'><i>Service </i></th>
+						<td align = "left">
+							<% form_tag :action => "search_by_service", :sel => @sel  do %>
+								<%= select_tag :query1, options_from_collection_for_select(@services, 
+								param1, param2, params[:query1])%>
+								<%= submit_tag 'Search' unless session[:user_type] == "Moderator"%>			
+							<% end %>
+						</td>
+					</tr>
+					<tr>					
+						<th align ='left'><i><% case @sel when "in" then %>Sender<% when "out" then %>Short code<% end %> </i></th>
+						<td align = "left">
+							<% form_tag :action => "search_by_sender", :sel => @sel  do %>
+								<%= text_field_tag("query2", params['query2'], :size => 13 ) unless @sel == "out" %>
+								<%= select_tag :query2, options_from_collection_for_select(@short_codes, 
+								:code, :code, params[:query2]) unless @sel == "in"%>
+								<%= submit_tag 'Search' %>			
+							<% end %>
+						</td>
+					</tr>
+					<tr>					
+						<th align ='left'><i><% case @sel when "in" then %>Short code<% when "out" then %>Destination<% end %> </i></th>
+						<td align = "left">
+							<% form_tag :action => "search_by_destination", :sel => @sel  do %>
+								<%= text_field_tag("query4", params['query4'], :size => 13 ) unless @sel == "in" %>
+								<%= select_tag :query4, options_from_collection_for_select(@short_codes, 
+								:code, :code, params[:query4]) unless @sel == "out"%>
+								<%= submit_tag 'Search' %>			
+							<% end %>
+						</td>
+					</tr>
+					<tr>					
+						<th align ='left'><i>Content </i></th>
+						<td align = "left">
+							<% form_tag :action => "search_by_content", :sel => @sel  do %>
+								<%= text_field_tag("query3", params['query3'], :size => 20 ) %>
+								<%= submit_tag 'Search' %>			
+							<% end %>
+						</td>
+					</tr>
+					<tr>
+						<th align ='left'><i>Date selection </i></th>
+						<td align = "left"><i>
+							<% form_tag :action => "search_by_date", :search_id => "selection", :sel => @sel do %>
+								From : <%= date_select("date_from", "", 
+														  						:min_date => Date.today, 
+														  						:max_date => 12.weeks.from_now)%><br>
+								To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+	 						<%= date_select("date_to", "", :min_date => Date.today, 
+								:max_date => 12.weeks.from_now)%>&nbsp;&nbsp;
+								<%= submit_tag 'Search', :name => "" %>								
+							<% end %></i>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<br>
+	<div id="messages">
+	  <% case params[:sel] when "in" then %>
+	  <%= render "incoming_messages" %>
+	 <% when "out" then %>
+	 	<%= render "outgoing_messages" %>
+	 <% end %>
+	</div>
+	
+	<div id="msg">
+	</div>
+</div>

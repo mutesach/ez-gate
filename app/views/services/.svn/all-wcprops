@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/754/pivot_gate/trunk/pivot_gate/app/views/services
+END
+edit_service.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/754/pivot_gate/trunk/pivot_gate/app/views/services/edit_service.html.erb
+END
+_add_service_mod.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/706/pivot_gate/trunk/pivot_gate/app/views/services/_add_service_mod.html.erb
+END
+new_user_mod.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/706/pivot_gate/trunk/pivot_gate/app/views/services/new_user_mod.html.erb
+END
+index.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/services/index.html.erb
+END
+new_service.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/services/new_service.html.erb
+END
+_remove_service_mod.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/706/pivot_gate/trunk/pivot_gate/app/views/services/_remove_service_mod.html.erb
+END
+list.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/706/pivot_gate/trunk/pivot_gate/app/views/services/list.html.erb
+END
+save_mod_user.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/706/pivot_gate/trunk/pivot_gate/app/views/services/save_mod_user.html.erb
+END
+_list_services.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/707/pivot_gate/trunk/pivot_gate/app/views/services/_list_services.html.erb
+END
+_disp_service.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/services/_disp_service.html.erb
+END
+view_service_details.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/services/view_service_details.html.erb
+END
+update_service.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/services/update_service.html.erb
+END

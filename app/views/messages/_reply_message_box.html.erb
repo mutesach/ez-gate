@@ -1,0 +1,7 @@
+<script type="text/javascript">
+	jQuery.facebox(function() {
+  	jQuery.get("reply_message?phone=<%= @phone_no%>&name=<%= @phone_no%>", function(data) {
+    	jQuery.facebox('<table>' + data + '</table>')
+  	})
+	})
+</script>

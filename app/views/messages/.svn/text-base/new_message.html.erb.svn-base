@@ -1,0 +1,105 @@
+<script language="javascript">
+	function validateSendM() {
+		if ($("message_dest") != null){
+			var code = document.getElementById('message_dest').value 
+		}
+		else{
+		  var code ="owner"
+		}
+		var mess = document.getElementById('message_content').value
+		if (code==null||code=="") {
+			document.getElementById('message_dest').style.backgroundColor='#FFFFB0';      
+			alert('Please select short code!');
+		  return false;
+		  
+		} 
+		if (mess==null||mess=="")
+		{
+			document.getElementById('message_content').style.backgroundColor='#FFFFB0';
+			alert('Message content is empty!');	 
+		  return false;
+		}  
+	}
+</script>
+<div id="content">
+<% if flash[:notice] -%>
+		<div id="flash">
+			<div style="margin-bottom:0px;">
+				<%= flash[:notice] %>
+			</div>
+			<script type="text/javascript">
+			  setTimeout("new Effect.Fade('flash');", 500)
+			</script>
+		</div>
+	<% end -%>
+<h2>Send message</i></h2>
+&nbsp;&nbsp;<%= image_tag("spinner2.gif",:align => "absmiddle",
+	:border => 0,:id => "spinner2",
+	:style =>"display: none;" ) %></h3>
+<% if session[:user_type] == "SA"%>
+	<% @conditions = "code != 'All'"%>
+<% else %>
+	<% @conditions = "user_id = #{session[:user_id]}"%>
+<% end %>
+<div id="send_sms">
+	<table>
+		<th>Sending options</th>
+		<% form_tag :controller => "messages", :action => 'send_message', :id => @message do -%>	     
+
+      <tr>
+      <td> 
+				<label for="number1"><input type="radio" value="1" name="message[number]" id="number1" onclick="checkfld(this);"> Single</label></td>
+				<td><label for="number2"><input type="radio" value="2" name="message[number]" id="number2" onclick="checkfld(this);"> Mutliple separated with ;</label></td>
+				<td><label for="number3"><input type="radio" value="3" name="message[number]" id="number3" onclick="checkfld(this);"> Mutliple from csv file</label></td>
+				<td><label for="number4"><input type="radio" value="4" name="message[number]" id="number4" onclick="checkfld(this);"> Mutliple from group</label>
+				</td></tr>
+		
+		</tr>
+		<tr>
+			<td>Short code</td><td><%= collection_select 'message', 'dest', 
+											ShortCode.find(:all, :conditions => @conditions, :joins => "left join user_short_codes on user_short_codes.short_code_id=short_codes.id",	:select => "user_short_codes.user_id, short_codes.code, short_codes.id"), :code, :code, :prompt => "Select" %></td></tr>
+		<tr>
+		<tr id="single_p" style="display: none;">
+	    <td>Phone (single)</td><td><%= text_field :message, :phone_single, :size => 15, :value => "+250" %></td>
+		</tr>
+		<tr id="multi_p" style="display: none;">
+	    <td>Phone (multiple)</td><td><%= text_field :message, :phone_multi, :size => 50 %></td>
+		</tr>	  
+	  <tr id="csv_p" style="display: none;">
+	    <td>File</td>
+	    <td><%= file_field :message, :file -%>
+	    </td>
+	  </tr>	  
+	  <tr id="group_p" style="display: none;">
+	    <td>Group</td>
+	    <td><%= collection_select :message, :group_id, Group.find(:all, :conditions => "user_id='#{session[:user_id]}'"), :id, :name, :prompt => "Select" %>
+	    </td>
+	  </tr>
+		<tr>
+	    <td>Message</td><td><%= text_area :message, :content, :rows => 5, :cols => 40, :onKeyUp => "textCounter(this, document.getElementById('len'), 125)", :onKeyDown => "textCounter(this, document.getElementById('len'), 125)" %></td>
+		</tr>
+		<tr><td><input readonly type="text" id="len" size="3" maxlength="3" value="125">characters left</td></tr>
+		
+    <tr>		
+			<% if @status == 0%>
+				<td bgcolor = "#fbb508">SMS Gateway not available</td>
+			<% else %>	
+				<% if @curr_status == "isolated"%>
+					<td bgcolor = "#fbb508">SMS Gateway ISOLATED</td>
+					<td><i>Cannot send messages for the moment, contact your sys. admin.</i></td>
+				<% else %>
+				  <% if @curr_status == "running" and @box_status != nil%>
+						<td>
+			        <a class="submit"><%= submit_tag "Send message", :name => "send_message", :onclick =>  "return validateSendM()" %></a> </td>
+			      </td>
+					<% else %>
+						<td bgcolor = "#fbb508">SMS Box not available</td>
+						<td><i>Cannot send messages for the moment, contact your sys. admin.</i></td>
+					<% end %>
+				<% end %>
+			<% end %>
+  	</tr>
+  	<% end -%>
+	</table>
+</div>
+</div>

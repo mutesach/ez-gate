@@ -1,0 +1,34 @@
+<%= javascript_include_tag 'pagination' %>
+
+<div id="content">
+
+<h2>SMS Gateway status&nbsp;&nbsp;
+<%= image_tag("spinner.gif",:align => "absmiddle",
+																			:border => 0,:id => "spinner",
+																			:style =>"display: none;" ) %></h2>
+<p>
+	<%= render :partial => "gateway_status", :layout => false%>
+
+<p><p>
+<h2>Web services&nbsp;&nbsp;
+<h3><%= link_to "New", :action => "new_web_service" %>
+</h3>
+<%= image_tag("spinner.gif",:align => "absmiddle",
+																			:border => 0,:id => "spinner",
+																			:style =>"display: none;" ) %></h2>
+<p>
+	<%= render :partial => "web_services", :layout => false%>
+
+<p><p>
+<h2>Short codes&nbsp;&nbsp;
+<h3><%= link_to "New", :action => "new_short_code" %>&nbsp;&nbsp;
+<%= link_to "Assign short code", :action => "assign_short_code" %>
+</h3>
+<%= image_tag("spinner.gif",:align => "absmiddle",
+																			:border => 0,:id => "spinner",
+																			:style =>"display: none;" ) %></h2>
+<p>
+	<%= render :partial => "user_short_codes", :layout => false%>
+
+</div>
+

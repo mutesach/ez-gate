@@ -1,0 +1,75 @@
+<script type="text/javascript">
+  function test(){
+    jQuery.facebox(function() {
+      jQuery.get("contacts/multi_message?contacts=<%= @contacts%>", function(data) {
+        jQuery.facebox('<table>' + data + '</table>')
+      })
+    })
+    return false;
+  }
+
+  function validateSend() {
+    var mess = document.getElementById('multi_content').value
+    if (mess==null||mess=="")
+    {
+      document.getElementById('mutli_content').style.backgroundColor='#FFFFB0';
+      alert('Message content is empty!');
+      return false;
+    }
+  }
+  $('a[data-popup]').live('click', function(e) {
+    window.open($(this)[0].href, 'popup','toolbar=0,scrollbars=1,location=0,statusbar=0,addressbar=0,menubar=0,resizable=0,width=500,height=300,left=500,right=500,top = 0');
+    e.preventDefault();
+  }); 
+</script>
+<i><div id="result"></div></i>
+<table width="100%" class="tgate">
+  <tr class="tgate">
+    <td width="70%" class="tgate">
+      <table class="tgate">
+        <h2>Contact(s)</h2>
+        <thead class="tgate">
+        <th class="tgate">Name</th>
+        <th class="tgate">Group</th>
+        <th class="tgate">Phone #</th>
+        <th></th><th></th><th></th>
+        </thead>
+        <% if @contacts != nil %>
+
+          <%= form_tag :controller => "contacts", :action => "manage_contacts" do -%>
+
+            <% @contacts.each do |i| %>
+              <tr class="tgate" id="<%= i.id%>">
+
+                <td class="tgate"><%=h i.name %></td>
+                <% group = Group.find(i.group_id)%>
+                <td class="tgate"><%=h group.name %></td>
+                <td class="tgate"><%=h i.phone_no %></td>
+                <td><%= link_to "[edit]", :controller => "contacts",:action => "edit_contact",
+                    :id => i.id %></td>
+                <td><%= check_box_tag "contact_ids[]", i.id %></td>
+              </tr>
+            <% end %>
+            <%= submit_tag "Delete", :name => "manage"%>
+            <%= submit_tag "Add contact to", :name => "manage"%> <%= collection_select 'group_select', 'grp_id',
+              Group.find(:all, :conditions => "user_id='#{session[:user_id]}'"), :id, :name, :prompt => "Select" %>
+
+          <% end %>
+        <%- end %>
+      </table>
+
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <%= render :partial => "groups", :layout => false%>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <%= render :partial => "directories", :layout => false%>
+    </td>
+  </tr>
+
+
+</table>

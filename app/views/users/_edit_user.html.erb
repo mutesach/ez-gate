@@ -1,0 +1,21 @@
+<%= link_to(image_tag("/images/back.png", {:alt => 'example', 
+		:class=>"rollover"}), :action => "index") %><br>
+		<%= error_messages_for 'user_detail' %>
+<% form_tag :action => 'change_password', :id => @user do %>
+<table>
+	<tr>
+		<td>
+			Change <%= @user.user.name %>'s password
+		   
+			<p><label for="user_new_password">New password</label><br/>
+			<%= password_field :user_detail, :password, :value => "", :size => 15%>
+			        
+			<p><label for="user_confirm_new_password">Confirm new password</label><br/>
+			<%= password_field :user_detail, :password_confirmation,:size => 15, :value => "" %>
+
+			<a class="submit"><%= submit_tag "Change"%></a><p>
+		</td>
+	</tr>
+</table>
+<% end %>
+

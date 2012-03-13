@@ -1,0 +1,124 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+  <h2>Reports&nbsp;&nbsp;<%= image_tag("spinner.gif",:align => "absmiddle",
+      :border => 0,:id => "spinner",
+      :style =>"display: none;" ) %></h2>
+
+  <p/>
+  <div id="reports">
+    <table width="100%">
+      <tr>
+        <td width="50%">
+          <h3>inbound messages</h3>
+          <table>
+            <tr>
+              <td align = "left">
+                <%= form_tag :action => "custom_request_inbound" do %>
+              <tr>
+                <th align ='left'>Date</th>
+                <td><%= date_select("in_rep_date", "",
+                    :min_date => Date.today,
+                    :max_date => 12.weeks.from_now)%></td></tr>
+              <tr>
+                <th align ='left'>Month</th>
+                <td><%= select 'inbound', 'rep_month',
+                    InboundMessage::MONTHS, {:prompt => "Select"} %></td></tr>
+              <tr>
+                <th align ='left'>Year</th>
+                <td><%= select 'inbound', 'rep_year',
+                    InboundMessage::YEARS, {:prompt => "Select"} %></td></tr>
+              <tr>
+                <th align ='left'>Service</th>
+                <td><%= collection_select 'inbound', 'rep_service', Service.find(:all, :conditions => "user_id=#{session[:user_id]}"), :id, :name, :prompt => "Select" %></td>
+
+              </tr>
+
+              <tr>
+                <th align ='left'>User</th>
+                <td><%= collection_select 'inbound', 'rep_user', User.find(:all), :id, :name, :prompt => "Select" %></td></tr>
+              <tr>
+                <th align ='left'>Operator</th>
+                <td><%= select 'inbound', 'rep_operator', InboundMessage::TELECOM_OPERATORS, {:prompt => "Select"} %></td></tr>
+              <tr><td>
+                  <%= submit_tag 'Print', :name => "" %></td></tr>
+            <% end %>
+        </td>
+      </tr>
+
+    </table>
+    </td>
+    <td>
+      <h3>outbound messages</h3>
+      <table>
+        <tr>
+          <td align = "left">
+            <%= form_tag :action => "custom_request_outbound" do %>
+          <tr>
+            <th align ='left'>Date</th>
+            <td><%= date_select("out_rep_date", "",
+                :min_date => Date.today,
+                :max_date => 12.weeks.from_now)%></td></tr>
+          <tr>
+            <th align ='left'>Month</th>
+            <td><%= select 'outbound', 'rep_month',
+                InboundMessage::MONTHS, {:prompt => "Select"} %></td></tr>
+          <tr>
+            <th align ='left'>Year</th>
+            <td><%= select 'outbound', 'rep_year',
+                InboundMessage::YEARS, {:prompt => "Select"} %></td></tr>
+          <tr>
+            <th align ='left'>Service</th>
+
+            <td><%= collection_select 'outbound', 'rep_service', Service.find(:all, :conditions => "user_id=#{session[:user_id]}"), :id, :name, :prompt => "Select" %></td>
+          </tr>
+
+
+          <tr>
+            <th align ='left'>User</th>
+            <td><%= collection_select 'outbound', 'rep_user', User.find(:all), :id, :name, :prompt => "Select" %></td></tr>
+          <tr>
+            <th align ='left'>Operator</th>
+            <td><%= select 'outbound', 'rep_operator', InboundMessage::TELECOM_OPERATORS, {:prompt => "Select"} %></td></tr>
+          <tr><td>
+              <%= submit_tag 'Print', :name => "" %></td></tr>
+        <% end %>
+    </td>
+    </tr>
+
+    </table>
+    </td>
+    </tr>
+
+    <tr>
+
+      <td>
+        <h3>Summary</h3>
+        <table>
+          <tr>
+            <td align = "left"><i>
+                <%= form_tag :action => "summary" do %>
+                  From : <%= date_select("date_from", "",
+                    :min_date => Date.today,
+                    :max_date => 12.weeks.from_now)%><br>
+                  To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                  <%= date_select("date_to", "", :min_date => Date.today,
+                    :max_date => 12.weeks.from_now)%>&nbsp;&nbsp;
+                  <%= submit_tag 'Print', :name => "" %>
+                <% end %></i>
+            </td>
+          </tr>
+        </table>
+      </td>
+
+    </tr>
+
+    </table>
+  </div>
+</div>
+

@@ -1,0 +1,10 @@
+<%= javascript_include_tag 'pagination' %>
+<div id="content">
+
+	<!--<%= periodically_call_remote(
+   :update => "alerts",
+   :frequency => 5,
+   :url => { :action => "update_alerts" }, 
+			    				:before => "Element.show('spinner')", 
+			    				:success => "Element.hide('spinner')") %>-->
+</div>

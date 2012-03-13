@@ -1,0 +1,102 @@
+<script type="text/javascript">
+  window.onload = hidefld;
+</script>
+<%= link_to (image_tag("/images/back.png", {:alt => 'example', 
+		:class=>"rollover"}), :action => "index") %>
+<%= error_messages_for 'web_service' %>
+
+<% form_tag :controller => "settings", :action => 'update_web_service', :id => @web_service do -%>
+<table>
+			<tbody>
+				<tr>   
+					<tr>
+			    	<td>Name:</td>
+			    	<td><%= text_field :web_service, :name, :size => 20 %></td>
+			    </tr>	
+			    
+			    <tr>
+			    	<td>Type:</td>
+			    	<td><%= select(:web_service, :web_service_type, WebService::Types, {:prompt => "Select"}, {:onchange => "checktype();"}) %></td>
+			    </tr>	
+       		<div id="types">
+	       		<tr>
+				    	<td><label id="uri">Web Service URI:</label></td>
+				    	<td><%= text_field :web_service, :web_service_uri, :size => 60 %></td>
+				    </tr>
+				    
+				    <tr>
+				    	<td><label id="postxml">POST XML format:</label></td>
+				    	<td><%= text_area :web_service, :post_xml_format, :rows => 20, :cols => 50 %></td>
+				    </tr>
+			    </div>
+			    
+			    <tr>
+			    	<td>Use default parameters ?</td>
+			    	<td>
+			    	<%= radio_button(:web_service, :default_param, true, :onclick => "check1();" )%> Yes &nbsp;&nbsp;
+		      	<%= radio_button(:web_service, :default_param, false, :onclick => "check2();" )%> No </td>		    	 
+			    </tr>
+			    <tr><td>
+				    <label id="eg1" style="display: none;">include parameter names and values (eg. param_name=500)</label>
+				    <label id="eg2">only include parameter names (eg. param_name)</label></td></tr>		  
+				  <tr>
+			    
+			    <tr>
+				    <td>Param 1:</td>
+				    <td><%= text_field :web_service, :param1, :size => 15 %></td>
+				  </tr>
+				  
+				  <tr>
+				    <td>Param 2:</td>
+				    <td><%= text_field :web_service, :param2, :size => 15 %></td>
+				  </tr>
+				  
+				  <tr>
+				    <td>Param 3:</td>
+				    <td><%= text_field :web_service, :param3, :size => 15 %></td>
+				  </tr>
+				  
+				  <tr>
+				    <td>Param 4:</td>
+				    <td><%= text_field :web_service, :param4, :size => 15 %></td>
+				  </tr>
+				  
+				  <tr>
+				    <td>Param 5:</td>
+				    <td><%= text_field :web_service, :param5, :size => 15 %></td>
+				  </tr>
+				  
+				  <tr>
+				    <td>Param 6:</td>
+				    <td><%= text_field :web_service, :param6, :size => 15 %></td>
+				  </tr>
+				  
+				  <tr>
+				    <td>Param 7:</td>
+				    <td><%= text_field :web_service, :param7, :size => 15 %></td>
+				  </tr>
+				  
+				  <tr>
+				    <td>Param 8:</td>
+				    <td><%= text_field :web_service, :param8, :size => 15 %></td>
+				  </tr>
+				  
+				  <tr>
+				    <td>Param  9:</td>
+				    <td><%= text_field :web_service, :param9, :size => 15 %></td>
+				  </tr>
+				  
+				  <tr>
+				    <td>Param 10:</td>
+				    <td><%= text_field :web_service, :param10, :size => 15 %></td>
+				  </tr>
+
+			    
+			    <tr><td>
+			    <a class="submit"><%= submit_tag "Save", :name => "save_user" %></a> </td>
+			    </tr>
+			     
+				</tr>     
+			</tbody>
+		</table>
+<% end -%>

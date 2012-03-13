@@ -1,0 +1,46 @@
+<div id="content">
+	<% if flash[:notice] -%>
+		<div id="flash">
+			<div style="margin-bottom:0px;">
+				<%= flash[:notice] %>
+			</div>
+		</div>
+	<% end -%>
+
+	<div id="new_short_code">
+		<h2>Settings&nbsp;&nbsp;> New short code</h2>
+
+
+		<%= link_to (image_tag("/images/back.png", {:alt => 'example', 
+				:class=>"rollover"}), :action => "index") %>
+		<%= error_messages_for 'short_code' %>
+
+		<% form_tag :controller => "settings", :action => 'new_short_code', :id => @short_code do -%>
+		<table>
+			<tbody>
+				<tr>   
+					<tr>
+			    	<td>Code:</td>
+			    	<td><%= text_field :short_code, :code, :size => 10 %></td>
+			    </tr>	
+			    
+			    <tr>
+			    	<td>SMSC:</td>
+			    	<td><%= select :short_code, :smsc, ShortCode::SMSCS, :prompt => "Select" %></td>
+			    </tr>	
+       		
+       		<tr>
+			    	<td>SMS Cost:</td>
+			    	<td><%= text_field :short_code, :sms_cost, :size => 9 %></td>
+			    </tr>
+			    
+			    <tr><td>
+			    <a class="submit"><%= submit_tag "Save", :name => "save_user" %></a> </td>
+			    </tr>    
+				</tr>     
+			</tbody>
+		</table>
+		<% end -%>
+
+	</div>
+</div>

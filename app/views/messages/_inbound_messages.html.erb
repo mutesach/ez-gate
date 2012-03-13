@@ -1,0 +1,83 @@
+<strong><i>(<%= @result %>) records found</i></strong>
+<div id="messages">
+  <table class="tgate" id="rounded-corner">
+    <thead class="tgate">
+      <% if session[:user_type] != "Moderator" %>
+      <th class="tgate"><%= link_to "SMSC", :update => "messages",
+          :url => {:action => "filter_by", :filter => "smsc", :cond => @conditions, :sel => "in"},
+          :before => "Element.show('spinner')",
+          :success => "Element.hide('spinner')" %></th>
+      <th class="tgate"><%= link_to "Service", :update => "messages",
+          :url => {:action => "filter_by", :filter => "service", :cond => @conditions, :sel => "in"},
+          :before => "Element.show('spinner')",
+          :success => "Element.hide('spinner')" %></th>
+    <% end %>
+    <th class="tgate"><%= link_to "Sender", :update => "messages",
+        :url => {:action => "filter_by" , :filter => "sender", :cond => @conditions, :sel => "in"},
+        :before => "Element.show('spinner')",
+        :success => "Element.hide('spinner')" %></th>
+    <th class="tgate"><%= link_to "Content", :update => "messages",
+        :url => {:action => "filter_by" , :filter => "content", :cond => @conditions, :sel => "in"},
+        :before => "Element.show('spinner')",
+        :success => "Element.hide('spinner')" %></th>
+    <% if session[:user_type] != "Moderator" %>
+      <th class="tgate">
+        <%= link_to "Status", :update => "messages",
+          :url => {:action => "filter_by", :filter => "status", :cond => @conditions, :sel => "in"},
+          :before => "Element.show('spinner')",
+          :success => "Element.hide('spinner')" %>
+      </th>
+    <% end %>
+    <th class="tgate"><%= link_to "Date/Time", :update => "messages",
+        :url => {:action => "filter_by", :filter => "date_time", :cond => @conditions, :sel => "in"},
+        :before => "Element.show('spinner')",
+        :success => "Element.hide('spinner')" %></th>
+    </thead>
+    <tbody>
+      <% if @inbound_messages != nil %>
+        <% @inbound_messages.each do |i| %>
+          <tr>
+
+          <% if session[:user_type] != "Moderator" %>
+            <td class="tgate"><%=h i.smsc %></td>
+            <td class="tgate"><%=h i.service.name %></td>
+          <% end %>
+          <td class="tgate"><%=h i.sender %></td>
+          <% if session[:user_type] == "Moderator" %>
+            <td class="tgate"><%=h i.content %></td>
+          <% else %>
+            <td class="tgate"><%=h i.content.slice(0,20) %><%= "..." unless i.content.length() < 20%></td>
+          <% end %>
+
+          <% if session[:user_type] != "Moderator" %>
+            <% case i.service_status when "success" then %>
+              <td class="tgate" bgcolor = "#c3ea78">
+                <%=h i.service_status.strip() %></td>
+            <% when "pending" then %>
+              <td class="tgate" bgcolor = "#deba65">
+                <%=h i.service_status %></td>
+            <% when "failed" then %>
+              <td class="tgate" bgcolor = "#bb3c2d">
+                <%=h i.service_status %></td>
+            <% end %>
+          <% end %>
+          <td class="tgate">
+            <%=h i.created_at.strftime("%Y-%m-%d %l:%M:%S %p") %></td>
+            <% if session[:user_type] != "Moderator" %>
+
+
+            <td><%= link_to "[View]", view_inbound_message_messages_path(:id => i.id), :method => :get, 'data-popup' => true %></td>
+            <td><%= link_to "[Reply]",:update => 'send_sms',
+                :url => {:controller => "messages", :action => "reply_message_box",
+                :id => i.sender},:before => "Element.show('spinner')",
+                :success => "Element.hide('spinner')" %></td>
+          <% end %>
+
+        </tr>
+      <% end %>
+    <% end %>
+      <tr width="20%"><td></td></tr>
+    </tbody>
+  </table>
+</div>
+

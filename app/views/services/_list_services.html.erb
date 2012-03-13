@@ -1,0 +1,120 @@
+<h2>Services&nbsp;&nbsp;
+  <%= image_tag("spinner.gif",:align => "absmiddle",
+    :border => 0,:id => "spinner",
+    :style =>"display: none;" ) %></h2>
+<p />
+  <%= link_to "New service", :action => "new_service" unless !["SA","Administrator"].include?(session[:user_type])%>
+  <% if @services.nil? %>
+    <% if session[:user_type] != "SA" or session[:user_type] != "Administrator" %>
+      <% conditions = "user_id = '#{session[:user_id]}' and id != 1" %>
+    <% else	 %>
+      <% conditions = "id != 1" %>
+    <% end %>
+    <%  @services = Service.find(:all, :conditions => conditions, :order => 'created_at DESC') %>
+  <% end %>
+<div id="services">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+      <script type="text/javascript">
+        setTimeout("new Effect.Fade('flash');", 500)
+      </script>
+    </div>
+  <% end -%>
+  <table class="tgate" id="rounded-corner">
+    <thead class="tgate">
+    <th class="tgate">Name</th>
+    <th class="tgate">Keyword</th>
+    <th class="tgate">Aliases</th>
+    <% if session[:user_type] != "Service-Aggregator" or session[:user_type] != "Bulk-push" %>
+      <th class="tgate">Owner</th>
+    <% end %>
+    <th class="tgate">Type</th>
+    <th class="tgate">Short code</th>
+    <th class="tgate">Status</th>
+    </thead>
+    <tbody>
+      <% if @services != nil %>
+        <% @services.each do |i| %>
+          <tr class="tgate">
+            <td class="tgate"><%=h i.name %></td>
+            <td class="tgate"><%=h i.keyword %></td>
+            <td class="tgate"><%=h i.aliases %></td>
+            <% if session[:user_type] != "User" %>
+              <td class="tgate"><%=h i.user.name %></td>
+            <% end %>
+            <td class="tgate"><%=h i.content_type %></td>
+            <td class="tgate"><%=h "#{ShortCode.find(i.user_short_code_id).code} (#{ShortCode.find(i.user_short_code_id).smsc})"  %></td>
+            <% if i.status == true %>
+              <td class="tgate" bgcolor = "green"><b>On</b></td>
+            <% else %>
+              <td class="tgate" bgcolor = "red"><b>Off</b></td>
+            <% end %>
+
+            <td><%= link_to "[View]", {:controller => "services", :action => "disp_service",
+                :id => i.id}, :method => :get, 'data-popup' => true %></td>
+
+            <td><%= link_to "[Edit]",:controller => "services",
+                :action => "edit_service",
+                :id => i.id unless i.id == 1%></td>
+            <% if i.status != true %>
+              <td><%= link_to "[Enable]",
+                  :controller => "services", :action => "enable_service",
+                  :id => i.id unless i.id == 1 or session[:user_type] == "User"%></td>
+            <% else %>
+              <td><%= link_to "[Disable]",:controller => "services", :action => "disable_service",
+                  :id => i.id unless i.id == 1 or session[:user_type] == "User"%> </td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <br/><br/>
+
+</div>
+
+<br/><br/>
+<h2>Moderators&nbsp;&nbsp;
+  <%= image_tag("spinner.gif",:align => "absmiddle",
+    :border => 0,:id => "spinner",
+    :style =>"display: none;" ) %></h2>
+<%= link_to "Add moderator", :action => "new_user_mod" unless !["SA","Administrator","Service-Aggregator"].include?(session[:user_type])%><br><br>
+<div id="user_mod">
+  <table class="tgate" id="rounded-corner">
+    <thead class="tgate">
+    <th class="tgate">Name</th>
+    <th class="tgate">Service(s)</th>
+    <th class="tgate">Status</th>
+    </thead>
+    <tbody>
+      <% if @user_mod != nil %>
+        <% @user_mod.each do |i| %>
+          <tr class="tgate">
+            <td class="tgate"><%=h i.username %></td>
+            <% @mod_services = UserModService.find(:all, :conditions => "user_mod_id = #{i.id}")%>
+            <% @mod_count = UserModService.count(:all, :conditions => "user_mod_id = #{i.id}")%>
+            <td class="tgate"><% @mod_services.each do |j|%>[<%=h j.service.name unless j.service_id.nil?%>] <% end %></td>
+            <% if i.status == true %>
+              <td class="tgate" bgcolor = "green"><b>On</b></td>
+              <td><%= link_to "[Deactivate]", :action => 'deactivate_user_mod', :id => i.id %></td>
+            <% else %>
+              <td class="tgate" bgcolor = "red"><b>Off</b></td>
+              <td><%= link_to "[Activate]",	:action => 'activate_user_mod', :id => i.id %></td>
+            <% end %>
+            <td id="add_service_mod"><%= link_to "[Add service]", :action => 'add_service_mod', :id => i.id %></td>
+            <td id="remove_service_mod"><%= link_to "[Remove service]", :action => 'remove_service_mod', :id => i.id unless @mod_count == nil%></td>
+            <td id="remove_service_mod"><%= link_to "[Delete]",
+                {:action => 'delete_mod_user', :id => i.id}, {:post => true,
+                :confirm => "Delete user #{i.username}?"
+              }%></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <br/><br/>
+
+</div>

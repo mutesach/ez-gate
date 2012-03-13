@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <meta name="author" content="" />
+
+    <%= stylesheet_link_tag "main"%>
+    <%= javascript_include_tag :defaults, 'jquery' %>
+
+    <link rel="shortcut icon" href="ezgate.ico" type="image/ico" />
+    <title>ez-Gate</title>
+    <script type="text/javascript">
+      function checktype() {
+        if (document.getElementById('web_service_web_service_type').value == "Get-URL") {
+          document.getElementById('web_service_post_xml_format').style.display = "none";
+          document.getElementById('postxml').style.display = "none";
+        }
+        if (document.getElementById('web_service_web_service_type').value == "POST-XML") {
+          document.getElementById('web_service_post_xml_format').style.display='';
+          document.getElementById('postxml').style.display = "";
+          document.getElementById('geturl').style.display = "none";
+		    	
+        }
+        if (document.getElementById('web_service_web_service_type').value == "") {
+          document.getElementById('web_service_post_xml_format').style.display = "none";
+          document.getElementById('postxml').style.display = "none";
+        }
+      }
+		  
+      function check1(field) {
+        document.getElementById('eg1').style.display='';
+        document.getElementById('eg2').style.display='none';
+      }
+		  
+      function check2(field) {
+        document.getElementById('eg1').style.display='none';
+        document.getElementById('eg2').style.display='';
+      }
+
+      function hidefld() {
+        document.getElementById('types').style.display = "none";
+        document.getElementById('postxml').style.display = "none";
+        document.getElementById('web_service_post_xml_format').style.display = "none";
+      }
+
+    </script>
+  </head>
+
+  <body>
+
+    <div id="wrap">
+      <div id="header">
+        <p id="toplinks">
+        <div align="right">
+          <strong><i><%= "Short code(s) : #{session[:short_code]}" unless session[:user_type] == "Moderator"%></i></strong><br>
+          <% user = User.find(session[:user_id]) unless session[:user_type] == "Moderator"%>
+          <strong><i><%= "SMS Stock : #{user.sms_stock}" unless user.sms_limit == false%></i></strong><br>
+          <%= session[:name] %> [<%= session[:user_type] %>],
+          <%= link_to("Log out", :controller => "login", :action => "logout")%>
+        </div>
+      </div>
+      <div id="container">
+        <div  id="avmenu">
+          <ul>
+            <li><a href="/messages">Messages</a></li>
+            <li><a href="/contacts">Contacts/Groups</a></li>
+            <% if session[:user_type] != "Bulk-push" or session[:user_type] != "Moderator" %>
+              <li><a href="/services">Services</a></li>
+            <% end %>
+            <% if session[:user_type] != "Moderator" %>
+              <li><a href="/report">Reports</a></li>
+            <% end %>
+            <% if session[:user_type] == "SA" or session[:user_type] == "Administrator" %>
+              <li><a href="/users">Users</a></li>
+            <% end %>
+            <% if session[:user_type] == "SA" or session[:user_type] == "Administrator" %>
+              <li><a href="/settings" class="current">Settings</a></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+      <%= yield  %>
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+<%= javascript_include_tag 'pagination' %>
+<script>
+  $('a[data-popup]').live('click', function(e) {
+    window.open($(this)[0].href, 'popup','toolbar=0,scrollbars=1,location=0,statusbar=0,addressbar=0,menubar=0,resizable=0,width=500,height=300,left=500,right=500,top = 0');
+    e.preventDefault();
+  }); 
+</script>
+<div id="content">
+  <%= render :partial => "list_services", :layout => false %>
+</div>

@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/settings
+END
+new_web_service.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/settings/new_web_service.html.erb
+END
+index.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/settings/index.html.erb
+END
+update_assigned_short_code.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/settings/update_assigned_short_code.html.erb
+END
+_user_short_codes.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/settings/_user_short_codes.html.erb
+END
+_edit_assigned_short_code.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/settings/_edit_assigned_short_code.html.erb
+END
+update_short_code.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/settings/update_short_code.html.erb
+END
+_edit_short_code.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/settings/_edit_short_code.html.erb
+END
+assign_short_code.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/settings/assign_short_code.html.erb
+END
+_web_services.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/settings/_web_services.html.erb
+END
+update_web_service.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/settings/update_web_service.html.erb
+END
+edit_web_service.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/settings/edit_web_service.html.erb
+END
+new_short_code.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/settings/new_short_code.html.erb
+END
+_gateway_status.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/settings/_gateway_status.html.erb
+END

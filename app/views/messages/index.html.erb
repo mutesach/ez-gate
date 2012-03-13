@@ -1,0 +1,24 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+  
+  <h2>Messages&nbsp;&nbsp;
+    <%= image_tag("spinner2.gif",:align => "absmiddle",
+      :border => 0,:id => "spinner2",
+      :style =>"display: none;" ) %></h2>
+  <% @sum = 0%>
+  <% @service.each do |i| %>
+    <% @sum = @sum + InboundMessage.where("service_id = '#{i.id}' and date(created_at) = curdate()").count%>
+  <% end %>
+  
+  <%= link_to ">> New message", new_message_messages_path unless session[:user_type] == "Moderator" %><br/><br/>
+  <% if session[:user_type] != "Bulk-push"%>
+    <%= link_to ">> Inbound", inbound_messages_path %><br/><br/>
+  <% end %>
+  <%= link_to ">> Outbound", outbound_messages_path unless session[:user_type] == "Moderator"%>&nbsp;&nbsp;
+</div>

@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/754/pivot_gate/trunk/pivot_gate/app/views/users
+END
+_new_user.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/users/_new_user.html.erb
+END
+index.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/754/pivot_gate/trunk/pivot_gate/app/views/users/index.html.erb
+END
+_user.rhtml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/690/pivot_gate/trunk/pivot_gate/app/views/users/_user.rhtml
+END
+_list_users.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/754/pivot_gate/trunk/pivot_gate/app/views/users/_list_users.html.erb
+END
+delete_user.rhtml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/641/pivot_gate/trunk/pivot_gate/app/views/users/delete_user.rhtml
+END
+save_user.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/users/save_user.html.erb
+END
+_edit_user.rhtml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/690/pivot_gate/trunk/pivot_gate/app/views/users/_edit_user.rhtml
+END
+edit_user.rhtml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/690/pivot_gate/trunk/pivot_gate/app/views/users/edit_user.rhtml
+END
+update_user_profile.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/users/update_user_profile.html.erb
+END
+_edit_user_profile.html.erb
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/709/pivot_gate/trunk/pivot_gate/app/views/users/_edit_user_profile.html.erb
+END
+change_password.rhtml
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/690/pivot_gate/trunk/pivot_gate/app/views/users/change_password.rhtml
+END

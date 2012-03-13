@@ -1,0 +1,7 @@
+<script type="text/javascript">
+	jQuery.facebox(function() {
+  	jQuery.get("messages/multi_message?group_id=<%= @group.id%>&group_name=<%= @group.name%>", function(data) {
+    	jQuery.facebox('<table>' + data + '</table>')
+  	})
+	})
+</script>

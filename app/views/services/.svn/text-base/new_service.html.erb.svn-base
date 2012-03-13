@@ -1,0 +1,95 @@
+<%= javascript_include_tag 'dynamic_codes'%>
+<script type="text/javascript">
+  window.onload = hidefld;
+</script>
+<div id="content">
+	<% if flash[:notice] -%>
+		<div id="flash">
+			<div style="margin-bottom:0px;">
+				<%= flash[:notice] %>
+			</div>
+		</div>
+	<% end -%>
+	<!--<%= periodically_call_remote(
+   :update => "alerts",
+   :frequency => 5,
+   :url => { :action => "update_alerts" }, 
+			    				:before => "Element.show('spinner')", 
+			    				:success => "Element.hide('spinner')") %>-->
+	<div id="new_service">
+		<h2>Services&nbsp;&nbsp;> New service</h2>
+
+
+		<%= link_to (image_tag("/images/back.png",{:alt => 'example',:class=>"rollover"}),:action => "list") %>
+		<%= error_messages_for 'service' %>
+
+		<% form_tag :controller => "services", :action => 'new_service', :id => @service do -%>
+		<table>
+			<tbody>
+				<tr>   
+					<tr>
+			    	<td>Name:</td>
+			    	<td><%= text_field :service, :name, :size => 30 %></td>
+			    </tr>	
+			    
+			    <tr>
+			    	<td>Keyword:</td>
+			    	<td><%= text_field :service, :keyword, :size => 15 %></td>
+			    </tr>	
+			    <% if session[:user_type] != "SA"%>		    	
+			    	<td><%= hidden_field :service, :user_id, :value => session[:user_id] %></td>
+			    <% else %>
+			    	<tr>
+				    	<td>User:</td>
+				    	<td><%= collection_select :service, :user_id, User.find(:all), 
+																:id, :name, :prompt => "Select" %></td>
+				    </tr>	
+			    <% end %>
+			    	<tr id="short_codes">
+				    	<td>Short code:</td>
+				    	<td><%= collection_select :service, :user_short_code_id, ShortCode.find(:all, :conditions => "code != 'All'"), 
+																:id, :code, :prompt => "Select" %></td>
+				    </tr>	
+			    	   
+			  	<tr>
+			    	<td>Content Type:</td>
+				    <td><%= select(:service, :content_type, Service::ContentType, {:prompt => "Select"}, {:onchange => "check_content_type();", :onkeyup => "check_content_type();"}) %></td>
+					</tr>        
+			    	    
+			    <tr>
+			    	<td>Reply :</td>
+			    	<td>
+			    	<%= radio_button(:service, :reply, true, :onclick => "checkfld1();" )%> Yes &nbsp;&nbsp;
+		      	<%= radio_button(:service, :reply, false, :onclick => "checkfld2();" )%> No </td>
+			    	
+			    	 
+			    </tr>
+			    <tr>
+			    	<td><label id="l_reply_content">Reply content:</label></td>
+			    	<td><%= text_area "service", "reply_content", :rows => 6, :cols => 30,:onKeyDown=> "textCounter(this,this.form.remLen2,161)", :onKeyUp=>"textCounter(this,this.form.remLen2,161)" %></td>		    	
+			    </tr>	
+			    <tr>
+			    <td  id="repl_c">
+			    	<input readonly type="text" name="remLen2" size="2" maxlength="3" value="125">char(s) left<br></td>
+			    </tr>
+
+			    <tr>
+			    	<td><label id="l_web_service_option">Web service:</td>
+			    	<td><%= collection_select :service, :web_service_id, WebService.find(:all), 
+															:id, :name, :prompt => "Select"%></td>
+			    </tr>
+			    </div>
+			    
+			    <tr><td>
+			    <a class="submit"><%= submit_tag "Save", :name => "save_user" %></a> </td>
+			    </tr>    
+				</tr>     
+			</tbody>
+		</table>
+		<% end -%>
+
+	</div>
+</div>
+
+
+

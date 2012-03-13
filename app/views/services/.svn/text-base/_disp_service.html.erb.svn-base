@@ -1,0 +1,7 @@
+<script type="text/javascript">
+	jQuery.facebox(function() {
+  	jQuery.get('view_service_details', function(data) {
+    	jQuery.facebox('<table>' + data + '</table>')
+  	})
+	})
+</script>

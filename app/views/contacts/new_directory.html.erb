@@ -1,0 +1,24 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+
+  <div id="new_directory">
+    <h2><%= link_to "Contacts/Groups", contacts_path %> > New directory&nbsp;&nbsp;
+      <%= image_tag("spinner.gif",:align => "absmiddle",
+        :border => 0,:id => "spinner",
+        :style =>"display: none;" ) %></h2>
+
+    <%= form_for :directory, :html => {:multipart => true } do |f| -%>
+      <%= f.file_field :file %>
+      <%= submit_tag 'Import' %>
+
+    <% end -%>
+  </div>
+<br /><br /><br />
+  <%= render :partial => "directories", :layout => false %>
+</div>

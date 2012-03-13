@@ -1,0 +1,85 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+  <div id="directories">
+    <h2><%= link_to "Contacts/Groups", contacts_path %> > <%= link_to params[:dir_ref], :action => "view_directory", :id => params[:dir_ref] %> > Search&nbsp;&nbsp;
+      <%= image_tag("spinner.gif",:align => "absmiddle",
+        :border => 0,:id => "spinner",
+        :style =>"display: none;" ) %></h2>
+
+    <table width="100%">
+      <tr>
+        <td width="50%">
+          <table>
+            <tr>
+              <th align ='left'><i>Column1 </i></th>
+              <td align = "left">
+                <%= form_tag(:action => "search_directory", :sel => "col1", :dir_ref => params[:dir_ref], :method => "post") do %>
+                  <%= text_field_tag("query1", params['query1'], :size => 13 ) %>
+                  <%= submit_tag 'Search' %>
+                <% end %>
+              </td>
+            </tr>
+            <tr>
+              <th align ='left'><i>Column2 </i></th>
+              <td align = "left">
+                <%= form_tag(:action => "search_directory", :sel => "col2", :dir_ref => params[:dir_ref], :method => "post") do %>
+                  <%= text_field_tag("query2", params['query2'], :size => 13 ) %>
+                  <%= submit_tag 'Search' %>
+                <% end %>
+              </td>
+            </tr>
+            <tr>
+              <th align ='left'><i>Column3 </i></th>
+              <td align = "left">
+                <%= form_tag(:action => "search_directory", :sel => "col3", :dir_ref => params[:dir_ref], :method => "post") do %>
+                  <%= text_field_tag("query3", params['query3'], :size => 13 ) %>
+                  <%= submit_tag 'Search' %>
+                <% end %>
+              </td>
+            </tr>
+            <tr>
+              <th align ='left'><i>Column4 </i></th>
+              <td align = "left">
+                <%= form_tag(:action => "search_directory", :sel => "col4", :dir_ref => params[:dir_ref], :method => "post") do %>
+                  <%= text_field_tag("query4", params['query4'], :size => 13 ) %>
+                  <%= submit_tag 'Search' %>
+                <% end %>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <br />
+
+    <table class="tgate" id="rounded-corner">
+      <thead class="tgate">
+      <th class="tgate">Column1</th>
+      <th class="tgate">Column2</th>
+      <th class="tgate">Column3</th>
+      <th class="tgate">Column4</th>
+      </thead>
+      <tbody>
+        <% if @directory != nil %>
+          <% @directory.each do |dir| %>
+            <tr>
+              <td class="tgate"><%=h dir.row1%></td>
+              <td class="tgate"><%=h dir.row2%></td>
+              <td class="tgate"><%=h dir.row3%></td>
+              <td class="tgate"><%=h dir.row4%></td>
+            </tr>
+          <% end %>
+
+        <%- end %>
+
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div id="header">
+  <p id="toplinks">
+  <div align="right">
+    <%= form_tag :action => "login" %>
+    username:
+    <%= text_field_tag :username, params[:username], :size => 10 %>&nbsp;
+    password:
+    <%= password_field_tag :password, params[:password], :size => 10 %>&nbsp;
+    <a class="submit">
+      <%= submit_tag "Login" %>
+    </a>
+  </div>
+</p>
+
+<br/><br/>
+<span class="fade"></span>
+<%= image_tag("ezgate.png", :border => 0,:height => "30%", :width => "30%") %>
+<table align="center">
+  <tr>
+    <td><h1>Coming soon...</h1></td>
+  </tr>
+</table>
+
+<p id="slogan"></p><br/><br/><br/><br/>
+</div>

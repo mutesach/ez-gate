@@ -1,0 +1,32 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+  <h2>Contacts/Groups&nbsp;&nbsp;
+    <%= image_tag("spinner.gif",:align => "absmiddle",
+      :border => 0,:id => "spinner",
+      :style =>"display: none;" ) %></h2>
+  <%= link_to ">> New contact", :action => "new_contact" %><br/><br/>
+  <%= link_to ">> New group", :action => "new_group" %><br/><br/>
+  <%= link_to ">> New directory", :action => "new_directory" %><br/><br/>
+
+  <% form_for :dump, :url=>{ :controller=>"contacts", :action=>"csv_import"}, :html => {:onSubmit => "return validateImport()", :multipart => true } do |f| -%>
+    <a>>> Import your contacts from CSV File :</a>
+    <%= f.file_field :file -%>
+
+    <%= f.collection_select 'grp_id', Group.find(:all, :conditions => "user_id='#{session[:user_id]}'"), :id, :name, :prompt => "Select" %>
+
+    <%= submit_tag 'Import' %>
+
+  <% end -%>
+  <br/>
+  <div id="update">
+    <%= render :partial => "contacts"%>
+  </div>
+
+  <div id="send_sms"></div>
+</div>

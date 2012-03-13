@@ -1,0 +1,58 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+
+  <div id="update_ringtone">
+    <h2><%= link_to "Settings", settings_path %> > Update ringtone&nbsp;&nbsp;
+      <%= image_tag("spinner.gif",:align => "absmiddle",
+        :border => 0,:id => "spinner",
+        :style =>"display: none;" ) %></h2>
+    <% if !@ringtone.nil? %>
+      <ul>
+        <% @ringtone.errors.each_with_index do |msg, i| %>
+          <li><%= msg[1] %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <%= form_tag :action => "update_ringtone"  do |f| -%>
+      <table>
+        <tbody>
+          <tr>
+          <tr>
+            <td>Keyword : </td>
+            <td><%= text_field :ringtone, :keyword, :size => 10 %></td>
+          </tr>
+
+          <tr>
+            <td>Aliases : </td>
+            <td><%= text_field :ringtone, :aliases, :size => 50 %></td>
+          </tr>
+
+          <tr>
+            <td>Song title : </td>
+            <td><%= text_field :ringtone, :song_title, :size => 20 %></td>
+          </tr>
+
+          <tr>
+            <td>Artist name : </td>
+            <td><%= text_field :ringtone, :artist_name, :size => 20 %></td>
+          </tr>
+
+          <tr>
+            <td>
+              <a class="submit"><%= submit_tag "Save", :name => "save_ringtone" %></a>
+            </td>
+          </tr>
+          </tr>
+        </tbody>
+      </table>
+    <% end -%>
+
+  </div>
+</div>

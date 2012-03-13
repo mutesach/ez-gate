@@ -1,0 +1,103 @@
+<h2>System users&nbsp;&nbsp;<%= image_tag("spinner.gif",:align => "absmiddle",
+																			:border => 0,:id => "spinner",
+																			:style =>"display: none;" ) %></h2>
+<p>
+<%= link_to_remote "New user",:update => 'users', :url => {:action => "new_user"}, 
+	    				:before => "Element.show('spinner')", 
+	    				:success => "Element.hide('spinner')" unless !["SA","Administrator"].include?(session[:user_type])%>
+
+
+<div id="users">
+<% if flash[:notice] -%>
+	<div id="flash">
+		<div style="margin-bottom:0px;">
+		<%= flash[:notice] %>
+		</div>
+		<script type="text/javascript">
+		  setTimeout("new Effect.Fade('flash');", 500)
+		  
+		</script>
+	</div>
+<% end -%>
+	<table id="rounded-corner">  
+	  <thead>
+	    <tr>
+	      <th>Name</th>
+	      <th>Type</th>
+			  <th>Phone #</th>
+			  <th>Short code</th>
+	      <th>Status</th>
+	    </tr>
+	  </thead> 
+	  <tbody>
+			<% @users.each do | i | %>
+			<tr>
+				<% parent = UserDetail.find(:first, :conditions => "user_id = '#{i.id}' and parent=true")%>
+				
+				  <% if session[:user_type] == "SA" %>
+							<td><%= link_to_remote i.name, :url => {:controller => "users", :action => "disp_user_profile", :id => i.id}, :update => "profile",:before => "Element.show('spinner')",
+    :success => "Element.hide('spinner')" %></td>
+							<td><%= i.user_type %></td>
+							<td><%= i.phone_no %></td>
+							<% short_codes = UserShortCode.find(:all, :conditions => "user_id = #{i.id}")%> 
+							<td><% if short_codes != nil %><% short_codes.each do |j| %>[<%= j.short_code.code %>] <% end %><% end %></td>
+							<% if parent.status == true %>
+			      	<td bgcolor = "green"><b>On</b></td>
+			    	<% else %>
+			    		<td bgcolor = "red"><b>Off</b></td>
+			    	<% end %>
+			    	<td>
+						<% if session[:user_id] == i.id or i.id != session[:user_id] %>
+				  		<%= link_to "[Change password]", :action => 'edit_user', :id => parent.id %>
+				    <% end %>    		  
+	    				<% if i.user_type != "SA" %>
+	    					  
+	    				<% if parent.status != true and i.id != session[:user_id] %>
+		    				<%= link_to_remote "[Activate]", :update => "content", 
+		    				:url => {:controller => "users",
+		    				:action => 'activate_user', :id => parent.id}, 
+		    				:before => "Element.show('spinner')", 
+		    				:success => "Element.hide('spinner')" %>
+	    				<% else %>
+	    				  <% if session[:user_id] != i.id%>
+			    				<%= link_to_remote "[Deactivate]", :update => "content", 
+			    				:url => {:controller => "users",
+			    				:action => 'deactivate_user', :id => parent.id}, 
+			    				:before => "Element.show('spinner')", 
+			    				:success => "Element.hide('spinner')" %>
+		    				<% end %>
+	    				<% end %>
+		    				<% if session[:user_type] == "SA"%>
+		    				 <%= link_to "[Delete]", {:controller => 'users',
+							  												:action => 'delete_user', :id => i.id},
+							                          {:post => true,
+							                          :confirm => "Delete user #{i.name}?"
+							                          }%> 
+							    <%= link_to_remote "[Edit]", :update => "users", 
+				  		:url => {:action => 'edit_user_profile', :id => i.id}, 
+	    				:before => "Element.show('spinner')", 
+	    				:success => "Element.hide('spinner')" %>
+							  <% end %>
+	    				<% end %>
+				  <% else %>
+				  	<% if session[:user_id] == i.id%>
+				  	<td><%= i.name %></td>
+							<td><%= i.user_type %></td>
+							<td><%= i.phone_no %></td>
+							<% short_codes = UserShortCode.find(:all, :conditions => "user_id = #{i.id}")%> 
+							<td><% if short_codes != nil %><% short_codes.each do |j| %>[<%= j.short_code.code %>] <% end %><% end %></td>
+							<% if parent.status == true %>
+			      	<td bgcolor = "green"><b>On</b></td>
+			    	<% else %>
+			    		<td bgcolor = "red"><b>Off</b></td>
+			    	<% end %>
+			    	<td>
+				  		<%= link_to "[Change password]", :action => 'edit_user', :id => parent.id %>
+				    <% end %>
+				  <% end %>
+			  </td>
+		  	</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>

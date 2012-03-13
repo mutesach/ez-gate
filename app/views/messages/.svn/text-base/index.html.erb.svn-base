@@ -1,0 +1,26 @@
+<%= javascript_include_tag 'pagination' %>
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+  <h2>Messages&nbsp;&nbsp;</h2>
+  <% @sum = 0%>
+  <% @service.each do |i| %>
+    <% @sum = @sum + IncomingMessage.count(:conditions => "service_id = '#{i.id}'
+    and date(created_at) = curdate()")%>
+  <% end %>
+  <%= link_to ">> New message", :action => "new_message" unless session[:user_type] == "Moderator" %><br/><br/>
+  <% if session[:user_type] != "Bulk-push"%>
+    <%= link_to ">> Incoming messages", :action => "incoming"%><br/><br/>
+  <% end %>
+  <%= link_to ">> Outgoing messages", :action => "outgoing" unless session[:user_type] == "Moderator"%>&nbsp;&nbsp;
+</div>
+<% task = 9000 %>
+<%= check_box :check, :agent1, {:onchange => remote_function(:url => {:action => 'toggle_completed'}, :with => "'value_received='+this.checked")} %>MTN
+<%= check_box :check, :agent2, {:onchange => remote_function(:url => {:action => 'toggle_completed'}, :with => "'value_received='+this.checked")} %>Tigo
+<%= check_box :check, :agent3, {:onchange => remote_function(:url => {:action => 'toggle_completed'}, :with => "'value_received='+this.checked")} %>Rwandatel
+

@@ -1,0 +1,41 @@
+<div id="content">
+	<% if flash[:notice] -%>
+		<div id="flash">
+			<div style="margin-bottom:0px;">
+				<%= flash[:notice] %>
+			</div>
+		</div>
+	<% end -%>
+
+	<div id="new_short_code">
+		<h2>Settings&nbsp;&nbsp;> Assign short code</h2>
+
+
+		<%= link_to (image_tag("/images/back.png", {:alt => 'example', 
+				:class=>"rollover"}), :action => "index") %>
+		<%= error_messages_for 'short_code' %>
+
+		<% form_tag :controller => "settings", :action => 'assign_short_code', :id => @user_short_code do -%>
+		<table>
+			<tbody>
+				<tr> 
+					<tr>
+					  <td>Short code:</td>
+					  <td><%= collection_select :user_short_code, :short_code_id, ShortCode.find(:all, :conditions => "code != 'All'"), 
+																		:id, :code, :prompt => "Select" %></td>
+					</tr>
+					<tr>
+					  <td>User:</td>
+					  <td><%= collection_select :user_short_code, :user_id, User.find(:all), 
+																		:id, :name, :prompt => "Select" %></td>
+					</tr>  		    
+			    <tr><td>
+			    <a class="submit"><%= submit_tag "Assign", :name => "save_user_short_code" %></a> </td>
+			    </tr>    
+				</tr>     
+			</tbody>
+		</table>
+		<% end -%>
+
+	</div>
+</div>

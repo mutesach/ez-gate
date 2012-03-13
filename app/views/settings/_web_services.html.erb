@@ -1,0 +1,24 @@
+<div id="web_services">
+
+  <table width="50%">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Web Service Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @web_services != nil %>
+        <% @web_services.each do |i| %>
+          <tr>
+            <td><%=h i.name %></td>
+            <td><%=h i.web_service_type %></td>
+            <td><%= link_to "[Edit]", :action => "edit_web_service", :id => i.id unless i.id == 1%></td>
+          </tr>
+        <% end %>
+      <% else %>
+
+      <% end %>
+    </tbody>
+  </table>
+</div>

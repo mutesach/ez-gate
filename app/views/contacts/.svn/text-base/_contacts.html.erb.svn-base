@@ -1,0 +1,82 @@
+<script type="text/javascript">
+	function test(){
+		jQuery.facebox(function() {
+	  	jQuery.get("contacts/multi_message?contacts=<%= @contacts%>", function(data) {
+	    	jQuery.facebox('<table>' + data + '</table>')
+	  	})
+		})
+		return false;
+	}
+
+	function validateSend() {
+		var mess = document.getElementById('multi_content').value
+		if (mess==null||mess=="")
+		{
+			document.getElementById('mutli_content').style.backgroundColor='#FFFFB0';
+			alert('Message content is empty!');	 
+		  return false;
+		}  
+	}
+</script>
+<i><div id="result"></div></i>
+<table width="100%" class="tgate">
+	<tr class="tgate">
+		<td width="70%" class="tgate">
+			<table class="tgate">
+				<caption>Contact(s)</caption>			
+				<thead class="tgate">				
+			    <th class="tgate">Name</th>
+			    <th class="tgate">Group</th>
+			    <th class="tgate">Phone #</th> 
+			    <th></th><th></th><th></th>
+			  </thead> 
+			  <% if @contacts != nil %>
+
+			    <% form_tag :controller => "contacts", :action => "manage_contacts" do -%>
+					
+			    	<% @contacts.each do |i| %>
+				    	<tr class="tgate" id="<%= i.id%>">
+				    		    	
+				      	<td class="tgate"><%=h i.name %></td>
+				      	<% group = Group.find(i.group_id)%> 
+				      	<td class="tgate"><%=h group.name %></td> 	
+				      	<td class="tgate"><%=h i.phone_no %></td>
+				      	<td><%= link_to_remote (image_tag("/images/edit-icon.png",
+								{:height => "18", :width => "18",:alt => 'example',
+								:class=>"rollover"}),:update => 'update',
+								:url => {:controller => "contacts",:action => "edit_contact",
+								:id => i.id},:before => "Element.show('spinner')",
+								:success => "Element.hide('spinner')") %></td>
+								<td><%= link_to_remote (image_tag("/images/send_sms.gif",
+								{:height => "18", :width => "22",:alt => 'example',
+								:class=>"rollover"}),:update => 'send_sms',
+								:url => {:controller => "messages", :action => "single_message_box",
+								:id => i.id},:before => "Element.show('spinner')",
+								:success => "Element.hide('spinner')") %></td>
+								<td><%= check_box_tag "contact_ids[]", i.id %></td>
+				      </tr>	     
+				    <% end %>
+				    <%= submit_tag "Delete", :name => "manage"%>
+				   	<%= submit_tag "Add contact to", :name => "manage"%> <%= collection_select 'group_select', 'grp_id', 
+											Group.find(:all, :conditions => "user_id='#{session[:user_id]}'"), :id, :name, :prompt => "Select" %>
+						<a href="#" onmousedown="new Effect.BlindDown($('mess'))">[Compose message]</a>
+						<div id="mess" style="display: none;">
+							<%= text_area :multi, :content, :rows => 5, :cols => 30, 
+							:onKeyUp => "textCounter(this, document.getElementById('len'), 125)", 
+							:onKeyDown => "textCounter(this, document.getElementById('len'), 125)" %>
+						  <input readonly type="text" id="len" size="3" maxlength="3" value="125">characters left<br>
+						  <%= submit_tag "Send message", :name => "manage", :onclick => "return validateSend()"%>
+						</div>
+ 					<% end %>
+			  <%- end %>		  
+			</table>
+			<%= will_paginate @contacts %>
+		</td>
+	</tr>	
+	<tr>
+	<td>
+		<%= render :partial => "groups", :layout => false%>
+	
+	</tr>
+	
+</table>

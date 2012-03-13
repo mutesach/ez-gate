@@ -1,0 +1,58 @@
+<div id="messages">
+	<table class="tgate" id="rounded-corner">  
+  <thead class="tgate">
+   <th class="tgate"><%= link_to_remote "SMSC", :update => "messages", 
+   :url => {:action => "filter_by", :filter => "smsc", :cond => @conditions}, 
+   :before => "Element.show('spinner')",
+   :success => "Element.hide('spinner')" %></th>
+   <th class="tgate"><%= link_to_remote "Service", :update => "messages", 
+   :url => {:action => "filter_by", :filter => "service", :cond => @conditions}, 
+   :before => "Element.show('spinner')",
+   :success => "Element.hide('spinner')" %></th>
+   <th class="tgate"><%= link_to_remote "Sender", :update => "messages", 
+   :url => {:action => "filter_by" , :filter => "sender", :cond => @conditions}, 
+   :before => "Element.show('spinner')",
+   :success => "Element.hide('spinner')" %></th>
+   <th class="tgate"><%= link_to_remote "Status", :update => "messages", 
+   :url => {:action => "filter_by", :filter => "status", :cond => @conditions}, 
+   :before => "Element.show('spinner')",
+   :success => "Element.hide('spinner')" %></th>     
+   <th class="tgate"><%= link_to_remote "Date/Time", :update => "messages", 
+   :url => {:action => "filter_by", :filter => "date_time", :cond => @conditions}, 
+   :before => "Element.show('spinner')",
+   :success => "Element.hide('spinner')" %></th>    
+  </thead>   
+  <tbody>
+  <% if @incoming_messages != nil %>
+   <% @incoming_messages.each do |i| %>
+   	<% if i.read_status == false %>
+     <tr bgcolor="#f3d6d3" class="tgate">
+    <% else %>
+     <tr class="tgate">
+    <% end %>
+     	<td class="tgate" width="20%"><%=h i.smsc %></td>
+     	<td class="tgate"><%=h i.service.name %></td>
+     	<td class="tgate"><%=h i.sender %> f(<%= i.num%>)</td>
+       <% case i.service_status when "success" then %>
+       	<td class="tgate" bgcolor = "#c3ea78">
+       	<%=h i.service_status.strip() %></td>
+       <% when "pending" then %>
+       	<td class="tgate" bgcolor = "#deba65">
+       	<%=h i.service_status %></td>
+       <% when "failed", "Service does not exist", 
+       	"The request has timed out", "Server not available", 
+       	"Network unreachable","Name or service unknown", "Service not active" then %>
+       	<td class="tgate" bgcolor = "#bb3c2d">
+       	<%=h i.service_status %></td>
+       <% end %>
+						<td class="tgate">
+						<%=h i.created_at.strftime("%Y-%m-%d %l:%M:%S %p") %></td>
+     </tr>
+    <% end %>
+  	<% end %>
+  	<tr width="20%"><td><%= will_paginate @incoming_messages %></td></tr>
+  </tbody>
+  
+	</table>
+</div>
+

@@ -1,0 +1,108 @@
+<html>
+  <title>Inbound Message</title>
+  <style type='text/css'>
+    body{
+      font:76% Verdana,Tahoma,Arial,sans-serif;
+      background:#ffffff url(/images/background.gif) top center repeat-y;
+      color:#404040;
+      line-height:1.2em;
+      margin:0 auto;
+      padding:0;
+      font-size:0.7em
+    }
+    table {
+      width: 95%;
+      background-color: #fafafa;
+      border: 0px #000000 solid;
+      border-collapse: collapse;
+      border-spacing: 0px;
+      font-size:1em;
+    }
+    td {
+      padding-top: 4px;
+      padding-bottom: 4px;
+      padding-left: 8px;
+      padding-right: 0px;
+    }
+    #list {
+      border-collapse:collapse;
+      font-family:"Lucida Sans Unicode","Lucida Grande",Sans-Serif;
+      font-size:10px;
+      margin:0px;
+      text-align:left;
+      width:100%;
+      line-height:1.5em;
+      float:right;
+      text-align:left;
+      padding:0;
+    }
+
+    #list th {
+      background:#B9C9FE none repeat scroll 0 0;
+      color:#003399;
+      font-size:11px;
+      font-weight:normal;
+      padding:4px;
+    }
+
+    #list td {
+      background:#E8EDFF none repeat scroll 0 0;
+      border-top:1px solid #FFFFFF;
+      color:#666699;
+      padding:2px;
+      cursor:pointer;
+    }
+
+    #list tbody tr:hover td {
+      background:#D0DAFD none repeat scroll 0 0;
+    }
+
+  </style>
+
+
+  <body>
+    <div id="msg">
+      <table>
+        <thead>
+          <tr>
+            <th>[inbound message]</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>SMSC</td><td><%=h @inbound_message.smsc %></td></tr>
+          <tr><td>Short code</td><td><%=h @inbound_message.destination %></td></tr>
+          <tr><td>Service</td><td><%=h @inbound_message.service.name %></td></tr>
+          <tr><td>Sender #</td><td><%=h @inbound_message.sender %></td></tr>
+          <tr><td>Content</td><td><%=h @inbound_message.content.split(/\n/) %></td></tr>
+          <tr><td>Service status</td><td><%=h @inbound_message.service_status %></td></tr>
+          <tr><td>Msg status</td><td><%=h @inbound_message.status_message %></td></tr>
+          <tr><td>Date/Time</td><td><%=h @inbound_message.created_at.strftime("%Y-%m-%d %l:%M:%S %p") %></td></tr>
+        </tbody>
+
+      </table>
+
+
+      <% if @outbound_message != nil%>
+        <table>
+          <thead>
+            <tr>
+              <th>[outbound message]</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Service</td><td><%=h @outbound_message.service %></td></tr>
+            <tr><td>Sender #</td><td><%=h @outbound_message.sender %></td></tr>
+            <tr><td>Destination #</td><td><%=h @outbound_message.destination %></td></tr>
+            <tr><td>Content</td><td><%=h @outbound_message.content.split(/\n/) %></td></tr>
+            <tr><td>Status</td><td><%=h @outbound_message.status %></td></tr>
+            <tr><td>Msg status</td><td><%=h @outbound_message.status_message %></td></tr>
+            <tr><td>Date/Time</td><td><%=h @outbound_message.created_at.strftime("%Y-%m-%d %l:%M:%S %p") %></td></tr>
+          </tbody>
+
+        </table>
+      <% end %>
+    </div>
+  </body>
+</html>

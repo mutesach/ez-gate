@@ -1,0 +1,105 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+  <h2>Reports&nbsp;&nbsp;<%= image_tag("spinner.gif",:align => "absmiddle",
+      :border => 0,:id => "spinner",
+      :style =>"display: none;" ) %></h2>
+  <p>
+  <div id="reports">
+    <table width="100%">
+      <tr>
+        <td width="50%">
+          <h3>Incoming messages</h3>
+          <table>
+            <tr>
+              <td align = "left">
+                <% form_tag :action => "custom_request_incoming" do %>
+              <tr>
+                <th align ='left'>Date</th>
+                <td><%= date_select("in_rep_date", "",
+                    :min_date => Date.today,
+                    :max_date => 12.weeks.from_now)%></td></tr>
+              <tr>
+                <th align ='left'>Month</th>
+                <td><%= select 'incoming', 'rep_month',
+                    IncomingMessage::MONTHS, {:prompt => "Select"} %></td></tr>
+              <tr>
+                <th align ='left'>Year</th>
+                <td><%= select 'incoming', 'rep_year',
+                    IncomingMessage::YEARS, {:prompt => "Select"} %></td></tr>
+              <tr>
+                <th align ='left'>Service</th>
+                <<<<<<< .mine
+                <td><%= collection_select 'incoming', 'rep_service', Service.find(:all, :conditions => "user_id=#{session[:user_id]}"), :id, :name, :prompt => "Select" %></td>
+
+                =======
+                <td><%= collection_select 'incoming', 'rep_service', Service.find(:all, :conditions => "user_id=#{session[:user_id]}"), :id, :name, :prompt => "Select" %></td>
+              </tr>
+              >>>>>>> .r760
+              <tr>
+                <th align ='left'>User</th>
+                <td><%= collection_select 'incoming', 'rep_user', User.find(:all), :id, :name, :prompt => "Select" %></td></tr>
+              <tr>
+                <th align ='left'>Operator</th>
+                <td><%= select 'incoming', 'rep_operator', IncomingMessage::TELECOM_OPERATORS, {:prompt => "Select"} %></td></tr>
+              <tr><td>
+                  <%= submit_tag 'Print', :name => "" %></td></tr>
+            <% end %>
+        </td>
+      </tr>
+      <tr>
+    </table>
+    </td>
+    <td>
+      <h3>Outgoing messages</h3>
+      <table>
+        <tr>
+          <td align = "left">
+            <% form_tag :action => "custom_request_outgoing" do %>
+          <tr>
+            <th align ='left'>Date</th>
+            <td><%= date_select("out_rep_date", "",
+                :min_date => Date.today,
+                :max_date => 12.weeks.from_now)%></td></tr>
+          <tr>
+            <th align ='left'>Month</th>
+            <td><%= select 'outgoing', 'rep_month',
+                IncomingMessage::MONTHS, {:prompt => "Select"} %></td></tr>
+          <tr>
+            <th align ='left'>Year</th>
+            <td><%= select 'outgoing', 'rep_year',
+                IncomingMessage::YEARS, {:prompt => "Select"} %></td></tr>
+          <tr>
+            <th align ='left'>Service</th>
+            <<<<<<< .mine
+            <td><%= collection_select 'outgoing', 'rep_service', Service.find(:all, :conditions => "user_id=#{session[:user_id]}"), :id, :name, :prompt => "Select" %></td>
+            =======
+            <td><%= collection_select 'outgoing', 'rep_service', Service.find(:all, :conditions => "user_id=#{session[:user_id]}"), :id, :name, :prompt => "Select" %></td>
+          </tr>
+          >>>>>>> .r760
+
+          <tr>
+            <th align ='left'>User</th>
+            <td><%= collection_select 'outgoing', 'rep_user', User.find(:all), :id, :name, :prompt => "Select" %></td></tr>
+          <tr>
+            <th align ='left'>Operator</th>
+            <td><%= select 'outgoing', 'rep_operator', IncomingMessage::TELECOM_OPERATORS, {:prompt => "Select"} %></td></tr>
+          <tr><td>
+              <%= submit_tag 'Print', :name => "" %></td></tr>
+        <% end %>
+    </td>
+    </tr>
+    <tr>
+      </table>
+      </td>
+    </tr>
+
+    </table>
+  </div>
+</div>
+

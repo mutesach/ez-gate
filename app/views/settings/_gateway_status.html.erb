@@ -1,0 +1,76 @@
+<div id="gateway_status">
+  <table>
+    <tr>
+      <th align ='left'><a href="#" onmousedown="new Effect.BlindDown($('sms_gateway_status'))">[View status]</a>
+        <a href="#" onmousedown="new Effect.BlindDown($('kannel'))">[Edit configuration file]</a></th>
+
+    </tr>
+    <tr>
+      <% if @status == 0%>
+        <td bgcolor = "#ff5858">OFF</td>
+        <td>
+          <% form_tag :action => "start_kannel" do %>
+            <a class="submit"><%= submit_tag 'Start', :name => "start_kannel_button" %></a>
+          <% end %>
+        </td>
+      <% else %>
+        <% if @curr_status == "isolated"%>
+          <td bgcolor = "#fbb508">ISOLATED</td>
+          <td>
+            <% form_tag :action => "resume_kannel" do %>
+              <a class="submit"><%= submit_tag 'Resume', :name => "resume_kannel_button" %></a>
+            <% end %>
+          </td>
+        <% else %>
+          <% if @curr_status == "running"%>
+            <td bgcolor = "#3bb813">RUNNING</td>
+            <td>
+              <% form_tag :action => "isolate_kannel" do %>
+                <a class="submit"><%= submit_tag 'Isolate', :name => "isolate_kannel_button" %></a>
+              <% end %>
+            </td>
+            <td>
+              <% form_tag :action => "restart_kannel" do %>
+                <a class="submit"><%= submit_tag 'Restart', :name => "restart_kannel_button" %></a>
+              <% end %>
+            </td>
+          <% end %>
+        <% end %>
+      <% end %>
+    </tr>
+  </table>
+
+  <div id="sms_gateway_status" style="display:none;">
+    <table class="contacts">
+      <tbody>
+        <% if @parsed_html != nil %>
+          <% @paragraphs = Array.new %>
+          <% @parsed_html.each_child_with_index do |c,i| %>
+            <tr>
+              <% line = c.to_s.strip %>
+              <% if line == "" %>
+                <% puts "#{@paragraphs}" %>
+                <% @paragraphs.clear %>
+              <% else %>
+                <td><%= line unless line.not_needed? %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+    <a href="#" onmousedown="new Effect.BlindUp($('sms_gateway_status'))">[Hide]</a>
+  </div>
+  <div id="kannel" style="display:none;">
+    <table>
+      <tr>
+        <% form_tag :action => "update_kannel_conf" do %>
+          <%= text_area "kannel", "kannel_conf", :rows => 25, :cols => 100 , :value => @file %>
+          <td><a class="submit"><%= submit_tag 'Update', :name => "button_update" %></a></td>
+        <% end %>
+        <td><a class="submit"><%= submit_tag 'Cancel', :name => "button_cancel", :onclick => "new Effect.BlindUp($('kannel'))" %></a></td>
+      </tr>
+    </table>
+
+  </div>
+</div>

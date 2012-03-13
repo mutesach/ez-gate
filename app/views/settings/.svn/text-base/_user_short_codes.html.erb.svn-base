@@ -1,0 +1,77 @@
+<div id="short_codes">
+	<% if flash[:notice] -%>
+		<div id="flash">
+			<div style="margin-bottom:0px;">
+			<%= flash[:notice] %>
+			</div>
+		</div>
+	<% end -%>
+	<h3><i>Registered short codes</i></h3>
+	<table width="50%">  
+	  <thead>
+	    <tr>
+	      <th>Code</th>
+	      <th>SMSC</th>
+	      <th>Cost</th>
+	      <th>Status</th>        
+	    </tr>
+	  </thead>  
+	  <tbody>
+	  <% if @short_codes != nil %>
+	    <% @short_codes.each do |i| %>
+	      <tr>
+	      	<td><%=h i.code %></td>
+	      	<td><%=h i.smsc %></td>
+	      	<td><%=h i.sms_cost %></td>
+					<% if i.status == true %>
+          	<td bgcolor = "green"><b>On</b></td>
+          	<td><%= link_to_remote "[Deactivate]",:update => 'short_codes', 
+          					:url => {:action => "deactivate_short_code", 
+          					:id => i.id},
+          					:before => "Element.show('spinner')",
+          					:success => "Element.hide('spinner')" unless i.id == 1%></td>
+        	<% else %>
+        		<td bgcolor = "red"><b>Off</b></td>
+        		<td><%= link_to_remote "[Activate]",:update => 'short_codes', 
+        						:url => {:action => "activate_short_code", 
+        						:id => i.id},
+        						:before => "Element.show('spinner')",
+        						:success => "Element.hide('spinner')" unless i.id == 1%></td>
+        	<% end %>
+					<td><%= link_to_remote "[Edit]",:update => 'short_codes', 
+									:url => {:action => "edit_short_code", :id => i.id} unless i.id == 1%></td>
+					<td><%= link_to "[Delete]", {:controller => 'settings',
+							  												:action => 'delete_short_code', :id => i.id},
+							                          {:post => true,
+							                          :confirm => "Delete short code #{i.code} [#{i.smsc}]?"
+							                          } unless i.id == 1%></td>
+	      </tr>
+	    <% end %>
+	  <% end %>
+	  </tbody>
+	</table>
+	<%= will_paginate @short_codes %>	
+	
+	
+	<h3><i>Assigned short codes</i></h3>
+	<table width="50%">  
+	  <thead>
+	    <tr>
+	      <th>Code</th>
+	      <th>User</th>      
+	    </tr>
+	  </thead>  
+	  <tbody>
+	  <% if @user_short_codes != nil %>
+	    <% @user_short_codes.each do |i| %>
+	      <tr>
+	      	<td><%=h i.short_code.code %></td>
+	      	<td><%=h i.user.name %></td>
+	    <% end %>
+	  <% end %>
+	  </tbody>
+	</table>
+	<br><br>
+	<%= will_paginate @user_short_codes %>
+
+</div>

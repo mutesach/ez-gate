@@ -1,0 +1,49 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+  <div id="edit_short_code">
+    <h2><%= link_to "Settings", settings_path %> > Edit short code&nbsp;&nbsp;
+      <%= image_tag("spinner.gif",:align => "absmiddle",
+        :border => 0,:id => "spinner",
+        :style =>"display: none;" ) %></h2>
+
+    <ul>
+      <% @short_code.errors.each_with_index do |msg, i| %>
+        <li><%= msg[1] %></li>
+      <% end %>
+    </ul>
+
+    <%= form_tag :controller => "settings", :action => 'update_short_code', :id => @short_code do -%>
+      <table>
+        <tbody>
+          <tr>
+          <tr>
+            <td>Code:</td>
+            <td><%= text_field :short_code, :code, :size => 10 %></td>
+          </tr>
+
+          <tr>
+            <td>SMSC:</td>
+            <td><%= select :short_code, :smsc, ShortCode::SMSCS, :prompt => "Select" %></td>
+          </tr>
+
+          <tr>
+            <td>SMS Cost:</td>
+            <td><%= text_field :short_code, :sms_cost, :size => 9 %></td>
+          </tr>
+
+          <tr><td>
+              <a class="submit"><%= submit_tag "Save", :name => "save_user" %></a> </td>
+          </tr>
+          </tr>
+        </tbody>
+      </table>
+    <% end -%>
+
+  </div>
+</div>

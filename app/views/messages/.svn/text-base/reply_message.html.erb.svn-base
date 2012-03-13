@@ -1,0 +1,80 @@
+<script language="javascript">
+	function validateSendM() {
+		if ($("message_dest") != null){
+			var code = document.getElementById('message_dest').value 
+		}
+		else{
+		  var code ="owner"
+		}
+		var mess = document.getElementById('message_content').value
+		if (code==null||code=="") {
+			document.getElementById('message_dest').style.backgroundColor='#FFFFB0';      
+			alert('Please select short code!');
+		  return false;
+		  
+		} 
+		if (mess==null||mess=="")
+		{
+			document.getElementById('message_content').style.backgroundColor='#FFFFB0';
+			alert('Message content is empty!');	 
+		  return false;
+		}  
+	}
+</script>
+<h3>Send message to <i>[<%= params[:phone]%>]</i></h3>
+&nbsp;&nbsp;<%= image_tag("spinner2.gif",:align => "absmiddle",
+	:border => 0,:id => "spinner2",
+	:style =>"display: none;" ) %></h3>
+<div id="send_sms">
+	<table>
+		<tr>
+			<td>Short code</td><td><%= collection_select 'message', 'dest',
+											ShortCode.find(:all, :conditions => "code != 'All'"), :code, :code, {:prompt => "Select"} unless session[:user_type] != "SA" %></td></tr>
+		<tr>
+	    <td>Message</td><td><%= text_area :message, :content, :rows => 5, :cols => 40, :onKeyUp => "textCounter(this, document.getElementById('len'), 125)", :onKeyDown => "textCounter(this, document.getElementById('len'), 125)" %></td>
+		</tr>
+		<input readonly type="text" id="len" size="3" maxlength="3" value="125">characters left
+    <tr>		
+		<% if @status == 0%>
+			<td bgcolor = "#fbb508">SMS Gateway not available</td>
+		<% else %>	
+			<% if @curr_status == "isolated"%>
+				<td bgcolor = "#fbb508">SMS Gateway ISOLATED</td>
+				<td><i>Cannot send messages for the moment, contact your sys. admin.</i></td>
+			<% else %>
+			  <% if @curr_status == "running" and @box_status != nil%>
+					<td>
+		        <a class="submit">
+		        <%= link_to_remote(image_tag("/images/sms2.png", {:width=> "50%", 
+		        :height => "50%", :alt => 'example', :class=>"rollover", 
+		        :onmouseover => "return validateSendM()", :mutlipart => true}), 
+		        :url => {:action => "send_single_message", :id => params[:phone]}, 
+		        :with => "'content='+encodeURIComponent($F('message_content')) + '&short='+encodeURIComponent($F('message_dest')) + '&name='+encodeURIComponent($F('message_name'))",
+		        :method => :get,
+		        :before => "Element.show('spinner2')",
+		        :success => "Element.hide('facebox')") unless !["SA", "Administrator"].include?(session[:user_type])%>
+		        
+		        <%= link_to_remote(image_tag("/images/sms2.png", {:width=> "50%", 
+		        :height => "50%", :alt => 'example', :class=>"rollover", 
+		        :onmouseover => "return validateSendM()", :mutlipart => true}), 
+		        :url => {:controller => "messages", :action => "send_single_message", :id => params[:phone]}, 
+		        :with => "'content='+encodeURIComponent($F('message_content')) + '&name='+encodeURIComponent($F('message_name'))",
+		        :method => :get,
+		        :before => "Element.show('spinner2')",
+		        :success => "Element.hide('facebox')") unless !["Service-Aggregator", "Bulk-push"].include?(session[:user_type])%>
+		        </a>
+		      </td>
+		      
+		      <td><i>This message will be sent to 1 recipient<br>
+		      <% if @user.sms_limit == true%>Available stock : <%=h @user.sms_stock %><% end %></i></td>
+		      
+				<% else %>
+					<td bgcolor = "#fbb508">SMS Box not available</td>
+					<td><i>Cannot send messages for the moment, contact your sys. admin.<br>
+		      <% if @user.sms_limit == true%>Available stock : <%=h @user.sms_stock %><% end %></i></td>
+				<% end %>
+			<% end %>
+		<% end %>
+  </tr>
+	</table>
+</div>

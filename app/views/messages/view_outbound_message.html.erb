@@ -1,0 +1,21 @@
+<% if @outbound_message != nil%>
+  <table>
+    <thead>
+      <tr>
+        <th>[outbound message]</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Service</td><td><%=h @outbound_message.service %></td></tr>
+      <tr><td>Sender #</td><td><%=h @outbound_message.sender %></td></tr>
+      <tr><td>Destination #</td><td><%=h @outbound_message.destination %></td></tr>
+      <tr><td>Content</td><td><%=h @outbound_message.content.split(/\n/) %></td></tr>
+      <tr><td>Status</td><td><%=h @outbound_message.status %></td></tr>
+      <tr><td>Msg Status</td><td><%=h @outbound_message.status_message %></td></tr>
+      <tr><td>Date/Time</td><td><%=h @outbound_message.created_at.strftime("%Y-%m-%d %l:%M:%S %p") %></td></tr>
+    </tbody>
+
+  </table>
+<% end %>
+</div>

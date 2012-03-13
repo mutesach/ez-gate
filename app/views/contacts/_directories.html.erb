@@ -1,0 +1,15 @@
+<br /><br />
+<div id="directories">
+  <table class="tgate">
+    <h2>Directorie(s)</h2>
+    <% if @directories != nil %>
+      <% @directories.each do |dir| %>
+      <tr>
+        <td class="tgate"><%= link_to dir.directory_ref, :action => "view_directory", :id => dir.directory_ref %></td>
+        <td class="tgate">&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to image_tag("delete3.png", :width => "20", :height => "20"), :action => "delete_directory", :id => dir.directory_ref %></td>
+      </tr>
+    <% end %>
+    <% end %>
+
+  </table>
+</div>

@@ -1,0 +1,48 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+      <script type="text/javascript">
+        setTimeout("new Effect.Fade('flash');", 500)
+      </script>
+    </div>
+  <% end -%>
+
+  <h2><%= link_to "Settings", settings_path%> > Ringtones&nbsp;&nbsp;
+    <%= image_tag("spinner.gif",:align => "absmiddle",
+      :border => 0,:id => "spinner",
+      :style =>"display: none;" ) %></h2>
+  <div id="ringtones">
+    <table class="tgate" id="rounded-corner">
+      <thead class="tgate">
+
+      <th class="tgate">Keyword</th>
+      <th class="tgate">Aliases</th>
+      <th class="tgate">Song title</th>
+      <th class="tgate">Artist</th>
+      <th class="tgate">File name</th>
+      <th class="tgate">File type</th>
+      <th class="tgate">File size</th>
+      <th class="tgate">Status</th>
+      </thead>
+      <tbody>
+        <% if @ringtones != nil %>
+          <% @ringtones.each do |i| %>
+            <tr>
+              <td class="tgate"><%=h i.keyword %></td>
+              <td class="tgate"><%=h i.aliases %></td>
+              <td class="tgate"><%=h i.song_title %></td>
+              <td class="tgate"><%=h i.artist_name %></td>
+              <td class="tgate"><%=h i.f_name %></td>
+              <td class="tgate"><%=h i.f_extension %></td>
+              <td class="tgate"><%=h i.f_size %></td>
+
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

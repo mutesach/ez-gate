@@ -1,0 +1,72 @@
+<div id="content">
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+
+  <div id="save_user">
+    <h2><%= link_to "Users", users_path %> > Save user&nbsp;&nbsp;
+      <%= image_tag("spinner.gif",:align => "absmiddle",
+        :border => 0,:id => "spinner",
+        :style =>"display: none;" ) %></h2>
+
+    <ul>
+      <% @user.errors.each_with_index do |msg, i| %>
+        <li><%= msg[1] %></li>
+      <% end %>
+    </ul>
+    <% form_tag :controller => "users", :action => 'save_user', :id => @user do -%>
+      <table>
+        <tbody>
+          <tr>
+            <td>User Type:</td>
+            <td><%= select :user, :user_type, User::Types, :prompt => "Select" %></td>
+          </tr>
+
+          <tr>
+            <td>Name:</td>
+            <td><%= text_field :user, :name, :size => 30 %></td>
+          </tr>
+          <tr>
+            <td>Username:</td>
+            <td><%= text_field :user_detail, :username, :size => 15 %></td>
+          </tr>
+          <tr>
+            <td>Phone #:</td>
+            <td><%= text_field :user, :phone_no, :size => 15 %></td>
+          </tr>
+          <tr>
+            <td>Email:</td>
+            <td><%= text_field :user, :email, :size => 30 %></td>
+          </tr>
+          <tr>
+            <td>Send SMS limit:</td>
+            <td><%= select :user, :sms_limit, User::STAT_OPTION %></td>
+          </tr>
+          <tr>
+            <td>SMS stock :</td>
+            <td><%= text_field :user, :sms_stock, :size => 5 %></td>
+          </tr>
+          <tr>
+            <td>Password:</td>
+            <td><%= password_field :user_detail, :password, :size => 15 %></td>
+          </tr>
+          <tr>
+            <td>Confirm password:</td>
+            <td><%= password_field :user_detail, :password_confirmation, :size => 15 %></td>
+          </tr>
+          <%= hidden_field :user_detail, :status, :value => 0 %>
+          <%= hidden_field :user_detail, :parent, :value => 1 %>
+
+          <tr><td>
+              <a class="submit"><%= submit_tag "Save", :name => "save_user" %></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <% end -%>
+  </div>
+</div>

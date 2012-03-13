@@ -1,0 +1,44 @@
+<%= link_to(image_tag("/images/back.png", {:alt => 'example', 
+		:class=>"rollover"}), :action => "index") %><br>
+<%= error_messages_for 'user' %>
+<% form_tag :action => 'update_user_profile', :id => @user do -%>
+<table>
+  <tr>
+    <td>
+  		<tr>
+	    	<td>User Type:</td>
+		    <td><%= select :user, :user_type, User::Types, :prompt => "Select" %></td>
+			</tr>
+    
+	    <tr>
+	    	<td>Name:</td>
+	    	<td><%= text_field :user, :name, :size => 30 %></td>
+	    </tr>		    
+	    <tr>
+	    	<td>Username:</td>
+	    	<td><%= text_field :user_detail, :username, :size => 15 %></td>
+	    </tr>		    
+	    <tr>
+	    	<td>Phone #:</td>
+	    	<td><%= text_field :user, :phone_no, :size => 15 %></td>
+	    </tr>
+	    <tr>
+	    	<td>Email:</td>
+	    	<td><%= text_field :user, :email, :size => 30 %></td>
+	    </tr>
+	    <tr>
+	    	<td>Send SMS limit:</td>
+	    	<td><%= select :user, :sms_limit, User::STAT_OPTION %></td>
+	    </tr>
+	    <tr>
+	    	<td>SMS stock :</td>
+	    	<td><%= text_field :user, :sms_stock, :size => 5 %></td>
+	    </tr>
+    	<tr>
+
+		  <a class="submit"><%= submit_tag "Update"%></a><p>
+			
+		</td>
+  </tr>
+</table>
+<% end -%>

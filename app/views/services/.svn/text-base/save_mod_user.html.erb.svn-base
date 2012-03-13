@@ -1,0 +1,48 @@
+<div id="content">
+	<% if flash[:notice] -%>
+		<div id="flash">
+			<div style="margin-bottom:0px;">
+				<%= flash[:notice] %>
+			</div>
+		</div>
+	<% end -%>
+
+	<div id="new_service_mod">
+		<h2>Services&nbsp;&nbsp;> New service moderator</h2>
+			<%= link_to (image_tag("/images/back.png", 
+			{:alt => 'example', :class=>"rollover"}), :action => "list") %>
+			<%= error_messages_for 'user_detail' %>
+
+			<% form_tag :controller => "services", :action => 'new_user_mod', :id => @user_detail do -%>
+			<table>
+				<tbody>
+					<tr>
+						<tr>
+			   	<td>Service:</td>
+			   	<td><%= collection_select :user_mod_service, :service_id, 
+			   			Service.find(:all, :conditions => "id != 1 and user_id = '#{session[:user_id]}'", 
+			   			:order => "name ASC"), :id, :name, 
+			   			:prompt => "Select"%></td>
+			   </tr>    
+			   <tr>
+			   	<td>Username:</td>
+			   	<td><%= text_field :user_detail, :username, :size => 15 %></td>
+			   </tr>		        
+			   <tr>
+			   	<td>Password:</td>
+			   	<td><%= password_field :user_detail, :password, :size => 15 %></td>
+			   </tr>		    
+			   <tr>
+			   	<td>Confirm password:</td>
+			   	<td><%= password_field :user_detail, :password_confirmation, :size => 15 %></td>
+			   </tr>
+			   <%= hidden_field :user_detail, :status, :value => 1 %>
+			   <%= hidden_field :user_detail, :parent, :value => 0 %>
+			    
+			   <tr><td><a class="submit"><%= submit_tag "Save", :name => "save_mod_user" %></a></td></tr>     
+					</tr>    
+				</tbody>
+			</table>
+			<% end -%>
+</div>
+</div>

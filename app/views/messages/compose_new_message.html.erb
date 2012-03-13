@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <meta name="author" content="" />
+
+    <%= stylesheet_link_tag "main", 'facebox'%>
+    <%= javascript_include_tag 'jquery', 'facebox' %>
+
+    <link rel="shortcut icon" href="ezgate.ico" type="image/ico" />
+    <title>ezGate</title>
+    <script language=JavaScript>
+      function textCounter(field,cntfield,maxlimit) {
+        if (field.value.length > maxlimit)
+          field.value = field.value.substring(0, maxlimit);
+        else
+          cntfield.value = maxlimit - field.value.length;
+
+      }
+      function fill_trash() {
+        $('trash').src = "/images/trashfull.jpg";
+      }
+      function empty_trash() {
+        $('trash').src = "/images/trash.jpg";
+      }
+      function validateImport() {
+        var group = document.getElementById('dump_grp_id').value
+        var file = document.getElementById('dump_file').value
+        if (group==null||group=="") {
+          document.getElementById('dump_grp_id').style.backgroundColor='#FFFFB0';
+          document.getElementById('dump_grp_id').style.borderColor='#666666';
+          alert('Please select group!');
+          return false;
+
+        }
+        if (file==null||file=="")
+        {
+          document.getElementById('dump_file').style.backgroundColor='#FFFFB0';
+          document.getElementById('dump_file').style.borderColor='#666666';
+          alert('Please select file to import!');
+          return false;
+        }
+      }
+      function checkfld(radioObj) {
+        if (radioObj.id == "number1"){
+          document.getElementById("single_p").style.display = "";
+          document.getElementById("multi_p").style.display = "none";
+          document.getElementById("csv_p").style.display = "none";
+          document.getElementById("group_p").style.display = "none";
+        }
+        if (radioObj.id == "number2"){
+          document.getElementById("single_p").style.display = "none";
+          document.getElementById("multi_p").style.display = "";
+          document.getElementById("csv_p").style.display = "none";
+          document.getElementById("group_p").style.display = "none";
+        }
+        if (radioObj.id == "number3"){
+          document.getElementById("single_p").style.display = "none";
+          document.getElementById("multi_p").style.display = "none";
+          document.getElementById("csv_p").style.display = "";
+          document.getElementById("group_p").style.display = "none";
+        }
+        if (radioObj.id == "number4"){
+          document.getElementById("single_p").style.display = "none";
+          document.getElementById("multi_p").style.display = "none";
+          document.getElementById("csv_p").style.display = "none";
+          document.getElementById("group_p").style.display = "";
+        }
+      }
+
+      function validateSendM() {
+        if ($("message_dest") != null){
+          var code = document.getElementById('message_dest').value
+        }
+        else{
+          var code ="owner"
+        }
+        var mess = document.getElementById('message_content').value
+        if (code==null||code=="") {
+          document.getElementById('message_dest').style.backgroundColor='#FFFFB0';
+
+          alert('Please select short code!');
+          return false;
+
+        }
+        if (mess==null||mess=="")
+        {
+          document.getElementById('message_content').style.backgroundColor='#FFFFB0';
+          alert('Message content is empty!');
+          return false;
+        }
+      }
+    </script>
+
+
+
+    <style type='text/css'>
+      body{
+        font:76% Verdana,Tahoma,Arial,sans-serif;
+        background:#ffffff url(/images/background.gif) top center repeat-y;
+        color:#404040;
+        line-height:1.2em;
+        margin:0 auto;
+        padding:0;
+        font-size:0.7em
+      }
+      table {
+        width: 95%;
+        background-color: #fafafa;
+        border: 0px #000000 solid;
+        border-collapse: collapse;
+        border-spacing: 0px;
+        font-size:1em;
+      }
+      td {
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 8px;
+        padding-right: 0px;
+      }
+      #list {
+        border-collapse:collapse;
+        font-family:"Lucida Sans Unicode","Lucida Grande",Sans-Serif;
+        font-size:10px;
+        margin:0px;
+        text-align:left;
+        width:100%;
+        line-height:1.5em;
+        float:right;
+        text-align:left;
+        padding:0;
+      }
+
+      #list th {
+        background:#B9C9FE none repeat scroll 0 0;
+        color:#003399;
+        font-size:11px;
+        font-weight:normal;
+        padding:4px;
+      }
+
+      #list td {
+        background:#E8EDFF none repeat scroll 0 0;
+        border-top:1px solid #FFFFFF;
+        color:#666699;
+        padding:2px;
+        cursor:pointer;
+      }
+
+      #list tbody tr:hover td {
+        background:#D0DAFD none repeat scroll 0 0;
+      }
+
+    </style>
+  </head>
+
+  <body>
+
+
+    <br />
+    <br />
+    <h2><%= link_to "Messages", messages_path%> > Send message&nbsp;&nbsp;
+      <%= image_tag("spinner2.gif",:align => "absmiddle",
+        :border => 0,:id => "spinner2",
+        :style =>"display: none;" ) %></h2>
+    <% if session[:user_type] == "SA"%>
+      <% @conditions = "code != 'All'"%>
+    <% else %>
+      <% @conditions = "user_id = #{session[:user_id]}"%>
+    <% end %>
+    <div id="send_sms">
+      <table>
+        <%= form_tag :controller => "messages", :action => 'send_message', :id => @message do -%>
+
+          <tr>
+            <td>Short code</td><td><%= collection_select 'message', 'dest',
+                ShortCode.find(:all, :conditions => @conditions, :joins => "left join user_short_codes on user_short_codes.short_code_id=short_codes.id",	:select => "user_short_codes.user_id, short_codes.code, short_codes.id, short_codes.smsc"), :id, :short_code_with_smsc %></td>
+          </tr>
+          <tr id="single_p">
+            <td>Phone number</td><td><%= text_field :message, :phone_single, :size => 15, :value => "+243" %></td>
+          </tr>
+          <tr id="multi_p" style="display: none;">
+            <td>Phone (multiple)</td><td><%= text_field :message, :phone_multi, :size => 50 %></td>
+          </tr>
+          <tr id="csv_p" style="display: none;">
+            <td>File</td>
+            <td><%= file_field :message, :file -%>
+            </td>
+          </tr>
+          <tr id="group_p" style="display: none;">
+            <td>Group</td>
+            <td><%= collection_select :message, :group_id, Group.find(:all, :conditions => "user_id='#{session[:user_id]}'"), :id, :name, :prompt => "Select" %>
+            </td>
+          </tr>
+          <tr>
+            <td>Message</td><td><%= text_area :message, :content, :rows => 5, :cols => 40, :onKeyUp => "textCounter(this, document.getElementById('len'), 125)", :onKeyDown => "textCounter(this, document.getElementById('len'), 125)" %></td>
+          </tr>
+          <tr><td><input readonly type="text" id="len" size="3" maxlength="3" value="125"/>characters left</td></tr>
+
+          <tr>
+            <% if @status == 0%>
+              <td bgcolor = "#fbb508">SMS Gateway not available</td>
+            <% else %>
+              <% if @curr_status == "isolated"%>
+                <td bgcolor = "#fbb508">SMS Gateway ISOLATED</td>
+                <td><i>Cannot send messages for the moment, contact your sys. admin.</i></td>
+              <% else %>
+                <% if @curr_status == "running" and @box_status != nil%>
+                  <td>
+                    <a class="submit"><%= submit_tag "Send message", :name => "send_message", :onclick =>  "return validateSendM();" %></a>
+                  </td>
+                <% else %>
+                  <td bgcolor = "#fbb508">SMS Box not available</td>
+                  <td><i>Cannot send messages for the moment, contact your sys. admin.</i></td>
+                <% end %>
+              <% end %>
+            <% end %>
+          </tr>
+        <% end -%>
+      </table>
+    </div>
+
+  </body>
+</html>
