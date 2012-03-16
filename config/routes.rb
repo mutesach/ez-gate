@@ -181,6 +181,14 @@ EzGate::Application.routes.draw do
     end
   end
 
+  resources :ringtones do
+    collection do
+      get 'index'
+      get 'download_ringtone'
+      post 'download_ringtone'
+    end
+  end
+
   # Sample resource route with sub-resources:
   #   resources :products do
   #     resources :comments, :sales

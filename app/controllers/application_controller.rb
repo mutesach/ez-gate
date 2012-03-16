@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  EZGATE_HOST = "localhost:3001"
+  EZGATE_HOST = "localhost"
   KANNEL_HOST = "localhost"
   KANNEL_SENDER_USERNAME = "ezgate"
   KANNEL_SENDER_PASSWORD = "ezgate"
@@ -7,25 +7,36 @@ class ApplicationController < ActionController::Base
   KANNEL_SEND_SMS_PORT = "4042"
   KANNEL_ADMIN_PORT = "4040"
   KANNEL_ADMIN_PASSWORD = "ez@kannel*"
-  RINGTONES_PATH = "/home/ezgate/ringtones"
+  RINGTONES_PATH = "#{Rails.root}/public/ringtones"
 
   protect_from_forgery
 
-
-  layout :detect_browser
+  before_filter :prepare_for_mobile
+  #layout :detect_browser
 
   private
-  MOBILE_BROWSERS = ["android", "ipod", "opera mini", "blackberry", "palm","hiptop","avantgo","plucker", "xiino","blazer","elaine", "windows ce; ppc;", "windows ce; smartphone;","windows ce; iemobile", "up.browser","up.link","mmp","symbian","smartphone", "midp","wap","vodafone","o2","pocket","kindle", "mobile","pda","psp","treo"]
+  #MOBILE_BROWSERS = ["android", "ipod", "opera mini", "blackberry", "palm","hiptop","avantgo","plucker", "xiino","blazer","elaine", "windows ce; ppc;", "windows ce; smartphone;","windows ce; iemobile", "up.browser","up.link","mmp","symbian","smartphone", "midp","wap","vodafone","o2","pocket","kindle", "mobile","pda","psp","treo"]
 
-  def detect_browser
-    agent = request.headers["HTTP_USER_AGENT"].downcase
-    MOBILE_BROWSERS.each do |m|
-      return "mobile_application" if agent.match(m)
+  def mobile_device?
+    if session[:mobile_param]
+      session[:mobile_param] == "1"
+    else
+      request.user_agent =~ /Mobile|webOS|android/
     end
-    return "application"
   end
+  helper_method :mobile_device?
 
-  private
+  def prepare_for_mobile
+    session[:mobile_param] = params[:mobile] if params[:mobile]
+    request.format = :mobile if mobile_device?
+  end
+  #def detect_browser
+  #  agent = request.headers["HTTP_USER_AGENT"].downcase
+  #  MOBILE_BROWSERS.each do |m|
+  #    return "mobile_application" if agent.match(m)
+  #  end
+  #  return "application"
+  #end
   
   def authorize
     unless UserDetail.find_by_id(session[:user_id])

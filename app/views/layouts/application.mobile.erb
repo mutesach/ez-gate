@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <meta name="author" content="" />
+    <%= stylesheet_link_tag "main.css" if !mobile_device?%>
+    <%= javascript_include_tag "jquery-1.7.1.min.js" if mobile_device? %>
+    <script type="text/javascript">
+      $(document).bind("mobileinit", function(){
+        $.mobile.ajaxEnabled = false;
+      });
+    </script>
+
+    <%= stylesheet_link_tag "jquery.mobile-1.0.1.min.css" if mobile_device?%>
+    <%= javascript_include_tag "jquery.mobile-1.0.1.min.js" if mobile_device?%>
+
+    <title>ezGate</title>
+  </head>
+
+  <body>
+
+    <div data-role="page">
+      <%= yield %>
+    </div>
+  </body>
+</html>

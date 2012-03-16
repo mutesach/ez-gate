@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120307114352) do
+ActiveRecord::Schema.define(:version => 20120313134207) do
 
   create_table "contacts", :force => true do |t|
     t.integer  "user_id",                  :null => false
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(:version => 20120307114352) do
   end
 
   create_table "inbound_messages", :force => true do |t|
-    t.string   "smsc",           :limit => 30,                         :null => false
+    t.string   "smsc",           :limit => 20,                         :null => false
     t.integer  "user_id",                                              :null => false
     t.integer  "service_id",                                           :null => false
     t.string   "sender",         :limit => 15,                         :null => false
@@ -100,6 +100,17 @@ ActiveRecord::Schema.define(:version => 20120307114352) do
   add_index "outbound_messages", ["sender"], :name => "idx_outbound_messages_sender"
   add_index "outbound_messages", ["service"], :name => "idx_outbound_messages_service"
   add_index "outbound_messages", ["user_id"], :name => "idx_outbound_messages_user_id"
+
+  create_table "ringtone_access_keys", :force => true do |t|
+    t.integer  "ringtone_id",                                                  :null => false
+    t.string   "hashed_key",  :limit => 50,                                    :null => false
+    t.string   "salt",        :limit => 50,                                    :null => false
+    t.datetime "expires_at",                :default => '2012-03-15 12:16:36'
+    t.datetime "used_at"
+    t.boolean  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "ringtones", :force => true do |t|
     t.integer  "user_id",                                       :null => false

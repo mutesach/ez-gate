@@ -1,0 +1,12 @@
+<div data-role="header">
+  <h1>ezGate</h1>
+</div>
+<div data-role="content">
+  <%= form_tag :action => "login" %>
+  username:
+  <%= text_field_tag :username, params[:username], :size => 10 %>
+  password:
+  <%= password_field_tag :password, params[:password], :size => 10 %>
+  <a class="submit"><%= submit_tag "Login" %></a>
+
+</div>

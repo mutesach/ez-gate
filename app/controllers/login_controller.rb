@@ -3,6 +3,7 @@ class LoginController < ApplicationController
   #filter_parameter_logging :username
   #filter_parameter_logging :password
 
+  #layout "login"
   def index
   end
 

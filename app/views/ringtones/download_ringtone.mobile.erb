@@ -1,0 +1,41 @@
+<script language="javascript">
+  function validateDownload() {
+    var pass = document.getElementById('password').value
+    if (pass==null||pass=="") {
+      document.getElementById('password').style.backgroundColor='#FFFFB0';
+      alert('Secret key is required');
+      return false;
+    }
+
+  }
+</script>
+<div data-role="header">
+  <h1>ezGate</h1>
+  <% if flash[:notice] -%>
+    <div id="flash">
+      <div style="margin-bottom:0px;">
+        <%= flash[:notice] %>
+      </div>
+    </div>
+  <% end -%>
+</div>
+<div data-role="content">
+  <%  if @ringtone %>
+    <table>
+      <tr>
+        <th>Ringtone details</h>
+      </tr>
+      <tr><td>Title</td><td><%= @ringtone.song_title %></td></tr>
+      <tr><td>File type</td><td><%= @ringtone.f_extension %></td></tr>
+      <tr><td>File size</td><td><%= @ringtone.f_size %></td></tr>
+    </table>
+    <form action="download_ringtone" method="get" data-ajax="false">
+      <input id="ringtone_id" name="ringtone_id" type="hidden" value="1" />
+      Secret key : <input id="password" name="password" size="6" type="password" />
+      <button type="submit" data-theme="b" name="submit" value="submit-value" onclick="return validateDownload()" onkeypress="return validateDownload()">Submit</button>
+    </form>
+  <%  else %>
+    <%= @message  %>
+  <%  end %>
+
+</div>

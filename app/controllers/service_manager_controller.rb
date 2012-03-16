@@ -96,7 +96,7 @@ class ServiceManagerController < ApplicationController
                       service_params = service_params + "," + @web_service.param8.strip() unless @web_service.param8 == ""
                       service_params = service_params + "," + @web_service.param9.strip() unless @web_service.param9 == ""
                       service_params = service_params + "," + @web_service.param10.strip() unless @web_service.param10 == ""
-                      content = "Invalid parameters. Follow this order : #{service_params}\n"
+                      content = "Invalid parameters\n"
                       req.update_attribute(:service_status, "failed")
                       req.update_attribute(:status_message, content)
                       self.send_sms(req, user_id, params[:sender], short_code, @service, content)
@@ -230,8 +230,8 @@ class ServiceManagerController < ApplicationController
       begin
         url = URI.parse(web_service.web_service_uri)
         http = Net::HTTP.new(url.host, url.port)
-        formatted_params = CGI::escape(service_params)
-        #formatted_params = service_params
+        formatted_params = service_params
+        puts service_params
         puts "*******************************************************************"
         puts "******************* Connecting to web service *********************"
         puts "*******************************************************************"
@@ -283,7 +283,25 @@ class ServiceManagerController < ApplicationController
   end
 
   def get_ringtone
-  	@result = "http://my-ezgate.com/yuejk"
+    if !params[:id].nil?
+      ringtone = Ringtone.where("keyword like '%#{params[:id]}%'").first
+      if !ringtone.nil?
+        if ringtone.status
+          secret_key = RingtoneAccessKey.random_key(4)
+          RingtoneAccessKey.create(:ringtone_id => ringtone.id,
+            :secret_key => secret_key,
+            :expires_at => Time.now() + 86400,
+            :status => true)
+          @result = "Ringtone: #{ringtone.song_title}\nSecret key: #{secret_key}\nhttp://#{EZGATE_HOST}/ringtones?id=#{ringtone.id}"
+        else
+          @result = "Ringtone #{ringtone.song_title} is no longer available"
+        end
+      else
+        @result = "Ringtone not available"
+      end
+    else
+      @result = "Invalid ringtone code"
+    end
     render :layout => false
   end
 end
