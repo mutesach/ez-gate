@@ -23,7 +23,7 @@
       <tr><td>File size</td><td><%= @ringtone.f_size %></td></tr>
     </table>
     <form action="ringtones/download_ringtone" method="get" data-ajax="false">
-      <input id="ringtone_id" name="ringtone_id" type="hidden" value="1" />
+      <input id="ringtone_id" name="ringtone_id" type="hidden" value="<%= @ringtone.id %>" />
       Secret key : <input id="password" name="password" size="6" type="password" />
       <button type="submit" data-theme="b" name="submit" value="submit-value" onclick="return validateDownload()" onkeypress="return validateDownload()">Submit</button>
     </form>
