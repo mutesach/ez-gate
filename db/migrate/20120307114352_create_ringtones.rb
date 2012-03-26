@@ -4,7 +4,7 @@ class CreateRingtones < ActiveRecord::Migration
       t.column :user_id, :integer, :null => false
       t.column :keyword, :string, :limit => 50, :null => false
 			t.column :aliases, :string, :limit => 50
-			t.column :song_title, :string, :limit => 50
+			t.column :song_title, :string, :limit => 100
       t.column :artist_name, :string, :limit => 50
       t.column :f_name, :string, :limit => 50
       t.column :f_extension, :string, :limit => 30

@@ -13,15 +13,25 @@ class RingtonesController < ApplicationController
   end
 
   def download_ringtone
+    @ringtone = Ringtone.find_by_id(params[:ringtone][:id])
+    key = RingtoneAccessKey.find_by_id(params[:access][:expiry])
+    if key.expires_at >= Time.now()
+      send_file("#{@ringtone.f_path}/#{@ringtone.f_name}", :type => "audio/mp3", :disposition => "attachment; filename=#{@ringtone.f_name}")
+    else
+      flash[:notice] = "Votre code secret n'est plus valide"
+    end
+  end
+
+  def check_key
     if !params[:ringtone][:id].nil?
       @ringtone = Ringtone.find_by_id(params[:ringtone][:id])
       if !params[:password].nil?
-        access = RingtoneAccessKey.validate(params[:ringtone][:id], params[:password])
-        if access
-          if access.req_status == "unused"
-            if access.expires_at >= Time.now()
-              #access.update_attribute(:status, false)
-              access.update_attribute(:used_at, Time.now())
+        @access = RingtoneAccessKey.validate(params[:ringtone][:id], params[:password])
+        if @access
+          if @access.req_status == "unused"
+            if @access.expires_at >= Time.now()
+              @access.update_attribute(:req_status, "used")
+              flash[:notice] = "#{@ringtone.song_title}"
             else
               flash[:notice] = "Votre code secret n'est plus valide"
             end
@@ -37,6 +47,5 @@ class RingtonesController < ApplicationController
     else
       flash[:notice] = "Sonnerie invalide"
     end
-    send_file("#{@ringtone.f_path}/#{@ringtone.f_name}", :type => "audio/mp3", :disposition => "attachment; filename=#{@ringtone.f_name}")
   end
 end

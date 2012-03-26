@@ -291,15 +291,15 @@ class ServiceManagerController < ApplicationController
             :key => secret_key,
             :expires_at => Time.now() + 1200,
             :req_status => "unused")
-          @result = "Ringtone: #{ringtone.song_title}\nSecret key: #{secret_key}\nhttp://#{EZGATE_HOST}/ringtones?id=#{ringtone.id}"
+          @result = "Allez sur http://#{EZGATE_PUBLIC_HOST}/ringtones?id=#{ringtone.id} et telecharger votre sonnerie a l'aide du code secret suivant :\n#{secret_key}"
         else
-          @result = "Ringtone #{ringtone.song_title} is no longer available"
+          @result = "La sonnerie <#{ringtone.song_title}> n est plus disponible"
         end
       else
-        @result = "Ringtone not available"
+        @result = "Sonnerie non disponible"
       end
     else
-      @result = "Invalid ringtone code"
+      @result = "Code sonnerie invalid"
     end
     render :layout => false
   end
