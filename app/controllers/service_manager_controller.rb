@@ -210,18 +210,17 @@ class ServiceManagerController < ApplicationController
 		case params[:status]
     when "0" then @status = "Accepted for delivery"
     when "1" then @status = "delivered"
-      OutboundMessage.create(:inbound_id => params[:inbound_id],
-        :user_id => params[:user_id], :service => params[:service],
-        :sender => params[:sender], :destination => params[:dest],
-        :content => params[:content], :status => @status,
-        :status_message => @status)
     when "2" then @status = "failed"
     when "4" then @status = "buffered"
     when "8" then @status = "submitted"
     when "16" then @status = "rejected"
 		end
 		
-
+    OutboundMessage.create(:inbound_id => params[:inbound_id],
+      :user_id => params[:user_id], :service => params[:service],
+      :sender => params[:sender], :destination => params[:dest],
+      :content => params[:content], :status => @status,
+      :status_message => @status)
   end
 
   def web_service_request(request, sender, service_params, web_service)
@@ -289,9 +288,9 @@ class ServiceManagerController < ApplicationController
         if ringtone.status
           secret_key = RingtoneAccessKey.random_key(4)
           RingtoneAccessKey.create(:ringtone_id => ringtone.id,
-            :secret_key => secret_key,
-            :expires_at => Time.now() + 86400,
-            :status => true)
+            :key => secret_key,
+            :expires_at => Time.now() + 1200,
+            :req_status => "unused")
           @result = "Ringtone: #{ringtone.song_title}\nSecret key: #{secret_key}\nhttp://#{EZGATE_HOST}/ringtones?id=#{ringtone.id}"
         else
           @result = "Ringtone #{ringtone.song_title} is no longer available"

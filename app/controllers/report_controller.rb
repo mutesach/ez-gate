@@ -400,8 +400,8 @@ class ReportController < ApplicationController
       end
       csv << [""]
       csv << [""]
-      csv << ["#{inbound.where("service_id=1").group("inbound_messages.smsc").first.smsc} [unknown services]"]
-      csv << ["","Short Code",inbound.where("service_id=1").group("inbound_messages.destination").first.destination]
+      csv << ["#{inbound.where("service_id=1").group("smsc").first} [unknown services]"]
+      csv << ["","Short Code",inbound.where("service_id=1").group("inbound_messages.destination").first]
       csv << ["", "Inbound", inbound.where("service_id=1").count]
     end
 

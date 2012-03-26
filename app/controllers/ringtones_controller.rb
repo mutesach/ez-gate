@@ -3,43 +3,40 @@ class RingtonesController < ApplicationController
     if params[:id]
       @ringtone = Ringtone.find_by_id(params[:id])
       if @ringtone
-        @message = "http://my-ezgate.com/yuejk"
+        @message = @ringtone.keyword
       else
-        @message = "Ringtone not available"
+        @message = "Sonnerie non disponible"
       end
     else
-      @message = "Invalid ringtone code"
+      @message = "Sonnerie invalide"
     end
-    render :layout => false unless mobile_device?
   end
 
   def download_ringtone
-    if !params[:ringtone_id].nil?
-      @ringtone = Ringtone.find_by_id(params[:ringtone_id])
+    if !params[:ringtone][:id].nil?
+      @ringtone = Ringtone.find_by_id(params[:ringtone][:id])
       if !params[:password].nil?
-        #@ringtone = Ringtone.find_by_id(params[:ringtone_id])
-        access = RingtoneAccessKey.validate(params[:ringtone_id], params[:password])
+        access = RingtoneAccessKey.validate(params[:ringtone][:id], params[:password])
         if access
-          if access.status
+          if access.req_status == "unused"
             if access.expires_at >= Time.now()
-              send_file("#{@ringtone.f_path}/#{@ringtone.f_name}", :type => "audio/mpeg", :disposition => "attachment; filename=#{@ringtone.f_name.gsub(" ","-")}")
-              access.update_attribute(:status, false)
+              #access.update_attribute(:status, false)
               access.update_attribute(:used_at, Time.now())
             else
-              flash[:notice] = "The secret key has expired"
+              flash[:notice] = "Votre code secret n'est plus valide"
             end
           else
-            flash[:notice] = "The secret key has already been used"
+            flash[:notice] = "Votre secret n'est plus utilisable"
           end
         else
-          flash[:notice] = "The secret key is invalid"
+          flash[:notice] = "Votre code secret est invalide"
         end
       else
-        flash[:notice] = "The secret key is required"
+        flash[:notice] = "Veuillez saisir votre code secret"
       end
     else
-      flash[:notice] = "Invalid ringtone"
+      flash[:notice] = "Sonnerie invalide"
     end
-    render :layout => false unless mobile_device?
+    send_file("#{@ringtone.f_path}/#{@ringtone.f_name}", :type => "audio/mp3", :disposition => "attachment; filename=#{@ringtone.f_name}")
   end
 end

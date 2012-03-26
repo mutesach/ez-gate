@@ -10,11 +10,22 @@
         $.mobile.ajaxEnabled = false;
       });
     </script>
+    <script language="javascript">
+      function validateDownload() {
+        var pass = document.getElementById('password').value
+        if (pass==null||pass=="") {
+          document.getElementById('password').style.backgroundColor='#FFFFB0';
+          alert('Veuillez saisir votre code secret');
+          return false;
+        }
+
+      }
+    </script>
 
     <%= stylesheet_link_tag "jquery.mobile-1.0.1.min.css" if mobile_device?%>
     <%= javascript_include_tag "jquery.mobile-1.0.1.min" if mobile_device?%>
 
-    <title>ezGate</title>
+    <title>Moov Muzik</title>
   </head>
 
   <body>

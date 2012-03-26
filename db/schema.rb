@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(:version => 20120313134207) do
   end
 
   create_table "inbound_messages", :force => true do |t|
-    t.string   "smsc",           :limit => 20,                         :null => false
+    t.string   "smsc",           :limit => 30,                         :null => false
     t.integer  "user_id",                                              :null => false
     t.integer  "service_id",                                           :null => false
     t.string   "sender",         :limit => 15,                         :null => false
@@ -103,14 +103,16 @@ ActiveRecord::Schema.define(:version => 20120313134207) do
 
   create_table "ringtone_access_keys", :force => true do |t|
     t.integer  "ringtone_id",                                                  :null => false
-    t.string   "hashed_key",  :limit => 50,                                    :null => false
-    t.string   "salt",        :limit => 50,                                    :null => false
-    t.datetime "expires_at",                :default => '2012-03-15 12:16:36'
+    t.string   "key",         :limit => 50,                                    :null => false
+    t.datetime "expires_at",                :default => '2012-03-26 13:41:10'
     t.datetime "used_at"
     t.boolean  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "ringtone_access_keys", ["key"], :name => "idx_ringtone_acess_keys_key"
+  add_index "ringtone_access_keys", ["ringtone_id"], :name => "idx_ringtone_acess_keys_ringtone_id"
 
   create_table "ringtones", :force => true do |t|
     t.integer  "user_id",                                       :null => false

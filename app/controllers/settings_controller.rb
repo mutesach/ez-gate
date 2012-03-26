@@ -230,16 +230,16 @@ class SettingsController < ApplicationController
     if request.post?
       begin
         import_file = params[:ringtone][:f_name].tempfile
-        save_as = File.join(RINGTONES_PATH ,  params[:ringtone][:f_name].original_filename)
+        save_as = File.join(RINGTONES_PATH ,  params[:ringtone][:f_name].original_filename.gsub(" ", "-"))
         File.open(save_as.to_s,'wb' ) do |file|
           file.write( import_file.read )
         end
         extension = File.extname(params[:ringtone][:f_name].original_filename).sub( /^\./, '' ).downcase
         size = File.size(save_as)
 
-        Ringtone.create(:user_id => session[:user_id],
-          :keyword => params[:ringtone][:keyword],
-          :aliases => params[:ringtone][:aliases],
+        ringtone = Ringtone.create(:user_id => session[:user_id],
+          :keyword => 1,
+          :aliases => 1,
           :song_title => params[:ringtone][:song_title],
           :artist_name => params[:ringtone][:artist_name],
           :f_name => params[:ringtone][:f_name].original_filename,
@@ -247,6 +247,8 @@ class SettingsController < ApplicationController
           :f_size => size,
           :f_path => RINGTONES_PATH,
           :status => 0)
+        ringtone.update_attribute(:keyword, ringtone.id)
+        ringtone.update_attribute(:aliases, ringtone.id)
         message = "Ringtone created successfuly"
       rescue Errno::ENOENT => message
       rescue Errno::EACCES => message
@@ -263,9 +265,10 @@ class SettingsController < ApplicationController
 
   def update_ringtone
     @ringtone = Ringtone.find(params[:id])
-	  if @ringtone.update_attributes(params[:short_code])
+    @ringtone.aliases = params[:ringtone][:keyword]
+	  if @ringtone.update_attributes(params[:ringtone])
 	    redirect_to(:action => "index")
-	    flash[:notice] = "Ringtone #{@ringtone.keyword} successfuly updated"
+	    flash[:notice] = "Ringtone #{@ringtone.song_title} successfuly updated"
 	  end
   end
 

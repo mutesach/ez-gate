@@ -185,7 +185,6 @@ EzGate::Application.routes.draw do
     collection do
       get 'index'
       get 'download_ringtone'
-      post 'download_ringtone'
     end
   end
 

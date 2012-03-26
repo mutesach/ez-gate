@@ -1,34 +1,24 @@
-<script language="javascript">
-  function validateDownload() {
-    var pass = document.getElementById('password').value
-    if (pass==null||pass=="") {
-      document.getElementById('password').style.backgroundColor='#FFFFB0';
-      alert('Secret key is required');
-      return false;
-    }
-
-  }
-</script>
 <div data-role="header">
-  <h1>ezGate</h1>
+  <h1>Moov Muzik</h1>
 </div>
 <div data-role="content">
   <%  if @ringtone %>
     <table>
       <tr>
-        <th>Ringtone details</h>
+        <th>Sonnerie</h>
       </tr>
-      <tr><td>Title</td><td><%= @ringtone.song_title %></td></tr>
-      <tr><td>File type</td><td><%= @ringtone.f_extension %></td></tr>
-      <tr><td>File size</td><td><%= @ringtone.f_size %></td></tr>
+      <tr><td>Titre: </td><td><%= @ringtone.song_title %></td></tr>
+      <tr><td>Type de fichier: </td><td><%= @ringtone.f_extension %></td></tr>
+      <tr><td>Taille du fichier: </td><td><%= @ringtone.f_size %></td></tr>
     </table>
-    <form action="ringtones/download_ringtone" method="get" data-ajax="false">
-      <input id="ringtone_id" name="ringtone_id" type="hidden" value="<%= @ringtone.id %>" />
-      Secret key : <input id="password" name="password" size="6" type="password" />
-      <button type="submit" data-theme="b" name="submit" value="submit-value" onclick="return validateDownload()" onkeypress="return validateDownload()">Submit</button>
-    </form>
+    <%= form_tag :action => "download_ringtone" do %>
+      <%= hidden_field "ringtone", "id", :value => @ringtone.id %>
+      <%= password_field_tag :password, params[:password], :size => 10 %>
+      <%= submit_tag 'Télécharger', :name => "", :onclick => "return validateDownload()", :onkeypress => "validateDownload()" %>
+    <% end %>
   <%  else %>
     <%= @message  %>
   <%  end %>
 
 </div>
+
