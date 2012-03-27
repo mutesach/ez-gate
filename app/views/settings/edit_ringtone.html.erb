@@ -25,9 +25,13 @@
         <tbody>
           <tr>
           <tr>
-              <td>Keyword : </td>
-              <td><%= text_field :ringtone, :keyword, :size => 5 %></td>
-            </tr>
+            <td>Keyword : </td>
+            <td><%= text_field :ringtone, :keyword, :size => 5 %></td>
+          </tr>
+          <tr>
+            <td>Aliases : </td>
+            <td><%= text_field :ringtone, :aliases, :size => 20 %></td>
+          </tr>
           <tr>
             <td>Song title : </td>
             <td><%= text_field :ringtone, :song_title, :size => 20 %></td>

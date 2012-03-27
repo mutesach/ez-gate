@@ -90,6 +90,7 @@ EzGate::Application.routes.draw do
       get 'edit_ringtone'
       post 'save_ringtone'
       post 'update_ringtone'
+      get 'delete_ringtone'
       get 'view_ringtones'
     end
   end

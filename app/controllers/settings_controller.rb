@@ -109,7 +109,8 @@ class SettingsController < ApplicationController
 	    end
 	  end
 	  redirect_to(:action => :index)
-  end 
+  end
+
 	
 	def new_web_service
 		@web_service = WebService.new(params[:web_service])
@@ -286,6 +287,20 @@ class SettingsController < ApplicationController
     @ringtone.update_attribute(:status, false)
     redirect_to :action => "index"
     flash[:notice] = "Ringtone #{@ringtone.keyword} disabled"
+  end
+
+  def delete_ringtone
+	  id = params[:id]
+	  if id && ringtone = Ringtone.find_by_id(id)
+	    begin
+        File.delete "#{ringtone.f_path}/#{ringtone.f_name}"
+	      ringtone.delete
+	      flash[:notice] = "Ringtone #{ringtone.song_title} deleted"
+	    rescue Exception => e
+	      flash[:notice] = "Cannot delete #{ringtone.song_title} : it is currently beeing used by one your users!!"
+	    end
+	  end
+	  redirect_to(:action => :index)
   end
 
   def view_ringtones

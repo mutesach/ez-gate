@@ -26,6 +26,8 @@
               <td><%= link_to "[Enable]",:action => "activate_ringtone", :id => i.id %></td>
             <% end %>
             <td><%= link_to "[Edit]", :action => "edit_ringtone", :id => i.id %></td>
+            <td><%= link_to "[Delete]", :action => "delete_ringtone", :id => i.id, :method => :delete, :confirm => "You sure?",
+                            :title => "Delete #{i.song_title}" %></td>
           </tr>
         <% end %>
       <% end %>

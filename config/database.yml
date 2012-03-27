@@ -35,8 +35,8 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: ez-gate_development
+  database: ez_gate_production
   pool: 5
   username: root
-  password: "123"
+  password: "ez@mysql2012*"
   socket: /var/run/mysqld/mysqld.sock
