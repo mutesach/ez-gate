@@ -55,7 +55,7 @@ class MessagesController < ApplicationController
       conditions = "service_id in(#{sel})" unless @user_mod.nil?
       conditions = "id in('')" unless sel != nil
 		end
-		@inbound_messages = InboundMessage.where(conditions)
+		@inbound_messages = InboundMessage.where(conditions).order("created_at DESC")
 		@result = InboundMessage.where(conditions).count
 	end
 	

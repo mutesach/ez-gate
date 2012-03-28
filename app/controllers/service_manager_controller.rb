@@ -289,7 +289,7 @@ class ServiceManagerController < ApplicationController
           secret_key = RingtoneAccessKey.random_key(4)
           RingtoneAccessKey.create(:ringtone_id => ringtone.id,
             :key => secret_key,
-            :expires_at => Time.now() + 1200,
+            :expires_at => Time.now() + 120,
             :req_status => "unused")
           @result = "Allez sur http://#{EZGATE_PUBLIC_HOST}/ringtones?id=#{ringtone.id} et telecharger votre sonnerie a l'aide du code secret suivant :\n#{secret_key}"
         else

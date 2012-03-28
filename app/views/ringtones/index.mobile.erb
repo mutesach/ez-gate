@@ -14,7 +14,7 @@
     <%= form_tag({:action => "check_key"}, {:method => "post", :remote => true, :"data-ajax" => true}) do %>
       <%= hidden_field "ringtone", "id", :value => @ringtone.id %>
       <%= password_field_tag :password, params[:password], :size => 10 %>
-      <%= submit_tag "Verifier code secret", :"data-theme" => "b", :name => "" %>
+      <%= submit_tag "Valider code secret", :"data-theme" => "b", :name => "" %>
     <% end %>
   <%  else %>
     <%= @message  %>

@@ -9,7 +9,7 @@
   <% end -%>
 </div>
 <div data-role="content">
-  <%  if @access %>
+  <%  if !@access.nil? and @access.expires_at >= Time.now() %>
     <table>
       <tr>
         <th>Sonnerie</th>

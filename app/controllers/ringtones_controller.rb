@@ -31,7 +31,7 @@ class RingtonesController < ApplicationController
           if @access.req_status == "unused"
             if @access.expires_at >= Time.now()
               @access.update_attribute(:req_status, "used")
-              flash[:notice] = "#{@ringtone.song_title}"
+              flash[:notice] = "Code secret valid, clickez sur Telecharger"
             else
               flash[:notice] = "Votre code secret n'est plus valide"
             end
