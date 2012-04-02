@@ -68,6 +68,18 @@
             document.getElementById("group_p").style.display = "";
           }
         }
+
+        function checkPhone(str)
+        {
+          var phone2 = /^(\+24381|24381|\+24382|24382|081|082)\d{7}$/;
+          if (str.value.match(phone2)) {
+            return true;
+          } else {
+            str.style.backgroundColor='#FFFFB0';
+            str.style.borderColor='#666666';
+            return false;
+          }
+        }
       </script>
 
 
@@ -92,7 +104,7 @@
             <ul>
               <li><a href="/messages">Messages</a></li>
               <li><a href="/contacts">Contacts/Groups</a></li>
-              <% if session[:user_type] != "Bulk-push" or session[:user_type] != "Moderator" %>
+              <% if ["SA","Administrator","Service-Aggregator"].include?(session[:user_type]) %>
                 <li><a href="/services">Services</a></li>
               <% end %>
               <% if session[:user_type] != "Moderator" %>

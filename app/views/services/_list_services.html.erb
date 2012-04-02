@@ -54,18 +54,18 @@
             <% end %>
 
             <td><%= link_to "[View]", {:controller => "services", :action => "disp_service",
-                :id => i.id}, :method => :get, 'data-popup' => true %></td>
+                :id => i.id}, :method => :get, 'data-popup' => true unless !["Administrator", "SA"].include?(session[:user_type])%></td>
 
             <td><%= link_to "[Edit]",:controller => "services",
                 :action => "edit_service",
-                :id => i.id unless i.id == 1%></td>
+                :id => i.id unless i.id == 1 or !["Administrator", "SA"].include?(session[:user_type])%></td>
             <% if i.status != true %>
               <td><%= link_to "[Enable]",
                   :controller => "services", :action => "enable_service",
                   :id => i.id unless i.id == 1 or session[:user_type] == "User"%></td>
             <% else %>
               <td><%= link_to "[Disable]",:controller => "services", :action => "disable_service",
-                  :id => i.id unless i.id == 1 or session[:user_type] == "User"%> </td>
+                  :id => i.id unless i.id == 1 or !["Administrator", "SA"].include?(session[:user_type])%> </td>
             <% end %>
           </tr>
         <% end %>
@@ -109,6 +109,11 @@
             <td id="remove_service_mod"><%= link_to "[Delete]",
                 {:action => 'delete_mod_user', :id => i.id}, {:post => true,
                 :confirm => "Delete user #{i.username}?"
+              }%></td>
+
+            <td id="remove_service_mod"><%= link_to "[Reset password]",
+                {:action => 'reset_mod_password', :id => i.id}, {:post => true,
+                :confirm => "Reset password for user #{i.username}?"
               }%></td>
           </tr>
         <% end %>

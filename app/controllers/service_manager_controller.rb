@@ -4,6 +4,11 @@ class ServiceManagerController < ApplicationController
   	t1 = Thread.new() {
 	  	if request.env["HTTP_USER_AGENT"] == "Kannel/1.4.3"
         if params[:smsc] != nil or params[:content] != nil or params[:sender] != nil or params[:keyword] != nil
+          if params[:content].split(/ /).length() == 1 and params[:content].downcase.gsub(" ","").slice(0,1) == "m"
+            params[:keyword] = "m"
+            params[:content] = "m #{params[:content].slice(1,params[:content].length())}"
+          end
+
           @service  = Service.find(:first, :conditions => "keyword = '#{params[:keyword]}' or aliases like '%#{params[:keyword]}%'",
             :joins => "left join short_codes on short_codes.code='#{params[:destination]}'",
             :select => "services.id as service_id, services.user_id, services.status, services.content_type, services.reply, services.reply_content, services.web_service_id,services.user_short_code_id, services.name, services.keyword, services.aliases, short_codes.id, short_codes.code, short_codes.smsc")

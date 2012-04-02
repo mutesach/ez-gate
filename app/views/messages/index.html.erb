@@ -20,5 +20,5 @@
   <% if session[:user_type] != "Bulk-push"%>
     <%= link_to ">> Inbound", inbound_messages_path %><br/><br/>
   <% end %>
-  <%= link_to ">> Outbound", outbound_messages_path unless session[:user_type] == "Moderator"%>&nbsp;&nbsp;
+  <%= link_to ">> Outbound", outbound_messages_path %>&nbsp;&nbsp;
 </div>

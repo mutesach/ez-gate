@@ -155,7 +155,6 @@ class SettingsController < ApplicationController
 	end	
 	
 	def deactivate_short_code
-					
     @short_code = ShortCode.find(params[:id])
     @short_code.update_attribute(:status, false)
     @short_codes = ShortCode.order('created_at DESC')
@@ -167,32 +166,25 @@ class SettingsController < ApplicationController
 	def resume_kannel
 		url = URI.parse('http://127.0.0.1:13000')
 	  @http = Net::HTTP.new(url.host, url.port)
-	  sms_gateway_response = @http.request_get("/resume?password=pivot10")
+	  sms_gateway_response = @http.request_get("/resume?password=ez@kannel*")
 		redirect_to :action => "index"
 	end
 	
 	def isolate_kannel
 		url = URI.parse('http://127.0.0.1:13000')
 	  @http = Net::HTTP.new(url.host, url.port)
-	  sms_gateway_response = @http.request_get("/isolate?password=pivot10")
+	  sms_gateway_response = @http.request_get("/isolate?password=ez@kannel*")
 		redirect_to :action => "index"
 	end
 	
 	def restart_kannel
 		url = URI.parse('http://127.0.0.1:13000')
 	  @http = Net::HTTP.new(url.host, url.port)
-	  sms_gateway_response = @http.request_get("/restart?password=pivot10")
+	  sms_gateway_response = @http.request_get("/restart?password=ez@kannel*")
 	  system "sleep 5"
 		redirect_to :action => "index"
 	end
 	
-	def start_kannel
-    Net::SSH.start("10.121.30.5", "pivot", :password => "guka9sym") do |ssh|
-      ssh.exec! "/etc/init.d/kannel start"
-    end
-    redirect_to :action => "index"
-  end
-
   def update_kannel_conf
     if params[:button_update] == "Update"
       File.open("#{RAILS_ROOT}/config/kannel.conf", 'w') {|f| f.write(params[:kannel][:kannel_conf]) }
@@ -203,29 +195,6 @@ class SettingsController < ApplicationController
       redirect_to :action => "index"
     end
   end
-
-  def upload_file(file)
-    local_file = file
-    remote_file = '/etc/kannel.conf'
-    res = ""
-    puts 'Connecting to remote server'
-    begin
-      Net::SFTP.start('10.121.30.5', 'pivot', :password => 'guka9sym') do |sftp|
-        # upload a file or directory to the remote host
-        begin
-          puts "Uploading file to #{remote_file}"
-          sftp.upload!(local_file, remote_file)
-          res = "Configuration file updated successfully!"
-        rescue Net::SFTP::StatusException => e
-          raise unless e.code == 2
-          res = e
-        end
-      end
-    rescue Errno::ENETUNREACH => f
-	    res = f
-    end
-    res
-	end
 
   def new_ringtone
     if request.post?

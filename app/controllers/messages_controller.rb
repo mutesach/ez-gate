@@ -4,7 +4,7 @@ require 'iconv'
 require 'rexml/document'
 class MessagesController < ApplicationController
 	before_filter :authorize
-	before_filter :role_moderator, :except => ["index","inbound","update_inbound",
+	before_filter :role_moderator, :except => ["index","inbound","outbound","update_inbound",
     "search_by_service","search_by_content","search_by_destination","search_by_date",
     "search_by_sender", "convert_date", "filter_by", "view_inbound_message",
     "disp_inbound_message"]
@@ -27,8 +27,8 @@ class MessagesController < ApplicationController
 			 	sel = sel + "'" + i.service_id.to_s + "'" + ","
       end
       sel = sel.slice(0, sel.length()-1)
-      conditions = "id in('#{sel}')" unless @user_mod.nil?
-      conditions = "id in('')" unless sel != nil
+      conditions = "id in(#{sel})" unless @user_mod.nil?
+      conditions = "id in()" unless sel != nil
       puts sel
 		end
 		@service =  Service.find(:all, :conditions => conditions)
@@ -120,13 +120,13 @@ class MessagesController < ApplicationController
       sel = ''
       conditions = ''
       @user_mod.each do |i|
-        keyword = Service.where("id=#{i.service_id}").select("keyword")
+        keyword = Service.find_by_id(i.service_id)
         sel = sel + "'" + keyword.keyword + "'" + ","
       end
       sel = sel.slice(0, sel.length()-1)
-      conditions = "service in(#{sel}) or service='push'" unless @user_mod.nil?
+      conditions = "service in(#{sel})" unless @user_mod.nil?
 		end
-		@outbound_messages = OutboundMessage.where(conditions)
+		@outbound_messages = OutboundMessage.where(conditions).order("created_at DESC")
 		@result = OutboundMessage.where(conditions).count
 	end
 	

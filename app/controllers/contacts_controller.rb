@@ -1,7 +1,7 @@
 require 'csv'
 class ContactsController < ApplicationController
 	before_filter :authorize
-	before_filter :role_moderator
+	before_filter :role_moderator, :except => [:index,:send_sms,:view_directory,:search_directory]
 	include REXML
   
 	def index

@@ -10,20 +10,22 @@
     <%= image_tag("spinner.gif",:align => "absmiddle",
       :border => 0,:id => "spinner",
       :style =>"display: none;" ) %></h2>
-  <%= link_to ">> New contact", :action => "new_contact" %><br/><br/>
-  <%= link_to ">> New group", :action => "new_group" %><br/><br/>
-  <%= link_to ">> New directory", :action => "new_directory" %><br/><br/>
+  <%if session[:user_type] != "Moderator"%>
+      <%= link_to ">> New contact", :action => "new_contact" unless session[:user_type] == "Moderator"%><br/><br/>
+    <%= link_to ">> New group", :action => "new_group" unless session[:user_type] == "Moderator"%><br/><br/>
+    <%= link_to ">> New directory", :action => "new_directory" unless session[:user_type] == "Moderator"%><br/><br/>
 
-  <% form_for :dump, :url=>{ :controller=>"contacts", :action=>"csv_import"}, :html => {:onSubmit => "return validateImport()", :multipart => true } do |f| -%>
-    <a>>> Import your contacts from CSV File :</a>
-    <%= f.file_field :file -%>
+    <% form_for :dump, :url=>{ :controller=>"contacts", :action=>"csv_import"}, :html => {:onSubmit => "return validateImport()", :multipart => true } do |f| -%>
+      <a>>> Import your contacts from CSV File :</a>
+      <%= f.file_field :file -%>
 
-    <%= f.collection_select 'grp_id', Group.find(:all, :conditions => "user_id='#{session[:user_id]}'"), :id, :name, :prompt => "Select" %>
+      <%= f.collection_select 'grp_id', Group.find(:all, :conditions => "user_id='#{session[:user_id]}'"), :id, :name, :prompt => "Select" %>
 
-    <%= submit_tag 'Import' %>
+      <%= submit_tag 'Import' %>
 
-  <% end -%>
-  <br/>
+    <% end -%>
+    <br/>
+  <% end %>
   <div id="update">
     <%= render :partial => "contacts"%>
   </div>

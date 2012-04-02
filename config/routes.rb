@@ -150,6 +150,7 @@ EzGate::Application.routes.draw do
       post 'update_service_mod'
       get 'activate_user_mod'
       get 'deactivate_user_mod'
+      get 'reset_mod_password'
       get 'edit_service'
       post 'update_service'
       get 'enable_service'

@@ -1,7 +1,7 @@
 class ServicesController < ApplicationController
 	before_filter :authorize
 	before_filter :role_authorize, :except => [:index,:list,:new_user_mod,:delete_mod_user,:add_service_mod,:remove_service_mod,
-    :delete_user_service_mod, :update_service_mod, :activate_user_mod, :deactivate_user_mod]
+    :delete_user_service_mod, :reset_mod_password, :update_service_mod, :activate_user_mod, :deactivate_user_mod]
 	before_filter :role_moderator
 	def index
     case session[:user_type]
@@ -180,6 +180,13 @@ class ServicesController < ApplicationController
     redirect_to :action => "list"
   end
 
+  def reset_mod_password
+    @user = UserDetail.find_by_id(params[:id])
+    new_password = UserDetail.random_password(6)
+    @user.update_attribute(:password, new_password)
+    flash[:notice] = "Password reset successfuly for user #{@user.username} : #{new_password}"
+    redirect_to :action => "list"
+  end
 
   def edit_service
     @service = Service.find(:first, :conditions => "id = '#{params[:id]}'")

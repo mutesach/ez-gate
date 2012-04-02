@@ -23,6 +23,11 @@ class UserDetail < ActiveRecord::Base
     user
   end
 
+  def self.random_password(size)
+    num = (('0'..'9').to_a)
+    (1..size).collect{|a| num[rand(num.size)] }.join
+  end
+
   # virtual attribute
   def password
     @password
