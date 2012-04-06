@@ -191,6 +191,15 @@ EzGate::Application.routes.draw do
     end
   end
 
+  resources :home do
+    collection do
+      get 'index'
+      get 'apps'
+      get 'games'
+      get 'ringtones'
+    end
+  end
+
   # Sample resource route with sub-resources:
   #   resources :products do
   #     resources :comments, :sales
@@ -216,7 +225,7 @@ EzGate::Application.routes.draw do
   # just remember to delete public/index.html.
 
 
-  root :to =>  'login#login'
+  root :to =>  'home#index'
 
   # See how all your routes lay out with "rake routes"
 

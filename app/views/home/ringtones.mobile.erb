@@ -1,0 +1,11 @@
+<div data-role="header">
+  <h1>Ringtones</h1>
+  <a href="/home" data-role="button" data-icon="home">Home</a>
+</div>
+<div data-role="content">
+  <ul data-role="listview"  data-theme="c" data-dividertheme="d">
+    <% @ringtones.each do |item| %>
+      <li><a href="/ringtones?id=<%= item.id%>"><%= item.song_title %></a></li>
+    <% end  %>
+  </ul>
+</div>

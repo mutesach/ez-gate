@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   EZGATE_HOST = "localhost"
-  EZGATE_PUBLIC_HOST = "216.224.185.186"
+  EZGATE_PUBLIC_HOST = "www.my-ezgate.com"
   KANNEL_HOST = "localhost"
   KANNEL_SENDER_USERNAME = "ezgate"
   KANNEL_SENDER_PASSWORD = "ezgate"
@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   KANNEL_SEND_SMS_PORT = "4042"
   KANNEL_ADMIN_PORT = "4040"
   KANNEL_ADMIN_PASSWORD = "ez@kannel*"
-  RINGTONES_PATH = "#{Rails.root}/public/ringtones"
+  RINGTONES_PATH = "/home/ezgate/ringtones"
 
   protect_from_forgery
 
@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
     if session[:mobile_param]
       session[:mobile_param] == "1"
     else
-      request.user_agent =~ /Mobile|webOS|android/
+      request.user_agent.downcase =~ /mobile|webos|android/
       #request.user_agent.downcase =~ /Mobile|android|ipod|opera mini|blackberry|palm|hiptop|avantgo|plucker|xiino|blazer|elaine|windows ce; ppc;|windows ce; smartphone;|windows ce; iemobile|up.browser|up.link|mmp|symbian|smartphone|midp|wap|vodafone|o2|pocket|kindle|mobile|pda|psp|treo/
     end
   end
