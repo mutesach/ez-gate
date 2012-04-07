@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   EZGATE_HOST = "localhost"
-  EZGATE_PUBLIC_HOST = "www.my-ezgate.com"
+  EZGATE_PUBLIC_HOST = "www.vodafun.net"
   KANNEL_HOST = "localhost"
   KANNEL_SENDER_USERNAME = "ezgate"
   KANNEL_SENDER_PASSWORD = "ezgate"

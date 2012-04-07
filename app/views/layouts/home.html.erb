@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <meta name="author" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <%= stylesheet_link_tag "1140.css" %>
+    <%= stylesheet_link_tag "styles.css" %>
+    <%= javascript_include_tag "css3-mediaqueries.js" %>
+
+    <style type="text/css">
+
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      .container p {
+        color: #fff;
+        line-height: 100px;
+        background: #000;
+        text-align: center;
+        margin: 20px 0 0 0;
+      }
+
+    </style>
+
+    <title>Vodafun</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="fourcol">
+        </div>
+        <div class="fourcol">
+          <% if flash[:notice] -%>
+            <div id="flash">
+              <div style="margin-bottom:0px;">
+                <%= flash[:notice] %>
+              </div>
+            </div>
+          <% end -%>
+        </div>
+        <div class="fourcol last">
+        </div>
+      </div>
+    </div>
+
+    <%= yield  %>
+  </body>
+</html>

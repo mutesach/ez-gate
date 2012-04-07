@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <div class="elevencol">
+      <h1>Moov Muzik</h1>
+    </div>
+    <div class="onecol last">
+      <a href="/home" data-role="button" data-icon="home">Accueil</a>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <div class="row">
+    <div class="eightcol">
+      <%  if @ringtone %>
+        <table>
+          <tr>
+            <th>Sonnerie</th>
+          </tr>
+          <tr><td>Titre: </td><td><%= @ringtone.song_title %></td></tr>
+          <tr><td>Type de fichier: </td><td><%= @ringtone.f_extension %></td></tr>
+          <tr><td>Taille du fichier: </td><td><%= @ringtone.f_size %></td></tr>
+        </table>
+        <%= form_tag({:action => "check_key"}, {:method => "post", :remote => true, :"data-ajax" => true}) do %>
+          <%= hidden_field "ringtone", "id", :value => @ringtone.id %>
+          <%= text_field_tag :password, params[:password], :size => 10 %>
+          <%= submit_tag "Valider code secret", :"data-theme" => "b", :name => "" %>
+        <% end %>
+      <%  else %>
+        <%= @message  %>
+      <%  end %>
+
+    </div>
+  </div>
+</div>

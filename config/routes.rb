@@ -183,20 +183,15 @@ EzGate::Application.routes.draw do
     end
   end
 
-  resources :ringtones do
-    collection do
-      get 'index'
-      get 'download_ringtone'
-      post 'check_key'
-    end
-  end
-
   resources :home do
     collection do
       get 'index'
       get 'apps'
       get 'games'
+      get 'ringtone'
       get 'ringtones'
+      get 'download_ringtone'
+      post 'check_key'
     end
   end
 
