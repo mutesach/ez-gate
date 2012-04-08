@@ -4,10 +4,11 @@
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
     <meta name="author" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <!--
     <%= stylesheet_link_tag "1140.css" %>
     <%= stylesheet_link_tag "styles.css" %>
     <%= javascript_include_tag "css3-mediaqueries.js" %>
+    -->
 
     <style type="text/css">
 
@@ -22,6 +23,16 @@
         text-align: center;
         margin: 20px 0 0 0;
       }
+      .fade{color:#008c00;}
+
+      h1{
+        font-size:4.2em;
+        letter-spacing:-5px;
+        margin:0 0 30px 25px;
+        color:#110cb0;
+      }
+
+      h1 a{text-transform:none; color:#4088b8;}
 
     </style>
 
@@ -48,5 +59,23 @@
     </div>
 
     <%= yield  %>
+    <div class="container">
+      <div class="row">
+        <div class="onecol">
+          <div data-role="content">
+            <table>
+              <tr>
+                <td>
+                  <%= image_tag("smpro.png", :border => 0,:height => "30%", :width => "30%") %>
+                </td>
+                <td>
+                  <%= image_tag("vodacom.png", :border => 0,:height => "30%", :width => "30%") %>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div> 
   </body>
 </html>
