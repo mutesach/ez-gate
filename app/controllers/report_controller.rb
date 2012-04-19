@@ -51,7 +51,7 @@ class ReportController < ApplicationController
   		month_f = "all"
   	else
   		month1 = "month(outbound_messages.created_at) = '#{params[:outbound][:rep_month]}'"
-  		month_f = inboundMessage::MONTHS[params[:outbound][:rep_month].to_i - 1][0]
+  		month_f = InboundMessage::MONTHS[params[:outbound][:rep_month].to_i - 1][0]
   		if condition1 != ""
   			condition1 = condition1 + " and " + month1
   		else
@@ -77,7 +77,7 @@ class ReportController < ApplicationController
   		condition1 = condition1
   		operator_f = "all"
   	else
-  		operator = "inbound_messages.smsc = '#{params[:outbound][:rep_operator]}'"
+  		operator = "outbound_messages.smsc = '#{params[:outbound][:rep_operator]}'"
   		operator_f = params[:outbound][:rep_operator]
   		condition2 = condition2 + " and " + operator
   		if condition1 != ""
@@ -164,7 +164,7 @@ class ReportController < ApplicationController
   		service = ""
   		service_f = "all"
   	else
-  		service = "service_id = '#{params[:inbound][:rep_service]}'"
+  		service = "inbound_messages.service_id = '#{params[:inbound][:rep_service]}'"
   		service_a = Service.find(:first, :conditions => "id = '#{params[:inbound][:rep_service]}'")
   		service_f = service_a.name  		
   		if condition1 != ""
@@ -194,7 +194,7 @@ class ReportController < ApplicationController
   		month_f = "all"
   	else
   		month1 = "month(inbound_messages.created_at) = '#{params[:inbound][:rep_month]}'"
-  		month_f = inboundMessage::MONTHS[params[:inbound][:rep_month].to_i - 1][0]
+  		month_f = InboundMessage::MONTHS[params[:inbound][:rep_month].to_i - 1][0]
   		if condition1 != ""
   			condition1 = condition1 + " and " + month1
   		else
@@ -228,7 +228,7 @@ class ReportController < ApplicationController
         operator = "inbound_messages.smsc = '#{params[:inbound][:rep_operator]}'"
         operator_f = params[:inbound][:rep_operator]
 
-        service = "inbound_messages.service = '#{params[:inbound][:rep_service]}'"
+        service = "inbound_messages.service_id = '#{params[:inbound][:rep_service]}'"
         service_f = params[:inbound][:rep_service]
         condition2 = condition2 + " and " + service
         if condition1 != ""

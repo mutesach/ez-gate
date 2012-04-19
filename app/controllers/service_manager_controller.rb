@@ -56,6 +56,7 @@ class ServiceManagerController < ApplicationController
               when "Dynamic" then
                 @web_service = WebService.find(:first,
 			      			:conditions => "id = '#{@service.web_service_id}'")
+                def_params = "origin=#{CGI::escape(params[:sender])}&destination=#{CGI::escape(params[:destination])}&message=#{CGI::escape(params[:content])}&service=#{CGI::escape(@service.service_id.to_s)}"
                 user_id = @service.user_id
                 service = @service.keyword
                 if @web_service != nil
@@ -87,8 +88,13 @@ class ServiceManagerController < ApplicationController
                       service_params = service_params + "&" + @web_service.param8.strip() + "=" + CGI::escape(sent_params[8]) unless @web_service.param8 == ""
                       service_params = service_params + "&" + @web_service.param9.strip() + "=" + CGI::escape(sent_params[9]) unless @web_service.param9 == ""
                       service_params = service_params + "&" + @web_service.param10.strip() + "=" + CGI::escape(sent_params[10]) unless @web_service.param10 == ""
+                      if service_params == ""
+                        service_params = def_params
+                      else
+                        service_params = service_params + "&" + def_params
+                      end
                       content = self.web_service_request(req, params[:sender], service_params, @web_service)
-                      self.send_sms(req, user_id, params[:sender], short_code, @service, content)
+                      self.send_sms(req, user_id, params[:sender], short_code, @service, content) unless !@service.reply
                     else
                       service_params = ""
                       service_params = service_params + @web_service.param1.strip() unless @web_service.param1 == ""
@@ -104,7 +110,7 @@ class ServiceManagerController < ApplicationController
                       content = "Invalid parameters\n"
                       req.update_attribute(:service_status, "failed")
                       req.update_attribute(:status_message, content)
-                      self.send_sms(req, user_id, params[:sender], short_code, @service, content)
+                      self.send_sms(req, user_id, params[:sender], short_code, @service, content) unless !@service.reply
                     end
                   else
                     service_params = ""
@@ -118,8 +124,13 @@ class ServiceManagerController < ApplicationController
                     service_params = service_params + "&" + @web_service.param8.strip() unless @web_service.param8 == ""
                     service_params = service_params + "&" + @web_service.param9.strip() unless @web_service.param9 == ""
                     service_params = service_params + "&" + @web_service.param10.strip() unless @web_service.param10 == ""
+                    if service_params == ""
+                      service_params = def_params
+                    else
+                      service_params = service_params + "&" + def_params
+                    end
                     content = self.web_service_request(req, params[:sender], service_params, @web_service)
-                    self.send_sms(req, user_id, params[:sender], short_code, @service, content)
+                    self.send_sms(req, user_id, params[:sender], short_code, @service, content) unless !@service.reply
                   end
                 else
                   content = "Service not available for the moment. Contact service provider.\n"
@@ -152,6 +163,10 @@ class ServiceManagerController < ApplicationController
               :service_status => "failed",
               :status_message => "service not available",
               :created_at => Time.now())
+            content = "Veuillez respecter le format suivant : KN John Doe 29ans Vendeur...\nLe premier mot identifiant la province, suivi de votre nom,age,profession et autre. Merci"
+            if params[:destination] == "44800"
+              self.send_sms(req, 1, params[:sender], short_code, Service.find(1), content)
+            end 
 		      	
 						@result = "Unknown service | content : #{params[:content]}"
 					end
@@ -296,7 +311,7 @@ class ServiceManagerController < ApplicationController
             :key => secret_key,
             :expires_at => Time.now() + 120,
             :req_status => "unused")
-          @result = "Allez sur http://#{EZGATE_PUBLIC_HOST}/ringtones?id=#{ringtone.id} et telecharger votre sonnerie a l'aide du code secret suivant :\n#{secret_key}"
+          @result = "Allez sur http://#{EZGATE_PUBLIC_HOST}/home/ringtone?id=#{ringtone.id} et telecharger votre sonnerie a l'aide du code secret suivant :\n#{secret_key}"
         else
           @result = "La sonnerie <#{ringtone.song_title}> n est plus disponible"
         end
@@ -305,6 +320,25 @@ class ServiceManagerController < ApplicationController
       end
     else
       @result = "Code sonnerie invalid"
+    end
+    render :layout => false
+  end
+
+  def testing
+
+  end
+
+  def get_unique_identifier
+    exists = InboundMessage.where("replace(sender,'+','') = '#{params[:origin].gsub('+','')}' and service_id = #{params[:service]} and service_status='success'").first
+    if exists.nil?
+      counter = InboundMessage.where("service_id = #{params[:service]} and service_status = 'success'").count()
+      uid = "RF_".concat("#{counter}/".rjust(9,'0')).concat(Time.now.strftime('%d%m%Y').to_s)
+      name = "#{params[:message].split(/ /)[1]} #{params[:message].split(/ /)[2]}"
+      @result = "Felicitation, PRO-YEN garantit votre insertion professionnelle dans le circuit traditionnel et autre.\nNumero d'identification: #{uid}"
+    else
+      message = OutboundMessage.find_by_inbound_id(exists.id)
+      uid = message.content.slice(message.content.strip().length()-21, 20)
+      @result = "Votre insertion profiessionnelle dans le cuircuit traditionnel et autre a deja ete effectuee.\nNumero d'identification: #{uid}"
     end
     render :layout => false
   end

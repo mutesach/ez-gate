@@ -180,6 +180,8 @@ EzGate::Application.routes.draw do
       get 'record_push'
       get 'service_test'
       get 'get_ringtone'
+      get 'testing'
+      get 'get_unique_identifier'
     end
   end
 

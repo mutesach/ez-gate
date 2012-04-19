@@ -41,13 +41,10 @@
               <td class="tgate"><%=h i.service.name %></td>
             <% end %>
             <td class="tgate"><%=h i.sender %></td>
-
-            <td class="tgate"><%=h i.content %></td>
-
-            <td class="tgate"><%=h i.content.slice(0,20) %><%= "..." unless i.content.length() < 20%></td>
-
-
-
+            <td class="tgate">
+              <%=h "#{i.content.slice(0,50)}..." unless i.content.nil? or i.content.length() <= 30  %>
+              <%=h "#{i.content}" unless i.content.nil? or i.content.length() > 30  %>
+            </td>
             <% case i.service_status when "success" then %>
               <td class="tgate" bgcolor = "#c3ea78">
                 <%=h i.service_status.strip() %></td>
@@ -61,9 +58,6 @@
 
             <td class="tgate">
               <%=h i.created_at.strftime("%Y-%m-%d %l:%M:%S %p") %></td>
-
-
-
             <td><%= link_to "[View]", view_inbound_message_messages_path(:id => i.id), :method => :get, 'data-popup' => true %></td>
             <td><%= link_to "[Reply]",:update => 'send_sms',
                 :url => {:controller => "messages", :action => "reply_message_box",

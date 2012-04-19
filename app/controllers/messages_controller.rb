@@ -289,23 +289,26 @@ class MessagesController < ApplicationController
   
   def send_message
     destination = ShortCode.find(params[:message][:dest])
-
-
     stock = User.find(session[:user_id])
     if stock.sms_stock > 0 or stock.sms_limit == false
-      result = self.send_sms(params[:message][:content], params[:message][:phone_single], destination)
-      if !["400","503","403"].include?(result[0])
-        stock.update_attribute(:sms_stock, stock.sms_stock - 1) unless stock.sms_limit == false
-        message = "1 Message(s) sent to #{params[:message][:phone_single]} @ #{Time.now.strftime("%H:%M:%S %Y-%m-%d")}"
+      if params[:message][:phone_single].match(/^(\+24381|24381|\+24382|24382|081|082)\d{7}$/)
+        if params[:message][:content].length() > 160
+          result = self.send_sms(params[:message][:content], params[:message][:phone_single], destination)
+          if !["400","503","403"].include?(result[0])
+            stock.update_attribute(:sms_stock, stock.sms_stock - 1) unless stock.sms_limit == false
+            message = "1 Message(s) sent to #{params[:message][:phone_single]} @ #{Time.now.strftime("%H:%M:%S %Y-%m-%d")}"
+          else
+            message = result[1]
+          end
+        else
+          message = "Message content should not exceed 160 characters"
+        end
       else
-        message = result[1]
+        message = "Invalid MSISDN"
       end
-         
     else
       message = "Unable to send message(s), stock : #{stock.sms_stock} (sms)"
-    end
-
-    
+    end   
     redirect_to :action => "new_message"
     flash[:notice] = message
 

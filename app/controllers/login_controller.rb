@@ -43,7 +43,7 @@ class LoginController < ApplicationController
   def logout
     reset_session
     flash[:notice] = "Logged out"
-    redirect_to root_url
+    redirect_to :action => "login"
   end
 
 end

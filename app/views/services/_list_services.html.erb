@@ -3,15 +3,15 @@
     :border => 0,:id => "spinner",
     :style =>"display: none;" ) %></h2>
 <p />
-  <%= link_to "New service", :action => "new_service" unless !["SA","Administrator"].include?(session[:user_type])%>
-  <% if @services.nil? %>
-    <% if session[:user_type] != "SA" or session[:user_type] != "Administrator" %>
-      <% conditions = "user_id = '#{session[:user_id]}' and id != 1" %>
-    <% else	 %>
-      <% conditions = "id != 1" %>
-    <% end %>
-    <%  @services = Service.find(:all, :conditions => conditions, :order => 'created_at DESC') %>
+<%= link_to "New service", :action => "new_service" unless !["SA","Administrator"].include?(session[:user_type])%>
+<% if @services.nil? %>
+  <% if session[:user_type] != "SA" or session[:user_type] != "Administrator" %>
+    <% conditions = "user_id = '#{session[:user_id]}' and id != 1" %>
+  <% else	 %>
+    <% conditions = "id != 1" %>
   <% end %>
+  <%  @services = Service.find(:all, :conditions => conditions, :order => 'created_at DESC') %>
+<% end %>
 <div id="services">
   <% if flash[:notice] -%>
     <div id="flash">
@@ -41,7 +41,10 @@
           <tr class="tgate">
             <td class="tgate"><%=h i.name %></td>
             <td class="tgate"><%=h i.keyword %></td>
-            <td class="tgate"><%=h i.aliases %></td>
+            <td class="tgate">
+              <%=h "#{i.aliases.slice(0,20)}..." unless i.aliases.nil? or i.aliases.length() <= 20  %>
+              <%=h "#{i.aliases}" unless i.aliases.nil? or i.aliases.length() > 20  %>
+            </td>
             <% if session[:user_type] != "User" %>
               <td class="tgate"><%=h i.user.name %></td>
             <% end %>
