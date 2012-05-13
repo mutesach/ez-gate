@@ -21,14 +21,13 @@
       return false;
     }
 
-    var phone2 = /^(\+24381|24381|\+24382|24382|081|082)\d{7}$/;
+    var phone2 = /^\D*\d{7}\D*$/;
     var phone_number = document.getElementById('message_phone_single').value
     if (phone_number.match(phone2)) {
       return true;
     } else {
       document.getElementById('message_phone_single').style.backgroundColor='#FFFFB0';
       document.getElementById('message_phone_single').style.borderColor='#666666';
-      document.getElementById('message_phone_single').value = '+2438'
       alert('Invalid phone number format!');
       return false;
     }
@@ -64,7 +63,8 @@
               ShortCode.find(:all, :conditions => @conditions, :joins => "left join user_short_codes on user_short_codes.short_code_id=short_codes.id",	:select => "user_short_codes.user_id, short_codes.code, short_codes.id, short_codes.smsc"), :id, :short_code_with_smsc %></td>
         </tr>
         <tr id="single_p">
-          <td>Phone number</td><td><%= text_field :message, :phone_single, :size => 15, :value => "+2438", :onKeyUp => "checkPhone(this);", :onKeyDown => "checkPhone(this);" %></td>
+          <td>Phone number</td><td><%= select(:message, :prefix, Service::Prefixes) %>
+            <%= text_field :message, :phone_single, :size => 7, :onKeyUp => "checkPhone(this);", :onKeyDown => "checkPhone(this);" %></td>
         </tr>
         <tr id="multi_p" style="display: none;">
           <td>Phone (multiple)</td><td><%= text_field :message, :phone_multi, :size => 50 %></td>
@@ -80,9 +80,9 @@
           </td>
         </tr>
         <tr>
-          <td>Message</td><td><%= text_area :message, :content, :rows => 5, :cols => 40, :onKeyUp => "textCounter(this, document.getElementById('len'), 160)", :onKeyDown => "textCounter(this, document.getElementById('len'), 160)" %></td>
+          <td>Message</td><td><%= text_area :message, :content, :rows => 8, :cols => 40, :onKeyUp => "textCounter(this, document.getElementById('len'), 480)", :onKeyDown => "textCounter(this, document.getElementById('len'), 480)" %></td>
         </tr>
-        <tr><td><input readonly type="text" id="len" size="3" maxlength="3" value="160"/>characters left</td></tr>
+        <tr><td><input readonly type="text" id="len" size="3" maxlength="3" value="480"/>characters left</td></tr>
 
         <tr>
           <% if @status == 0%>

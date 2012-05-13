@@ -293,7 +293,7 @@ file
 
 
 
-
+delete
 2011-11-28T10:08:24.302825Z
 5a1c9100db16e87e64ca5d25b760a325
 2011-04-15T14:36:38.307142Z
@@ -583,6 +583,29 @@ mutesach
 
 4151
 
+inbound.html.erb
+file
+
+
+
+add
+
+b4dcdc5222936852f48977abaf3d3aed
+
+
+
+
+
+
+
+
+
+
+
+copied
+http://192.168.1.50/svn/pivot_gate/trunk/pivot_gate/app/views/messages/incoming.html.erb
+3274
+
 multi_message.html.erb
 file
 
@@ -617,14 +640,14 @@ mutesach
 
 3342
 
-inbound.html.erb
+send_single_message.html.erb
 file
 
 
 
 add
 
-b4dcdc5222936852f48977abaf3d3aed
+5a1c9100db16e87e64ca5d25b760a325
 
 
 
@@ -637,30 +660,7 @@ b4dcdc5222936852f48977abaf3d3aed
 
 
 copied
-http://192.168.1.50/svn/pivot_gate/trunk/pivot_gate/app/views/messages/incoming.html.erb
-3274
-
-outbound.html.erb
-file
-
-
-
-add
-
-8d6286c7a803066d72a922e1e4fd7ac4
-
-
-
-
-
-
-
-
-
-
-
-copied
-http://192.168.1.50/svn/pivot_gate/trunk/pivot_gate/app/views/messages/outgoing.html.erb
+http://192.168.1.50/svn/pivot_gate/trunk/pivot_gate/app/views/messages/single_message.html.erb
 3274
 
 search_by_sender.html.erb
@@ -696,6 +696,29 @@ mutesach
 
 
 4174
+
+outbound.html.erb
+file
+
+
+
+add
+
+8d6286c7a803066d72a922e1e4fd7ac4
+
+
+
+
+
+
+
+
+
+
+
+copied
+http://192.168.1.50/svn/pivot_gate/trunk/pivot_gate/app/views/messages/outgoing.html.erb
+3274
 
 filter_by_frequency.html.erb
 file

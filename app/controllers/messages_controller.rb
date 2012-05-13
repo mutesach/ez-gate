@@ -3,11 +3,11 @@ require 'rexml/document'
 require 'iconv'
 require 'rexml/document'
 class MessagesController < ApplicationController
-	before_filter :authorize
+	before_filter :authorize, :except => ["send_sms_service"]
 	before_filter :role_moderator, :except => ["index","inbound","outbound","update_inbound",
     "search_by_service","search_by_content","search_by_destination","search_by_date",
     "search_by_sender", "convert_date", "filter_by", "view_inbound_message",
-    "disp_inbound_message"]
+    "disp_inbound_message", "send_sms_service"]
 	include REXML
 	def index
 		case session[:user_type]
@@ -55,7 +55,7 @@ class MessagesController < ApplicationController
       conditions = "service_id in(#{sel})" unless @user_mod.nil?
       conditions = "id in('')" unless sel != nil
 		end
-		@inbound_messages = InboundMessage.where(conditions).order("created_at DESC")
+		@inbound_messages = InboundMessage.where(conditions).order("created_at DESC").limit(50)
 		@result = InboundMessage.where(conditions).count
 	end
 	
@@ -126,7 +126,7 @@ class MessagesController < ApplicationController
       sel = sel.slice(0, sel.length()-1)
       conditions = "service in(#{sel})" unless @user_mod.nil?
 		end
-		@outbound_messages = OutboundMessage.where(conditions).order("created_at DESC")
+		@outbound_messages = OutboundMessage.where(conditions).order("created_at DESC").limit(50)
 		@result = OutboundMessage.where(conditions).count
 	end
 	
@@ -291,14 +291,19 @@ class MessagesController < ApplicationController
     destination = ShortCode.find(params[:message][:dest])
     stock = User.find(session[:user_id])
     if stock.sms_stock > 0 or stock.sms_limit == false
-      if params[:message][:phone_single].match(/^(\+24381|24381|\+24382|24382|081|082)\d{7}$/)
-        if params[:message][:content].length() > 160
-          result = self.send_sms(params[:message][:content], params[:message][:phone_single], destination)
-          if !["400","503","403"].include?(result[0])
-            stock.update_attribute(:sms_stock, stock.sms_stock - 1) unless stock.sms_limit == false
-            message = "1 Message(s) sent to #{params[:message][:phone_single]} @ #{Time.now.strftime("%H:%M:%S %Y-%m-%d")}"
+      if params[:message][:phone_single].match(/^\D*\d{7}\D*$/)
+        if params[:message][:content].length() <= 480
+          sender = "#{params[:message][:prefix].strip()}#{params[:message][:phone_single].strip()}"
+          if sender.match(/^(\+243|243|0)(81|82|83)\d{7}$/)
+            result = self.send_sms(params[:message][:content], sender, destination)
+            if !["400","503","403"].include?(result[0])
+              stock.update_attribute(:sms_stock, stock.sms_stock - 1) unless stock.sms_limit == false
+              message = "1 Message(s) sent to #{sender} @ #{Time.now.strftime("%H:%M:%S %Y-%m-%d")}"
+            else
+              message = result[1]
+            end
           else
-            message = result[1]
+            message = "Invalid MSISDN #{sender}"
           end
         else
           message = "Message content should not exceed 160 characters"
@@ -311,7 +316,6 @@ class MessagesController < ApplicationController
     end   
     redirect_to :action => "new_message"
     flash[:notice] = message
-
   end
 
   def single_message_box
@@ -373,32 +377,32 @@ class MessagesController < ApplicationController
     @status = @result[0]
     @curr_status = @result[1]
     @box_status = @result[2]
-
-    if @status == 0
-      message = "SMS Gateway not available"
-    else
-      if @curr_status == "running" and @box_status != nil
-        stock = User.find(session[:user_id])
-        if stock.sms_stock > 0 or stock.sms_limit == false
-          result = self.send_sms(params[:content], params[:id], params[:short])
-          if !["400","503"].include?(result[0])
-            stock.update_attribute(:sms_stock, stock.sms_stock - 1) unless stock.sms_limit == false
-            puts "Sending message to #{params[:id]} ...."
-            message = "1 Message sent to #{params[:name]} [#{params[:id]}] @ #{Time.now.strftime("%H:%M:%S %Y-%m-%d")}"
+    if !params[:message][:content].nil? and !params[:message][:destination].nil?
+      if @status == 0
+        message = "SMS Gateway not available"
+      else
+        if @curr_status == "running" and @box_status != nil
+          stock = User.find(session[:user_id])
+          if stock.sms_stock > 0 or stock.sms_limit == false
+            result = self.send_sms(params[:message][:content], params[:destination], params[:message][:source])
+            if !["400","503"].include?(result[0])
+              stock.update_attribute(:sms_stock, stock.sms_stock - 1) unless stock.sms_limit == false
+              puts "Sending message to #{params[:id]} ...."
+              message = "1 Message sent to #{params[:name]} [#{params[:id]}] @ #{Time.now.strftime("%H:%M:%S %Y-%m-%d")}"
+            else
+              message = result[1]
+            end
           else
-            message = result[1]
+            message = "Unable to send message(s), stock : #{stock.sms_stock} (sms)"
           end
         else
-          message = "Unable to send message(s), stock : #{stock.sms_stock} (sms)"
+          message = "SMS Box not available"
         end
-      else
-        message = "SMS Box not available"
       end
+    else
+      message = "Missing parameters"
     end
-    render :update do |page|
-      page.replace_html("result", message)
-      page["result"].visual_effect :highlight, :duration => 4
-    end
+    
   end
   
   def send_multi_message
@@ -490,24 +494,57 @@ class MessagesController < ApplicationController
     puts "***********************************************************************";
     puts "To : #{@destination}"
     puts "Message content : \n#{message}";
-    puts "Short code : #{short_code}"
+    puts "Short code : #{short_code.code}"
     sms_gateway_response = @http.request_get("/cgi-bin/sendsms?username=#{kannel_sender_username}&password=#{kannel_sender_password}&from=#{short_code.code}&to=#{@destination}&text=#{@message}&dlr-mask=31&dlr-url=#{@resp_url}")
     puts "Response from SMS Gateway : ";
     puts sms_gateway_response.body
     return sms_gateway_response.code, sms_gateway_response.body
   end
 
-  def toggle_completed
-    update_page do |page|
-      page[:value_received].visual_effect :highlight
+  def send_sms_service
+    if !params[:from].nil? and !params[:to].nil?  and !params[:user].nil? and !params[:pass].nil? and !params[:text].nil?
+      short_code = ShortCode.find_by_code(params[:from])
+      user_auth = UserDetail.authenticate(params[:user], params[:pass])
+      if user_auth
+        if short_code
+          user = User.find_by_id(user_auth.user_id)
+          if user.user_type != "SA"
+            short_code_auth = UserShortCode.find_by_user_id_and_short_code_id(user_auth.user_id, short_code.id)
+          else
+            short_code_auth = short_code
+          end
+          if short_code_auth           
+            if user.sms_stock > 0 or user.sms_limit == false
+              if params[:to].match(/^(\+24381|24381|\+24382|24382|081|082)\d{7}$/)
+                if params[:text].length() <= 160
+                  result = self.send_sms(params[:text], params[:to], short_code)
+                  if !["400","503","403"].include?(result[0])
+                    user.update_attribute(:sms_stock, user.sms_stock - 1) unless user.sms_limit == false
+                    @message = "1 Message(s) sent to #{params[:to]} @ #{Time.now.strftime("%H:%M:%S %Y-%m-%d")}"
+                  else
+                    @message = result[1]
+                  end
+                else
+                  @message = "Message content should not exceed 160 characters"
+                end
+              else
+                @message = "Invalid MSISDN"
+              end
+            else
+              @message = "Unable to send message(s), stock : #{user.sms_stock} (sms)"
+            end
+          else
+            @message = "Short code not allowed for user #{user.name}"
+          end
+        else
+          @message = "Invalid short code"
+        end
+      else
+        @message = "Invalid user/password combination"
+      end
+    else
+      @message = "Missing parameters"
     end
-  end
-
-  def show
-
-  end
-
-  def create
-
+    render :layout => false
   end
 end

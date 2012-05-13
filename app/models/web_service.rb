@@ -5,7 +5,7 @@ class WebService < ActiveRecord::Base
   validates :web_service_uri, :presence =>{:message => "URI can't be blank"}
 
 	#validates_uri_existence_of :web_service_uri, :with => /(^$)|(^(http|https):\/\/[a-z0-9])/ix
-	Types = [[ "Get-URL" , "Get-URL" ],[ "POST-XML" , "POST-XML" ]]
+	Types = [[ "Get-URL (static)" , "Get-URL(1)" ], [ "Get-URL (dynamic)" , "Get-URL(2)" ],[ "POST-XML" , "POST-XML" ]]
 
 	def safe_delete
     transaction do

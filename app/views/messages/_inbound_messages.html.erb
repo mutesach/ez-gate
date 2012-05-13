@@ -59,10 +59,7 @@
             <td class="tgate">
               <%=h i.created_at.strftime("%Y-%m-%d %l:%M:%S %p") %></td>
             <td><%= link_to "[View]", view_inbound_message_messages_path(:id => i.id), :method => :get, 'data-popup' => true %></td>
-            <td><%= link_to "[Reply]",:update => 'send_sms',
-                :url => {:controller => "messages", :action => "reply_message_box",
-                :id => i.sender},:before => "Element.show('spinner')",
-                :success => "Element.hide('spinner')" %></td>
+            <!--<td><%= link_to "[Reply]", reply_message_messages_path(:id => i.sender), :method => :get, 'data-popup' => true %></td>-->
 
 
           </tr>

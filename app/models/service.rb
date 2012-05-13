@@ -11,6 +11,7 @@ class Service < ActiveRecord::Base
   validates :content_type, :presence =>{:message => "Content type can't be blank"}
 
 	ContentType = [[ "Static" , "Static" ],[ "Dynamic" , "Dynamic" ]]
+  Prefixes = [["+24381","+24381"],["+24382","+24382"],["+24383","+24383"]]
 	def service_name
     "#{name}"
   end

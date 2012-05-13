@@ -80,6 +80,66 @@
             return false;
           }
         }
+        function checktype() {
+          if (document.getElementById('web_service_web_service_type').value == "Get-URL") {
+            document.getElementById('web_service_post_xml_format').style.display = "none";
+          }
+          if (document.getElementById('web_service_web_service_type').value == "POST-XML") {
+            document.getElementById('web_service_post_xml_format').style.display='';
+          }
+          if (document.getElementById('web_service_web_service_type').value == "") {
+            document.getElementById('web_service_post_xml_format').style.display = "none";
+          }
+        }
+
+        function check1(field) {
+          document.getElementById('eg1').style.display='';
+          document.getElementById('eg2').style.display='none';
+        }
+
+        function check2(field) {
+          document.getElementById('eg1').style.display='none';
+          document.getElementById('eg2').style.display='';
+        }
+
+        function hidefld() {
+          document.getElementById('types').style.display = "none";
+          document.getElementById('postxml').style.display = "none";
+          document.getElementById('web_service_post_xml_format').style.display = "none";
+        }
+        function check_content_type() {
+          if (document.getElementById('service_content_type').value == "Static") {
+            document.getElementById('l_web_service_option').style.display='none';
+            document.getElementById('service_web_service_id').style.display='none';
+
+          }
+          else{
+            document.getElementById('l_web_service_option').style.display='';
+            document.getElementById('service_web_service_id').style.display='';
+          }
+          if (document.getElementById('service_content_type').value == "Dynamic") {
+            document.getElementById('l_web_service_option').style.display='';
+            document.getElementById('service_web_service_id').style.display='';
+            document.getElementById('service_reply_content').style.display = "none";
+            document.getElementById('l_reply_content').style.display = "none";
+          }
+          else{
+            document.getElementById('l_web_service_option').style.display='none';
+            document.getElementById('service_web_service_id').style.display='none';
+          }
+
+          if (document.getElementById('service_reply_true').value == "true"){
+            document.getElementById('service_reply_content').style.display = "";
+            document.getElementById('l_reply_content').style.display = "";
+          }
+
+          if (document.getElementById('service_reply').value == "false"){
+            document.getElementById('service_reply_content').style.display = "none";
+            document.getElementById('l_reply_content').style.display = "none";
+            document.getElementById('repl_c').style.display = "none";
+          }
+        }
+
       </script>
 
 

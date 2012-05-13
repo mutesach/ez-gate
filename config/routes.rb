@@ -25,6 +25,8 @@ EzGate::Application.routes.draw do
   #     end
   #   end
 
+  match "/ksmsgw/" => "messages#send_sms_service", :via => :get
+  
   resources :messages do
     collection do
       get 'inbound'
@@ -53,6 +55,7 @@ EzGate::Application.routes.draw do
       get  'single_message'
       get  'multi_message'
       get  'send_single_message'
+      post  'send_single_message'
       get  'send_multi_message'
       get  'check_gateway_status'
       get  'send_sms'
